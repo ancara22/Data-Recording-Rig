@@ -31,7 +31,6 @@ function saveData(folder, fileType) {
 
 //Send the connfiguration, config.txt file to the raspberry pi
 function rigConfiguration() {
-    console.log('Config start')
     let config = {
         host: "raspberry.local",
         port: 22,
@@ -54,35 +53,37 @@ function rigConfiguration() {
             sftp.fastPut('./config.ini', `${rigDirectory}config.ini`, (err) => {
                 if (err) {
                     console.error('Error transferring the file:', err);
-                    console.error('The Rasppberry Pi is OFF!!');
                     sftp.end(); 
                     ssh.end();
-                    return;
+                    return 0;
                 }
 
-                //Run the rig recording
-                //"python3 /home/rig/Documents/App/main/app.py"
+                // Run the rig recording
                 ssh.exec("python3 /home/rig/Documents/App/main/app.py", (err, stream) => {
                     if (err) {
-                        console.error("Error runnig the app:", err);
+                        console.error("Error running the app:", err);
                         ssh.end();
-                        return 0;
+                        return;
                     }
+                    
 
-                    stream.on("close", () => { 
-                        console.error("Recording start!");
-                        ssh.end();
-                    })
-
-                })
+                    stream.stderr.on('data', (data) => {
+                        console.error('Python Script Error:', data.toString());
+                    });
                 
+                    stream.on("close", (code, signal) => { 
+                        console.log("Recording process closed. Exit code:", code, "Signal:", signal);
+                        ssh.end();
+                    });
+                });
+
             })
         
-       
-        sftp.on('close', () => {
-            ssh.end();
-            console.log('Rig configuration compleated.');
-        })
+           
+            sftp.on('close', () => {
+                ssh.end();
+                console.log('Rig configuration compleated.');
+            })
       
         })
     })
