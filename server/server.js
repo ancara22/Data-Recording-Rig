@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const fs =  require('fs');
 const path = require('path');
 const { Client } = require('ssh2');
+const { spawn } = require('child_process');
 
 
 // Set the port for the server
@@ -98,7 +99,7 @@ function rigConfiguration() {
 
 
 //Get image and save to a file
-app.post('/image', saveData('images', 'image'), (req, res) => {
+app.post('/image', saveData('images/row_images', 'image'), (req, res) => {
     const imageFile = req.file;
   
     if (!imageFile) {
@@ -169,6 +170,10 @@ function removeStreamFiles(directoryPath) {
     });
 }
 
+
+function runSpeakersTranscriber() { 
+    let process = spawn('python3', ['transcriber.py']);
+}
 
 
 setInterval(() => {
