@@ -6,16 +6,11 @@ import time
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-row_images = "data/images/row_images"
-processed_images = "data/images/processed_images"
+row_images = "../data/images/row_images"
+processed_images = "../data/images/processed_images"
 
 
-def showImage(img): 
-    plt.imshow(img, cmap="gray") 
-    plt.axis('off') 
-    plt.style.use('ggplot') 
-    plt.show() 
-  
+#Read the image, face detection, face bluring, dext recognition, text extraction
 def processImage(imagePath):
     try:
         #Get image
@@ -34,7 +29,6 @@ def processImage(imagePath):
         
             roi = cv2.GaussianBlur(roi, (23, 23), 30) 
             image[y:y+roi.shape[0], x:x+roi.shape[1]] = roi 
-        
 
         #Processing for text detection
         ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
@@ -46,11 +40,10 @@ def processImage(imagePath):
         #Execute text searching
         for cnt in contours:
             x, y, w, h = cv2.boundingRect(cnt)
-            
             rect = cv2.rectangle(image2, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cropped = image2[y:y + h, x:x + w]
             
-            file = open("image_text.txt", "a")
+            file = open("../data/images/image_text/image_text.txt", "a")
 
             # Apply OCR
             text = pytesseract.image_to_string(cropped)
@@ -75,14 +68,23 @@ def processImage(imagePath):
         print(exc)
 
 
+#Image Testing function, to be removed
+def showImage(img): 
+    plt.imshow(img, cmap="gray") 
+    plt.axis('off') 
+    plt.style.use('ggplot') 
+    plt.show() 
+
+#New image handler
 class ImageHandler(FileSystemEventHandler):
     def on_created(self, event):
         if not event.is_directory and event.src_path.endswith(".jpg"):
-            imagePath = event.src_path
-            processImage(imagePath)
+            imagePath = event.src_path  #Get the image path
+            processImage(imagePath)     #Process the image
 
 
 if __name__ == "__main__":
+    #Observe the row_images folder content
     image_handler = ImageHandler()
     observer = Observer()
     observer.schedule(image_handler, path=row_images, recursive=False)
@@ -90,9 +92,12 @@ if __name__ == "__main__":
 
     try:
         while True:
-            time.sleep(1)
+            time.sleep(0)
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
 
-    # processImage('/Users/dionisbarcari/Documents/raspberryPi/server/data/images/row_images/90671759-group-of-people-holding-a-banner.jpg')
+
+
+###The processing execution is slower that image receiving
+##To be solved
