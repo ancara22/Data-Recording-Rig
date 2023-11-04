@@ -1,0 +1,9 @@
+############################################################################
+
+config.ini - This file contains the rig configurations and will be sent to the Raspberry Pi rig when the server is running. 
+
+utility.js - It contains the server's functionality.  
+
+processors/ - This directory contains the data processing scripts. 
+ 
+data/ - This is the folder where the data will be stored and processed. 
