@@ -60,7 +60,7 @@ function rigConfiguration() {
                     }
                     
                     stream.stderr.on('data', (data) => {
-                        //console.error('Python Script Error:', data.toString());
+                        console.error('Python Script Error:', data.toString());
                 
                     });
                 
@@ -142,5 +142,5 @@ export {
     removeStreamFiles,
     rigConfiguration,
     saveData,
-    runSpeakersTranscriber
+    runSpeakersTranscriber,
 }

@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { runDirealizer, saveData, rigConfiguration, removeStreamFiles, runImageProcessor } from './utility.js'
+import { runSpeakersTranscriber, saveData, rigConfiguration, removeStreamFiles, runImageProcessor } from './utility.js'
 
 // Set the port for the server
 const port = 8080;
