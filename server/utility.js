@@ -3,6 +3,7 @@ import { Client } from 'ssh2';
 import { readdir, unlink } from 'fs';
 import { join } from 'path';
 import { spawn, exec } from 'child_process';
+import fs from 'fs';
 
 
 //Save data to a file
@@ -136,6 +137,28 @@ function runSpeakersTranscriber() {
 }
 
 
+function processGSRoutput(data) {
+    let value = parseInt(data)  // they are comming in json format...modify tyhis line
+    let notConnectedvalue = 600; //600+ when the sensors are not connected
+    
+    if(value < notConnectedvalue) {
+        //Save data
+        //Find the Normal state after data recording  ///Test
+        
+        //Save dat  to a csv file
+        const data = `\n1234323213, ${value}`;
+
+        fs.appendFile("./data/gsr/gsr_output.csv", data, "utf-8", (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("GSR data saved: " + value);
+            }
+        });
+    }
+}
+
+
 
 export {
     runImageProcessor,
@@ -143,4 +166,5 @@ export {
     rigConfiguration,
     saveData,
     runSpeakersTranscriber,
+    processGSRoutput
 }

@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { runSpeakersTranscriber, saveData, rigConfiguration, removeStreamFiles, runImageProcessor } from './utility.js'
+import { processGSRoutput, runSpeakersTranscriber, saveData, rigConfiguration, removeStreamFiles, runImageProcessor } from './utility.js'
 
 // Set the port for the server
 const port = 8080;
@@ -58,8 +58,9 @@ app.post('/gsr', saveData('gsr', 'json'), (req, res) => {
         console.error('No GSR data received');
         return res.sendStatus(400);
     }
-
     console.log('gsrData: ', gsrData)
+    processGSRoutput(JSON.parse(gsrData)['gsrData']);
+
     res.sendStatus(200);
 });
 
