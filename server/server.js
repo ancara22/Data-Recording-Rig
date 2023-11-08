@@ -1,7 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { processGSRoutput, runSpeakersTranscriber, saveData, rigConfiguration, removeStreamFiles, runImageProcessor } from './utility.js'
+import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio } from './utility.js'
+import { sendAudioToAWSS3 } from './aws.js';
 
 // Set the port for the server
 const port = 8080;
@@ -44,7 +45,26 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
         console.error('No audio file received');
         return res.sendStatus(400);
     }
-    res.sendStatus(200);
+
+    const filePath = './data/audio/row_audio/' + audioFile.filename;
+
+    fs.stat(filePath, (err, stats) => {
+        if (err) {
+            console.error('Error checking file status:', err);
+            return res.sendStatus(500);
+        }
+
+        if (stats.isFile()) {
+            console.log('filename: ', audioFile.filename);
+            if(identifySpeachInAudio(audioFile.filename)) {
+                //sendAudioToAWSS3(audioFile.filename);
+            }
+            
+            return res.sendStatus(200);
+        }
+    })
+
+    //res.sendStatus(200);
 });
 
 
@@ -59,7 +79,7 @@ app.post('/gsr', saveData('gsr', 'json'), (req, res) => {
         return res.sendStatus(400);
     }
     console.log('gsrData: ', gsrData)
-    processGSRoutput(JSON.parse(gsrData)['gsrData']);
+    processGSRoutput(gsrData['gsr_data']);
 
     res.sendStatus(200);
 });
@@ -92,9 +112,9 @@ setInterval(() => {
 //List the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-
-    rigConfiguration();
-    runImageProcessor()   //Not running...to be solved
-    
+    runImageProcessor("maxresdefault.jpg");
+    //rigConfiguration();
+    //runImageProcessor()   //Not running...to be solved
+   
   });
   

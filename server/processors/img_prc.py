@@ -1,10 +1,8 @@
 import os
 import cv2 
-import matplotlib.pyplot as plt
 import pytesseract
-import time
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+import sys
+
 
 row_images = "./data/images/row_images"
 processed_images = "./data/images/processed_images"
@@ -68,36 +66,8 @@ def processImage(imagePath):
         print(exc)
 
 
-#Image Testing function, to be removed
-def showImage(img): 
-    plt.imshow(img, cmap="gray") 
-    plt.axis('off') 
-    plt.style.use('ggplot') 
-    plt.show() 
 
-#New image handler
-class ImageHandler(FileSystemEventHandler):
-    def on_created(self, event):
-        if not event.is_directory and event.src_path.endswith(".jpg"):
-            imagePath = event.src_path  #Get the image path
-            processImage(imagePath)     #Process the image
+imagePath =  row_images + "/" + sys.argv[1]
+imagePath = os.path.abspath(imagePath)
 
-
-if __name__ == "__main__":
-    #Observe the row_images folder content
-    image_handler = ImageHandler()
-    observer = Observer()
-    observer.schedule(image_handler, path=row_images, recursive=False)
-    observer.start()
-
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        observer.stop()
-    observer.join()
-
-
-
-###The processing execution is slower that image receiving
-##To be solved
+processImage(imagePath)

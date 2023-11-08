@@ -6,6 +6,7 @@ import { spawn, exec } from 'child_process';
 import fs from 'fs';
 
 
+
 //Save data to a file
 function saveData(folder, fileType) {
     const storage = diskStorage({
@@ -112,11 +113,10 @@ function removeStreamFiles(directoryPath) {
 }
 
 
-
 //!!!!!!!!!!!!!!!!!!!!!!! TO BE SOLVED !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //Run image processor python script, image_processor
-function runImageProcessor() {
-    exec('python3 ./processors/image_processor.py', (error, stdout, stderr) => {
+function runImageProcessor(imageName) {
+    exec(`python3 ./processors/image_processor.py ${imageName}`, (error, stdout, stderr) => {
         if (error) {
           console.error(`Error: ${error.message}`);
           return;
@@ -127,14 +127,7 @@ function runImageProcessor() {
         }
         console.log(`Output: ${stdout}`);
       });
-
 }   
-
-//!!!!!!!!!!!!!!!!!!!!!!! TO BE SOLVED !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//Run the audio direalizer python script, transcriber
-function runSpeakersTranscriber() { 
-    let transcriber = spawn('python3', ['processors/transcriber.py']);
-}
 
 
 function processGSRoutput(data) {
@@ -146,9 +139,10 @@ function processGSRoutput(data) {
         //Find the Normal state after data recording  ///Test
         
         //Save dat  to a csv file
-        const data = `\n1234323213, ${value}`;
+        let timestamp = Date.now();
+        const data = `\n${timestamp}, ${value}`;
 
-        fs.appendFile("./data/gsr/gsr_output.csv", data, "utf-8", (err) => {
+        fs.appendFile("./data/gsr/gsrData.csv", data, "utf-8", (err) => {
             if (err) {
                 console.log(err);
             } else {
@@ -159,12 +153,32 @@ function processGSRoutput(data) {
 }
 
 
+function identifySpeachInAudio(audioFIleName) {
+    exec(`python3 ./processors/transcriber.py ${audioFIleName}`, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error: ${error}`);
+          return res.status(500).send('Error running Python script.');
+        }
+    
+        const outputString = stdout.trim();
+        
+        if(outputString == 'true') {
+            return true;
+        } else if(outputString == 'false') {
+            return false;
+        } else {
+            return false;
+        }
+
+    
+    })
+}
 
 export {
     runImageProcessor,
     removeStreamFiles,
     rigConfiguration,
     saveData,
-    runSpeakersTranscriber,
-    processGSRoutput
+    processGSRoutput,
+    identifySpeachInAudio
 }
