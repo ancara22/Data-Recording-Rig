@@ -1,8 +1,8 @@
 import os
 import cv2 
-import matplotlib.pyplot as plt
 import pytesseract
 import time
+import csv
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -27,12 +27,12 @@ def processImage(imagePath):
             cv2.rectangle(image, (x, y), (x + w, y + h), (180, 180, 180), 2) 
             roi = image[y:y+h, x:x+w] 
         
-            roi = cv2.GaussianBlur(roi, (23, 23), 30) 
+            roi = cv2.GaussianBlur(roi, (23, 23), 100) 
             image[y:y+roi.shape[0], x:x+roi.shape[1]] = roi 
 
         #Processing for text detection
-        ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
-        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (60, 60))
+        ret, thresh1 = cv2.threshold(gray, 128, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
+        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (40, 20))
         dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
         contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         image2 = image.copy()
@@ -43,17 +43,18 @@ def processImage(imagePath):
             rect = cv2.rectangle(image2, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cropped = image2[y:y + h, x:x + w]
             
-            file = open("./data/images/image_text/image_text.txt", "a")
+            csv_file = "./data/images/image_text/image_text.csv"
 
-            # Apply OCR
-            text = pytesseract.image_to_string(cropped)
-            formated_text = '\n'.join(line for line in text.splitlines() if line.strip())
+            with open(csv_file, mode="a", newline='') as file:
+                writer = csv.writer(file)
+            
+                # Apply OCR
+                text = pytesseract.image_to_string(cropped)
+                formated_text = ''.join(line for line in text.splitlines() if line.strip())
 
-            # Appending the text into file
-            if formated_text != "":
-                file.write(formated_text)
-                file.write("\n")
-            file.close
+                # Append the OCR result to the CSV file
+                if formated_text != "":
+                    writer.writerow([os.path.basename(imagePath), formated_text])
 
         # Save the new image
         image_name = os.path.basename(imagePath)
@@ -63,17 +64,9 @@ def processImage(imagePath):
         # Remove the old image
         os.remove(imagePath)
 
-        #showImage(image) 
     except Exception as exc:
         print(exc)
 
-
-#Image Testing function, to be removed
-def showImage(img): 
-    plt.imshow(img, cmap="gray") 
-    plt.axis('off') 
-    plt.style.use('ggplot') 
-    plt.show() 
 
 #New image handler
 class ImageHandler(FileSystemEventHandler):
@@ -98,6 +91,5 @@ if __name__ == "__main__":
     observer.join()
 
 
-
 ###The processing execution is slower that image receiving
-##To be solved
+

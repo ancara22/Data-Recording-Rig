@@ -2,10 +2,8 @@ from pyannote.audio import Pipeline
 import sys
 
 
-#IN THE PROCESSS################################################
-
 file_path_input = sys.argv[1]
-file_path = "/Users/dionisbarcari/Documents/Courseworks/raspberryPi/server/data/audio/row_audio/" + file_path_input
+file_path = "./data/audio/row_audio/" + file_path_input
 
 #Audio file direalizer, recognise the spearkers and speach timelines
 def extractSpeakersTimelines(file):
@@ -20,11 +18,6 @@ def extractSpeakersTimelines(file):
         print('true')
 
     sys.stdout.flush()
-
-    #Save the diarization output
-    #with open("data/audio/audio_direalised/conv_direalised3.rttm", "w") as rttm:
-    #    diarization.write_rttm(rttm)
-
 
 extractSpeakersTimelines(file_path)
 

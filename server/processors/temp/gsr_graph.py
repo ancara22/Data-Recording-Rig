@@ -15,7 +15,7 @@ def update():
     plt.draw()
 
 
-filePath = 'server/data/gsr/gsrData.csv'        #File path
+filePath = '../data/gsr/gsrData.csv'        #File path
 
 fig, axes = plt.subplots()
 

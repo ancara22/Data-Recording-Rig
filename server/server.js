@@ -112,9 +112,8 @@ setInterval(() => {
 //List the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    runImageProcessor("maxresdefault.jpg");
-    //rigConfiguration();
-    //runImageProcessor()   //Not running...to be solved
    
+    rigConfiguration();
+    runImageProcessor();
   });
   

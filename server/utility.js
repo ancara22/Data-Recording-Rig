@@ -2,10 +2,8 @@ import multer, { diskStorage } from 'multer';
 import { Client } from 'ssh2';
 import { readdir, unlink } from 'fs';
 import { join } from 'path';
-import { spawn, exec } from 'child_process';
+import { exec } from 'child_process';
 import fs from 'fs';
-
-
 
 //Save data to a file
 function saveData(folder, fileType) {
@@ -88,6 +86,65 @@ function rigConfiguration() {
     ssh.connect(config); //Start connection
 }
 
+//Run image processor python script, image_processor
+function runImageProcessor() {
+    exec(`python3 ./processors/image_processor.py`, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error: ${error.message}`);
+          return;
+        }
+        if (stderr) {
+          console.error(`Stderr: ${stderr}`);
+          return;
+        }
+        console.log(`Output: ${stdout}`);
+      });
+}   
+
+//Save GSR data to a csv file
+function processGSRoutput(data) {
+    let value = parseInt(data) 
+    let notConnectedvalue = 600; //600+ when the sensors are not connected
+    
+    if(value < notConnectedvalue) {
+        //Save dat  to a csv file
+        let timestamp = Date.now();
+        const data = `\n${timestamp}, ${value}`;
+
+        fs.appendFile("./data/gsr/gsrData.csv", data, "utf-8", (err) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("GSR data saved: " + value);
+            }
+        });
+    }
+}
+
+//Identify speech in an audio file
+function identifySpeachInAudio(audioFIleName) {
+    //Run the python transcriber
+    exec(`python3 ./processors/transcriber.py ${audioFIleName}`, (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error: ${error}`);
+          return false;
+        }
+    
+        //Get the output
+        const outputString = stdout.trim();
+        
+        if(outputString == 'true') {
+            return true;
+        } else if(outputString == 'false') {
+            return false;
+        } else {
+            return false;
+        }
+
+    
+    })
+}
+
 //Temp function
 //Remove images from the directory
 function removeStreamFiles(directoryPath) {
@@ -110,68 +167,6 @@ function removeStreamFiles(directoryPath) {
             }
         });
     });
-}
-
-
-//!!!!!!!!!!!!!!!!!!!!!!! TO BE SOLVED !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//Run image processor python script, image_processor
-function runImageProcessor(imageName) {
-    exec(`python3 ./processors/image_processor.py ${imageName}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Error: ${error.message}`);
-          return;
-        }
-        if (stderr) {
-          console.error(`Stderr: ${stderr}`);
-          return;
-        }
-        console.log(`Output: ${stdout}`);
-      });
-}   
-
-
-function processGSRoutput(data) {
-    let value = parseInt(data)  // they are comming in json format...modify tyhis line
-    let notConnectedvalue = 600; //600+ when the sensors are not connected
-    
-    if(value < notConnectedvalue) {
-        //Save data
-        //Find the Normal state after data recording  ///Test
-        
-        //Save dat  to a csv file
-        let timestamp = Date.now();
-        const data = `\n${timestamp}, ${value}`;
-
-        fs.appendFile("./data/gsr/gsrData.csv", data, "utf-8", (err) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("GSR data saved: " + value);
-            }
-        });
-    }
-}
-
-
-function identifySpeachInAudio(audioFIleName) {
-    exec(`python3 ./processors/transcriber.py ${audioFIleName}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Error: ${error}`);
-          return res.status(500).send('Error running Python script.');
-        }
-    
-        const outputString = stdout.trim();
-        
-        if(outputString == 'true') {
-            return true;
-        } else if(outputString == 'false') {
-            return false;
-        } else {
-            return false;
-        }
-
-    
-    })
 }
 
 export {

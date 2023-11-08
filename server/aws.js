@@ -159,6 +159,10 @@ function jsonToText(filePath) {
 }
 
 
+function gettextSentiment() {
+    
+}
+
 
 export {
     sendAudioToAWSS3
