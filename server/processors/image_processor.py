@@ -5,6 +5,8 @@ import time
 import csv
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import threading
+from concurrent.futures import ThreadPoolExecutor
 
 row_images = "./data/images/row_images"
 processed_images = "./data/images/processed_images"
@@ -27,12 +29,12 @@ def processImage(imagePath):
             cv2.rectangle(image, (x, y), (x + w, y + h), (180, 180, 180), 2) 
             roi = image[y:y+h, x:x+w] 
         
-            roi = cv2.GaussianBlur(roi, (23, 23), 100) 
+            roi = cv2.GaussianBlur(roi, (23, 23), 30) 
             image[y:y+roi.shape[0], x:x+roi.shape[1]] = roi 
 
         #Processing for text detection
-        ret, thresh1 = cv2.threshold(gray, 128, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
-        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (40, 20))
+        ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
+        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (60, 60))
         dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
         contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         image2 = image.copy()
@@ -70,11 +72,14 @@ def processImage(imagePath):
 
 #New image handler
 class ImageHandler(FileSystemEventHandler):
+    def __init__(self):
+        self.thread_pool = ThreadPoolExecutor(max_workers=3)
+
     def on_created(self, event):
         if not event.is_directory and event.src_path.endswith(".jpg"):
             imagePath = event.src_path  #Get the image path
-            processImage(imagePath)     #Process the image
 
+            self.thread_pool.submit(processImage, imagePath)
 
 if __name__ == "__main__":
     #Observe the row_images folder content

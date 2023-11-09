@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio } from './utility.js'
-import { sendAudioToAWSS3 } from './aws.js';
+import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio } from './modules/utility.js'
+import { sendAudioToAWSS3 } from './modules/aws.js';
 
 // Set the port for the server
 const port = 8080;
@@ -63,8 +63,6 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
             return res.sendStatus(200);
         }
     })
-
-    //res.sendStatus(200);
 });
 
 
@@ -103,7 +101,7 @@ app.post('/video', saveData('videos', 'video'), (req, res) => {
 //Temp code, to be removed
 //###############################################
 setInterval(() => {
-    let dirPath = 'data/images/row_images';
+    let dirPath = 'data/images/processed_images';
     removeStreamFiles(dirPath);
 }, 30000)
 

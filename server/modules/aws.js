@@ -7,7 +7,7 @@ const s3 = new AWS.S3();                                    //Init AWS S3 Bucket
 
 //Insert audio file to the AWS S3 Bucket 
 function sendAudioToAWSS3(audioFile) {
-    let filePath = "./data/audio/row_audio/" + audioFile;
+    let filePath = "../data/audio/row_audio/" + audioFile;
     
     //Configure the AWS bucket
     const bucketName = 'audiobucketfortranscirber';
@@ -94,7 +94,7 @@ function getTranscriptionStatus(transcriptionJobName, audioFile) {
 
 //Get Transcriber output
 function getTranscriptionData(result_file_url, audioFile) {
-    let outputPath = './data/audio/audio_text/' + (audioFile.replace('.wav', '.json')); //Output file name
+    let outputPath = '../data/audio/audio_text/' + (audioFile.replace('.wav', '.json')); //Output file name
 
     //Create a empty file
     let file = fs.createWriteStream(outputPath);
@@ -159,7 +159,7 @@ function jsonToText(filePath) {
 }
 
 
-function gettextSentiment() {
+function getTextSentiment() {
     
 }
 
