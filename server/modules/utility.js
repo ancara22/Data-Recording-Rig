@@ -121,6 +121,46 @@ function processGSRoutput(data) {
     }
 }
 
+//Insert data into 3 minuts sections
+function insertGSRData(data, dataValue) {
+    let value = parseInt(dataValue) 
+    let notConnectedvalue = 600;
+
+    if(value < notConnectedvalue) {
+        if(!data.startTime) data.startTime = Date.now();
+
+        data.gsrData.push(value);
+    } else {
+        data.artefacts ++;
+    }
+
+    if(data.errors >= 3) {
+        data.startTime = Date.now();
+        data.artefacts = 0;
+    }
+        
+    if(Date.now() - data.startTime >= 3 * 60 * 1000) {
+        data.finishTime = Date.now();
+        writeSectionToCSV(data);
+    }
+
+}
+
+//Insert the section to csv file
+function writeSectionToCSV(data) {
+    fs.appendFile("./data/gsr/gsrSections.csv", JSON.stringify(data) + '\n', (err) => {
+        if (err) {
+            console.error('Error writing to CSV file:', err);
+        }
+    });
+
+    // Clear the data for the next section
+    data.startTime = null;
+    data.finishTime = null;
+    data.gsrData = [];
+}
+
+
 //Identify speech in an audio file
 function identifySpeachInAudio(audioFIleName) {
     //Run the python transcriber
@@ -175,5 +215,6 @@ export {
     rigConfiguration,
     saveData,
     processGSRoutput,
-    identifySpeachInAudio
+    identifySpeachInAudio,
+    insertGSRData
 }

@@ -5,7 +5,6 @@ import time
 import csv
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import threading
 from concurrent.futures import ThreadPoolExecutor
 
 row_images = "./data/images/row_images"
@@ -34,7 +33,7 @@ def processImage(imagePath):
 
         #Processing for text detection
         ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
-        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (60, 60))
+        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (40, 40))
         dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
         contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         image2 = image.copy()

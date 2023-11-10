@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio } from './modules/utility.js'
+import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData } from './modules/utility.js'
 import { sendAudioToAWSS3 } from './modules/aws.js';
 
 // Set the port for the server
@@ -66,33 +66,30 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
 });
 
 
-//Get GSR json and save to a file
+//Get GSR 
 //##############################################
 
-app.post('/gsr', saveData('gsr', 'json'), (req, res) => {
+//GSR section object
+let data = {
+    startTime: null,
+    finishTime: null,
+    gsrData: [],
+    artefacts: 0
+}  
+
+app.post('/gsr', (req, res) => {
     const gsrData = req.body;
 
     if (!gsrData) {
         console.error('No GSR data received');
         return res.sendStatus(400);
     }
+
     console.log('gsrData: ', gsrData)
-    processGSRoutput(gsrData['gsr_data']);
 
-    res.sendStatus(200);
-});
+    insertGSRData(data, gsrData['gsr_data'])
+    //processGSRoutput(gsrData['gsr_data']);
 
-
-//Get video and save to a file
-//##############################################
-
-app.post('/video', saveData('videos', 'video'), (req, res) => {
-    const videoFile = req.file;
-  
-    if (!videoFile) {
-      console.error('No video file received');
-      return res.sendStatus(400);
-    }
     res.sendStatus(200);
 });
 
