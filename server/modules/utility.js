@@ -102,7 +102,7 @@ function runImageProcessor() {
 }   
 
 //Save GSR data to a csv file
-function processGSRoutput(data) {
+function processGSRoutput(data, nr) {
     let value = parseInt(data) 
     let notConnectedvalue = 600; //600+ when the sensors are not connected
     
@@ -111,7 +111,9 @@ function processGSRoutput(data) {
         let timestamp = Date.now();
         const data = `\n${timestamp}, ${value}`;
 
-        fs.appendFile("./data/gsr/gsrData.csv", data, "utf-8", (err) => {
+        createFileIfNotExists(`./data/gsr/gsrData${nr}.csv`, "Timestamp,GSR");
+
+        fs.appendFile(`./data/gsr/gsrData${nr}.csv`, data, "utf-8", (err) => {
             if (err) {
                 console.log(err);
             } else {
@@ -122,33 +124,40 @@ function processGSRoutput(data) {
 }
 
 //Insert data into 3 minuts sections
-function insertGSRData(data, dataValue) {
+function insertGSRData(data, dataValue, data2) {
     let value = parseInt(dataValue) 
     let notConnectedvalue = 600;
 
     if(value < notConnectedvalue) {
-        if(!data.startTime) data.startTime = Date.now();
+        if(data.startTime == null) data.startTime = Date.now();
 
         data.gsrData.push(value);
     } else {
         data.artefacts ++;
     }
 
-    if(data.errors >= 3) {
+    if(data.artefacts >= 3) {
         data.startTime = Date.now();
         data.artefacts = 0;
     }
+   
+
+    processGSRoutput(dataValue, data2.fileNumb);
         
-    if(Date.now() - data.startTime >= 3 * 60 * 1000) {
+    if(Date.now() - data.startTime >= 3 * 60 * 1000 && data.startTime != null || data.gsrData.length >= 85) {
         data.finishTime = Date.now();
         writeSectionToCSV(data);
+        data2.fileNumb++;
+         
     }
 
 }
 
 //Insert the section to csv file
 function writeSectionToCSV(data) {
-    fs.appendFile("./data/gsr/gsrSections.csv", JSON.stringify(data) + '\n', (err) => {
+    const csvRow = `${data.startTime},${data.finishTime},[${data.gsrData.join(', ')}]\n`;
+
+    fs.appendFile("./data/gsr/gsrSections.csv",  csvRow, (err) => {
         if (err) {
             console.error('Error writing to CSV file:', err);
         }
@@ -195,7 +204,7 @@ function removeStreamFiles(directoryPath) {
         }
 
         files.forEach((file) => {
-            if (file.includes('stream')) {
+            if (file.includes('stream') || file.includes('audio')) {
                 const filePath = join(directoryPath, file);
                 unlink(filePath, (error) => {
                     if (error) {
@@ -208,6 +217,15 @@ function removeStreamFiles(directoryPath) {
         });
     });
 }
+
+
+function createFileIfNotExists(filePath, content) {
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, content || '', 'utf-8');
+      console.log(`File created: ${filePath}`);
+    }
+}
+
 
 export {
     runImageProcessor,

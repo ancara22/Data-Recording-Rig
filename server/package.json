@@ -20,12 +20,14 @@
   "homepage": "https://github.com/ancara22/pi-server#readme",
   "dependencies": {
     "aws-sdk": "^2.1489.0",
+    "binaryjs": "^0.2.1",
     "body-parser": "^1.20.2",
     "child_process": "^1.0.2",
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
     "multer": "^1.4.5-lts.1",
     "path": "^0.12.7",
-    "ssh2": "^1.14.0"
+    "ssh2": "^1.14.0",
+    "wav": "^1.0.2"
   }
 }

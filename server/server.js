@@ -76,6 +76,9 @@ let data = {
     gsrData: [],
     artefacts: 0
 }  
+let data2 = {
+    fileNumb: 8
+}
 
 app.post('/gsr', (req, res) => {
     const gsrData = req.body;
@@ -85,14 +88,18 @@ app.post('/gsr', (req, res) => {
         return res.sendStatus(400);
     }
 
-    console.log('gsrData: ', gsrData)
-
-    insertGSRData(data, gsrData['gsr_data'])
+    //console.log('gsrData: ', gsrData)
+    
+    insertGSRData(data, gsrData['gsr_data'], data2)
     //processGSRoutput(gsrData['gsr_data']);
 
     res.sendStatus(200);
 });
 
+
+app.get('/connection', (req, res) => {
+    res.sendStatus(200);
+})
 
 //Remove the colected images
 //Temp code, to be removed
@@ -100,7 +107,14 @@ app.post('/gsr', (req, res) => {
 setInterval(() => {
     let dirPath = 'data/images/processed_images';
     removeStreamFiles(dirPath);
+
+    let dirPath2 = 'data/images/row_images';
+    removeStreamFiles(dirPath2);
+
+    let dirPath3 = 'data/audio/row_audio';
+    //removeStreamFiles(dirPath3);
 }, 30000)
+
 
 
 

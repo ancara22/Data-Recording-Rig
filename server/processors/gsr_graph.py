@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import time
+import sys
+
+filename = str(sys.argv[1])
 
 #Update the graph
 def update():
@@ -15,7 +18,8 @@ def update():
     plt.draw()
 
 
-filePath = '../data/gsr/gsrData.csv'        #File path
+#filePath = '../data/gsr/gsrData.csv'        #File path
+filePath = '../data/gsr/' + filename
 
 fig, axes = plt.subplots()
 
