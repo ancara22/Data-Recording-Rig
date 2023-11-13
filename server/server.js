@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import fs from 'fs';
 import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData } from './modules/utility.js'
 import { sendAudioToAWSS3 } from './modules/aws.js';
+import path from 'path';
+import { fileURLToPath } from 'url'
 
 // Set the port for the server
 const port = 8080;
@@ -115,7 +117,11 @@ setInterval(() => {
     //removeStreamFiles(dirPath3);
 }, 30000)
 
-
+app.get("/", (req, res)=> {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    res.sendFile(path.join(__dirname, '/index.html'));
+})
 
 
 //List the server

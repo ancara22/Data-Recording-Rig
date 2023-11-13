@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Data collection and processing server",
-  "main": "server.js",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -20,7 +20,6 @@
   "homepage": "https://github.com/ancara22/pi-server#readme",
   "dependencies": {
     "aws-sdk": "^2.1489.0",
-    "binaryjs": "^0.2.1",
     "body-parser": "^1.20.2",
     "child_process": "^1.0.2",
     "express": "^4.18.2",

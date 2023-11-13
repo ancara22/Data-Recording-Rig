@@ -172,8 +172,8 @@ function writeSectionToCSV(data) {
 
 //Identify speech in an audio file
 function identifySpeachInAudio(audioFIleName) {
-    //Run the python transcriber
-    exec(`python3 ./processors/transcriber.py ${audioFIleName}`, (error, stdout, stderr) => {
+    //Run the python audio_transcriber
+    exec(`python3 ./processors/audio_transcriber.py ${audioFIleName}`, (error, stdout, stderr) => {
         if (error) {
           console.error(`Error: ${error}`);
           return false;
