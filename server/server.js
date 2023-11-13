@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
 import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData } from './modules/utility.js'
-import { sendAudioToAWSS3 } from './modules/aws.js';
+import { sendAudioToAWSS3 } from './modules/aws_services.js';
 import path from 'path';
 import { fileURLToPath } from 'url'
 
@@ -10,6 +10,9 @@ import { fileURLToPath } from 'url'
 const port = 8080;
 const app = express();
 app.use(bodyParser.json());
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, 'webclient')));
 
 
 //Get image and save to a file. 
@@ -89,8 +92,6 @@ app.post('/gsr', (req, res) => {
         console.error('No GSR data received');
         return res.sendStatus(400);
     }
-
-    //console.log('gsrData: ', gsrData)
     
     insertGSRData(data, gsrData['gsr_data'], data2)
     //processGSRoutput(gsrData['gsr_data']);
@@ -102,6 +103,13 @@ app.post('/gsr', (req, res) => {
 app.get('/connection', (req, res) => {
     res.sendStatus(200);
 })
+
+
+
+app.get("/", (req, res)=> {
+    res.sendFile(path.join(__dirname, '/webclient/index.html'));
+})
+
 
 //Remove the colected images
 //Temp code, to be removed
@@ -116,12 +124,6 @@ setInterval(() => {
     let dirPath3 = 'data/audio/row_audio';
     //removeStreamFiles(dirPath3);
 }, 30000)
-
-app.get("/", (req, res)=> {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    res.sendFile(path.join(__dirname, '/index.html'));
-})
 
 
 //List the server
