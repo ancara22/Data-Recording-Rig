@@ -32,11 +32,13 @@ def processImage(imagePath):
             image[y:y+roi.shape[0], x:x+roi.shape[1]] = roi 
 
         #Processing for text detection
-        ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV)
-        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (40, 40))
-        dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
+        ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV) #cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV 
+        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (60, 60))
+        dilation = cv2.dilate(thresh1, rect_kernel, iterations = 3)
         contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         image2 = image.copy()
+
+        contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 100]
 
         #Execute text searching
         for cnt in contours:
@@ -54,7 +56,7 @@ def processImage(imagePath):
                 formated_text = ''.join(line for line in text.splitlines() if line.strip())
 
                 # Append the OCR result to the CSV file
-                if formated_text != "":
+                if formated_text != "" and len(formated_text) > 10:
                     writer.writerow([os.path.basename(imagePath), formated_text])
 
         # Save the new image
@@ -93,7 +95,4 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         observer.stop()
     observer.join()
-
-
-###The processing execution is slower that image receiving
 

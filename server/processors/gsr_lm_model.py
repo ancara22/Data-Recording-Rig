@@ -54,7 +54,7 @@ model = RandomForestClassifier(n_estimators=100, random_state=42, class_weight='
 
 cv_scores = cross_val_score(model, features, EMOTION, cv=5)
 
-# Print the cross-validation scores
+#Print the cross-validation scores
 print("Cross-Validation Scores:", cv_scores)
 print("Mean CV Score:", cv_scores.mean())
 

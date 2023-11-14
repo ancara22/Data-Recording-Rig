@@ -1,0 +1,60 @@
+[
+    {
+      "timestamp": "1699383037",
+      "audio_file": "audioT_audio_1699383037.wav",
+      "text": [
+        {
+          "speaker": "spk_0",
+          "text": "I don't think he really has an empathy vow."
+        },
+        {
+          "speaker": "spk_1",
+          "text": "Well, he's capitalized on being disagreeable if you're in the public eye like that and you're a critic and you wanna say what you have to say and you want."
+        }
+      ]
+    },
+    {
+      "timestamp": 1699992389,
+      "text": [
+        {
+          "speaker": "spk_0",
+          "text": "undefined He had died of alcoholism when he was 27 whose voice sounds like an 80 year old man ."
+        },
+        {
+          "speaker": "spk_1",
+          "text": "Simple melody . No , but there's ."
+        }
+      ],
+      "audio_file": "audio_1699992389.json"
+    },
+    {
+      "timestamp": 1699992389,
+      "text": [],
+      "audio_file": "audio_1699992389.json"
+    },
+    {
+      "timestamp": 1699992389,
+      "text": [],
+      "audio_file": "audio_1699992389.json"
+    },
+    {
+      "timestamp": 1699994489,
+      "text": [
+        {
+          "speaker": "spk_0",
+          "text": " Fascinating , uh , conversely , what sorts of openers , um , do you think , establish the best rapport and , um , you know , be never ."
+        }
+      ],
+      "audio_file": "audio_1699994489.wav"
+    },
+    {
+      "timestamp": 1699994651,
+      "text": [
+        {
+          "speaker": "spk_0",
+          "text": " And I don't recall ever quote unquote cashing in on any of that . But he was exactly right . When I eventually decided to move institutions , we've given away so much ."
+        }
+      ],
+      "audio_file": "audio_1699994651.wav"
+    }
+  ]

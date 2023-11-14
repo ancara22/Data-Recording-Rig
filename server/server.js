@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import fs from 'fs';
+import fs, {promises} from 'fs';
 import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData } from './modules/utility.js'
 import { sendAudioToAWSS3 } from './modules/aws_services.js';
 import path from 'path';
@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'webclient')));
+
 
 
 //Get image and save to a file. 
@@ -51,23 +52,20 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
         return res.sendStatus(400);
     }
 
+    //Row data path
     const filePath = './data/audio/row_audio/' + audioFile.filename;
 
-    fs.stat(filePath, (err, stats) => {
-        if (err) {
-            console.error('Error checking file status:', err);
-            return res.sendStatus(500);
-        }
-
-        if (stats.isFile()) {
-            console.log('filename: ', audioFile.filename);
-            if(identifySpeachInAudio(audioFile.filename)) {
-                //sendAudioToAWSS3(audioFile.filename);
+    //Read the audio file/Promise
+    fs.promises.readFile(filePath)
+        .then(()=> {
+            return true;
+            //identifySpeachInAudio(audioFile.filename) //Significall work/ Test
+        }).then((isSpeech) => {
+            if (isSpeech) {
+              sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
             }
-            
-            return res.sendStatus(200);
-        }
-    })
+            res.sendStatus(200);
+        })
 });
 
 
@@ -81,7 +79,9 @@ let data = {
     gsrData: [],
     artefacts: 0
 }  
-let data2 = {
+
+//Used for trainig
+let trainingFileStart = {
     fileNumb: 8
 }
 
@@ -93,23 +93,41 @@ app.post('/gsr', (req, res) => {
         return res.sendStatus(400);
     }
     
-    insertGSRData(data, gsrData['gsr_data'], data2)
-    //processGSRoutput(gsrData['gsr_data']);
+    insertGSRData(data, gsrData['gsr_data'], trainingFileStart) //Insert gsr data/ Used for LM training 
+    //processGSRoutput(gsrData['gsr_data']);   /// Process GSr data, the permanent processor
 
     res.sendStatus(200);
 });
 
 
+//For connection testing
 app.get('/connection', (req, res) => {
     res.sendStatus(200);
 })
 
 
+//Web interface
+//##############################################
 
 app.get("/", (req, res)=> {
     res.sendFile(path.join(__dirname, '/webclient/index.html'));
 })
 
+
+//List the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+   
+    rigConfiguration();
+    runImageProcessor();
+});
+
+
+
+
+
+
+//##############################################################################################################################################
 
 //Remove the colected images
 //Temp code, to be removed
@@ -119,18 +137,12 @@ setInterval(() => {
     removeStreamFiles(dirPath);
 
     let dirPath2 = 'data/images/row_images';
-    removeStreamFiles(dirPath2);
+    //removeStreamFiles(dirPath2);
 
     let dirPath3 = 'data/audio/row_audio';
     //removeStreamFiles(dirPath3);
 }, 30000)
 
 
-//List the server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-   
-    rigConfiguration();
-    runImageProcessor();
-  });
+
   

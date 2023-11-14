@@ -4,6 +4,9 @@ import { readdir, unlink } from 'fs';
 import { join } from 'path';
 import { exec } from 'child_process';
 import fs from 'fs';
+import { promisify } from 'util'
+
+
 
 //Save data to a file
 function saveData(folder, fileType) {
@@ -20,6 +23,7 @@ function saveData(folder, fileType) {
     const upload = multer({ storage: storage });
     return upload.single(fileType);
 }
+
 
 //Send the connfiguration, config.ini file to the raspberry pi
 function rigConfiguration() {
@@ -51,24 +55,33 @@ function rigConfiguration() {
                     return 0;
                 }
 
-                // Run the rig recording on the raspberry pi
-                ssh.exec("python3 /home/rig/Documents/App/main/app.py", (err, stream) => {
-                    if (err) {
-                        console.error("Error running the app:", err);
-                        ssh.end();
-                        return;
-                    }
-                    
-                    stream.stderr.on('data', (data) => {
-                        console.error('Python Script Error:', data.toString());
-                
-                    });
-                
-                    stream.on("close", (code, signal) => { 
-                        console.log("Recording process closed. Exit code:", code, "Signal:", signal);
-                        ssh.end();
-                    });
-                });
+                //Stop all the previews processes
+                ssh.exec('pkill -f python', (err, stream) => {
+                    const sleep = (milliseconds) => {
+                        return new Promise(resolve => setTimeout(resolve, milliseconds));
+                    };
+
+                    sleep(1000).then(()=> {
+                        // Run the rig recording on the raspberry pi
+                        ssh.exec("python3 /home/rig/Documents/App/main/app.py", (err, stream) => {
+                            if (err) {
+                                console.error("Error running the app:", err);
+                                ssh.end();
+                                return;
+                            }
+                            
+                            stream.stderr.on('data', (data) => {
+                                console.error('Python Script Error:', data.toString());
+                        
+                            });
+                        
+                            stream.on("close", (code, signal) => { 
+                                console.log("Recording process closed. Exit code:", code, "Signal:", signal);
+                                ssh.end();
+                            });
+                        });
+                    })
+                }) 
             })
             
             //On writing close, close the ssh connection
@@ -86,6 +99,7 @@ function rigConfiguration() {
     ssh.connect(config); //Start connection
 }
 
+
 //Run image processor python script, image_processor
 function runImageProcessor() {
     exec(`python3 ./processors/image_processor.py`, (error, stdout, stderr) => {
@@ -100,6 +114,7 @@ function runImageProcessor() {
         console.log(`Output: ${stdout}`);
       });
 }   
+
 
 //Save GSR data to a csv file
 function processGSRoutput(data, nr) {
@@ -122,6 +137,7 @@ function processGSRoutput(data, nr) {
         });
     }
 }
+
 
 //Insert data into 3 minuts sections
 function insertGSRData(data, dataValue, data2) {
@@ -171,28 +187,26 @@ function writeSectionToCSV(data) {
 
 
 //Identify speech in an audio file
-function identifySpeachInAudio(audioFIleName) {
-    //Run the python audio_transcriber
-    exec(`python3 ./processors/audio_transcriber.py ${audioFIleName}`, (error, stdout, stderr) => {
-        if (error) {
-          console.error(`Error: ${error}`);
-          return false;
-        }
-    
-        //Get the output
-        const outputString = stdout.trim();
-        
-        if(outputString == 'true') {
-            return true;
-        } else if(outputString == 'false') {
-            return false;
-        } else {
-            return false;
-        }
+const execAsync = promisify(exec);
 
-    
-    })
+async function identifySpeachInAudio(audioFileName) {
+    return execAsync(`python3 ./processors/audio_transcriber.py ${audioFileName}`)
+        .then(({ stdout, stderr }) => {
+            const outputString = stdout.trim();
+            if (outputString === 'true') {
+                return true;
+            } else if (outputString === 'false') {
+                return false;
+            } else {
+                return false;
+            }
+        })
+        .catch(error => {
+            console.error(`Error: ${error.message}`);
+            return false;
+        });
 }
+
 
 //Temp function
 //Remove images from the directory
@@ -209,8 +223,6 @@ function removeStreamFiles(directoryPath) {
                 unlink(filePath, (error) => {
                     if (error) {
                         console.error(`Error deleting file ${file}:`, error);
-                    } else {
-                        console.log(`Deleted file: ${file}`);
                     }
                 });
             }

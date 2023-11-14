@@ -5,9 +5,10 @@ import https from 'https'
 let transcribeService = new AWS.TranscribeService();        //Init AWS Transcriber
 const s3 = new AWS.S3();                                    //Init AWS S3 Bucket
 
+
 //Insert audio file to the AWS S3 Bucket 
 function sendAudioToAWSS3(audioFile) {
-    let filePath = "../data/audio/row_audio/" + audioFile;
+    let filePath = "./data/audio/row_audio/" + audioFile;
     
     //Configure the AWS bucket
     const bucketName = 'audiobucketfortranscirber';
@@ -27,10 +28,9 @@ function sendAudioToAWSS3(audioFile) {
                 transcribeTheAudioFile(audioFile) //Run the Transcriber job
             }
         })
-        
     }); 
-
 }
+
 
 //Create and run the Transcriber job on the AWS Transcriber service
 function transcribeTheAudioFile(audioFile) {
@@ -50,7 +50,7 @@ function transcribeTheAudioFile(audioFile) {
           MaxSpeakerLabels: 2,
           ShowSpeakerLabels: true,
         }
-      };
+    };
 
     //Run the transcriber
     transcribeService.startTranscriptionJob(params, (err, resp) => {
@@ -94,7 +94,7 @@ function getTranscriptionStatus(transcriptionJobName, audioFile) {
 
 //Get Transcriber output
 function getTranscriptionData(result_file_url, audioFile) {
-    let outputPath = '../data/audio/audio_text/' + (audioFile.replace('.wav', '.json')); //Output file name
+    let outputPath = './data/audio/' + (audioFile.replace('.wav', '.json')); //Output file name
 
     //Create a empty file
     let file = fs.createWriteStream(outputPath);
@@ -102,66 +102,139 @@ function getTranscriptionData(result_file_url, audioFile) {
     //Request the data
     https.get(result_file_url, (response) => {
         response.pipe(file);
-
+        
         //Once request finish, get data
         file.on('finish', () => {
             file.close(() => {
-                jsonToText(outputPath) //Convert aditionaly the speach in readable form
+                //jsonToText(outputPath) //Convert aditionaly the speach in readable form
+                insertToJSON(outputPath, audioFile)
             });
         });
+    
     }).on('error', (err) => {
         console.error('Error downloading JSON file:', err);
     });
 }
 
 
-//Convert the Transcriber JSON output in a clear text form
-function jsonToText(filePath) {
-    //Read the JSon file
-    fs.readFile(filePath, (err, data) => {
-        try {
-            let words = JSON.parse(data)["results"]["items"];   //Get the extracted words
-            let content = words[0]["speaker_label"] + ":";      //Final string builder
-            let newSpeaker = false;                             //Detect skeaker change
-            let speaker;                                        //Speaker id
+//Insert audio transcribed data in an json file
+function insertToJSON(outputPath, audioFile) {
+    let final_file_path = './data/audio/audio_text.json';
 
-            for(let i in words) {
-                let speaker_label = words[i]["speaker_label"];
+    //One speaker data
+    let newData = {
+        timestamp: undefined,
+        text: [],
+        audio_file: undefined,
+    }
 
-                //Control the current speaker id
-                if(speaker == undefined) {
-                    speaker = speaker_label;
-                } else if(speaker != speaker_label) {  
-                    speaker = speaker_label;
-                    newSpeaker = true;      
-                }
+    formatTheAudioJson(outputPath, newData);    //Format the comversation
 
-                //Change the speaker
-                if(newSpeaker) {
-                    content += "\n" + speaker + ': ';
-                    newSpeaker = false;
-                } else {
-                    content += ' ';
-                }
+    let str = audioFile.match(/\d+/);           //Get the timestamp from the file name
+    let timestamp = str ? parseInt(str[0], 10) : null;  
 
-                //Add the next word
-                content += words[i]["alternatives"][0]["content"];
+    newData.audio_file = audioFile;     //Add the audio file name
+    newData.timestamp = timestamp;      //Add the audio start timestamp
+
+    try {
+        //Read the final json file
+        fs.readFile(final_file_path, 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error reading JSON file:', err);
+                return;
             }
 
-            //Write the conversation to a file
-            fs.writeFile(filePath.replace('.json', '.txt'), content.replace(/\s([.,?!])/g, '$1'), (err) => {
-                if(err) console.log('err', err);
-            });
-        } catch(e) {
-            console.log(e)
-        }
-    })
-}
+            let dataObject = JSON.parse(data);  //Parse the json data to object
+            dataObject.push(newData);           //Add the new data to the file object
 
+            let dataJson = JSON.stringify(dataObject);      //Convert the object to json
+            
+            //Write the json file
+            fs.writeFile(final_file_path, dataJson, 'utf8', (err) => {
+                if (err) {
+                  console.error('Error updating JSON file:', err);
+                }
+            })
+        })
+    } catch(e) {
+        console.log('Error reading the audio json file.')
+    }
 
-function getTextSentiment() {
+    removeAJsonFile(outputPath);  //Remove the json file(the transcribed file from one audio data)
     
 }
+
+
+//Format the conversation to json format
+function formatTheAudioJson(filePath, respons) {
+    let words, content = '', newSpeaker = false;
+
+    //Read the input file/from transcriber
+    fs.readFile(filePath, (err, data) => {
+        //One speaker data
+        let speakerData = {
+            speaker: undefined,
+            text: '' 
+        }
+
+        words = JSON.parse(data)["results"]["items"];   //Get the extracted words
+
+        let s = 0; //speaker count
+
+        for(let i in words) {
+            let speaker_label = words[i]["speaker_label"]; 
+
+            //Control the current speaker id
+            if(!speakerData.speaker) {
+                speakerData.speaker = speaker_label;        //Set the first speaker
+                respons.text.push(speakerData);             
+            } else if(speakerData.speaker != speaker_label) {
+                newSpeaker = true;  
+                speakerData = {
+                    speaker: '',
+                    text: '' 
+                }    
+            }
+
+            respons.text[s].text = content; //Update the speaker speach
+
+            //Change the speaker
+            if(newSpeaker) {
+                s++;
+
+                speakerData.speaker = speaker_label;
+                speakerData.text = '';
+
+                content = '';
+                respons.text.push(speakerData);
+                respons.text[s].text = content;
+
+                newSpeaker = false;
+            } else {
+                content += ' ';
+            }
+
+            //Add the next word
+            content += words[i]["alternatives"][0]["content"];
+
+            respons.text[s].text = content;
+        }
+
+    });
+    
+   
+}
+
+
+//Remove the a file
+function removeAJsonFile(filePath) {
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error('Error removing file:', err);
+        }
+    });
+}
+
 
 
 export {
