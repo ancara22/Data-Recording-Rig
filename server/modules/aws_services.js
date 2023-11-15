@@ -196,7 +196,7 @@ function formatTheAudioJson(filePath, respons) {
                 }    
             }
 
-            respons.text[s].text = content; //Update the speaker speach
+            respons.text[s].text = content.replace(/\s([.,?!])/g, '$1'); //Update the speaker speach
 
             //Change the speaker
             if(newSpeaker) {
@@ -207,7 +207,7 @@ function formatTheAudioJson(filePath, respons) {
 
                 content = '';
                 respons.text.push(speakerData);
-                respons.text[s].text = content;
+                respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
 
                 newSpeaker = false;
             } else {
@@ -217,7 +217,7 @@ function formatTheAudioJson(filePath, respons) {
             //Add the next word
             content += words[i]["alternatives"][0]["content"];
 
-            respons.text[s].text = content;
+            respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
         }
 
     });

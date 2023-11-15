@@ -1,10 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import fs, {promises} from 'fs';
+import fs from 'fs';
 import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData } from './modules/utility.js'
 import { sendAudioToAWSS3 } from './modules/aws_services.js';
 import path from 'path';
 import { fileURLToPath } from 'url'
+
 
 // Set the port for the server
 const port = 8080;
@@ -13,7 +14,6 @@ app.use(bodyParser.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'webclient')));
-
 
 
 //Get image and save to a file. 
@@ -113,15 +113,32 @@ app.get("/", (req, res)=> {
     res.sendFile(path.join(__dirname, '/webclient/index.html'));
 })
 
+app.get('/gsrData', (req, res) => {
+    const filePath = './data/gsr/gsr_data.csv';
+  
+    //Read the file
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500);
+      } else {
+        let rows = data.trim().split('\n');
+        let header = rows[0].split(',');
+        let gsr_data = rows.slice(1).map(row => row.split(',').map(parseFloat));
+  
+        res.json({ header, gsr_data });
+      }
+    });
+  });
+
 
 //List the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-   
-    rigConfiguration();
-    runImageProcessor();
-});
 
+    //rigConfiguration();
+    //runImageProcessor();
+});
 
 
 
@@ -146,3 +163,20 @@ setInterval(() => {
 
 
   
+
+//Text sentiment
+//Rig random pip
+//find the key words start - finish in the audio text (assign that text in a separate conversation section json)
+//Save gsr in a file//and after creating an section of 3 min - execute the lm_prediction
+        //Collect more data and improve the accuracy
+
+//Write the frontend
+    //Rig settings
+    //Rig Restart
+    //Run the app
+    //stop the app
+    //shutdown the rig
+    //GSR graph  /sentiment
+    //Audio files text/ sentiment
+    //images list and text
+    //data counter
