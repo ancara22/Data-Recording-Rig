@@ -11,7 +11,6 @@
     <title>RIG</title>
 </head>
 <body>
-
     <div id="app">
         <div id="nav">
             <div id="menu">
@@ -34,54 +33,53 @@
                 <span>{{ startTime }}</span>
             </div>
         </div>
-        <div v-if="pageContent == 'settings'" class="content">
+        <div v-if="pageContent == 'settings'" id="settings_container">
             <h1>Rig Settings</h1>
-            <div class="seting_box">
-                <h3>Image:</h3>
+            <div class="settings_box">
+                <h3>Image</h3>
                 <div class="settings">
-                    <label for="">Frequence</label>
-                    <input type="text">
-                </div>
-                <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
-                </div>
-                <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
-                </div>
-            </div>
-            <div class="seting_box">
-                <h3>AUdio:</h3>
-                <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
-                </div>
-                <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
-                </div>
-                <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
+                    <label for="img_freq">Frequence</label>
+                    <input name="img_freq" type="number">
+                    <label for="img_frame">Framerate</label>
+                    <input name="img_frame" type="number">
+                    <label for="img_x">Image x</label>
+                    <input name="img_x" type="number">
+                    <label for="img_y">Image y</label>
+                    <input name="img_y" type="number">
+                    <label for="img_host">Host</label>
+                    <input name="img_host" type="text">
                 </div>
             </div>
-            <div class="seting_box">
-                <h3>GSR:</h3>
+            <div class="settings_box">
+                <h3>Audio</h3>
                 <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
-                </div>
-                <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
-                </div>
-                <div class="settings">
-                    <label for=""></label>
-                    <input type="text">
+                    <label for="aud_freq">Frequence</label>
+                    <input name="aud_freq" type="number">
+                    <label for="aud_rate">Sample rate</label>
+                    <input name="aud_rate" type="number">
+                    <label for="aud_chunk">Chunk</label>
+                    <input name="aud_chunk" type="number">
+                    <label for="aud_host">Host</label>
+                    <input name="aud_host" type="text">
                 </div>
             </div>
-         
+            <div class="settings_box">
+                <h3>GSR</h3>
+                <div class="settings">
+                    <label for="gsr_freq">Frequence</label>
+                    <input name="gsr_freq" type="number" disabled>
+                    <label for="gsr_host">Host</label>
+                    <input name="gsr_host" type="text">
+                </div>
+                <div class="settings">
+                    <h3>Connection</h3>
+                    <label for="connection_host">Host</label>
+                    <input name="connection_host" type="text">
+                </div>
+            </div>
+            <div id="saveBtn">
+                <button >Save</button>
+            </div>
         </div>
         <div id="rig_data_box" v-else-if="pageContent == 'data'">
             <div id="counter">
@@ -106,7 +104,7 @@
                         <div id="audio_text">
                             <div>
                                 <span class="timestamp">Time: 2023.15.11 23:32 - 2023.15.11 23:42</span>
-                                <li><span>speaker_0:</span> Fascinating , uh , conversely , what sorts of openers , um , do you think , establish the best rapport and , um , you know , be never .</li>
+                                <li><span>speaker_0:</span> Fascinating, uh, conversely, what sorts of openers, um, do you think, establish the best rapport and , um , you know , be never .</li>
                                 <li><span>speaker_1:</span> And I don't recall ever quote unquote cashing in on any of that . But he was exactly right . When I eventually decided to move institutions , we've given away so much .</li>
                                 <li><span>speaker_0:</span> Yes.</li>
                                 <li><span>speaker_1:</span> Fascinating , uh , conversely , what sorts of openers , um , do you think , establish the best rapport and , um , you know , be never .</li>
@@ -127,27 +125,28 @@
                 </div>
                 <div class="text_box_2" >
                     <span>Text from image:</span>
-                    <div id="image_text"></div>
+                    <div id="image_text">
+                        <li><span>2023.15.11 23:32: </span>Costa</li>
+                        <li><span>2023.15.11 23:32: </span>dsda</li>
+                        <li><span>2023.15.11 23:32: </span>Hello</li>
+                        <li><span>2023.15.11 23:32: </span>Alexa is ...</li>
+                    </div>
                 </div>
             </div>
             <div id="gsr_box">
                 <div id="gsrGraph"></div>
                 <div id="gsr_emotions">
                     <div id="history">
-                        <ul>
-                            <li>Relaxing State</li>
-                            <li>Stress State</li>
-                            <li>Stress State</li>
-                        </ul>
+                        <li class="current" ><span>Current State</span>Stress State</li>
+                        <li>Relaxing State<span>2023.15.11 23:32 - 2023.15.11 23:42</span></li>
+                        <li>Stress State<span>2023.15.11 23:32 - 2023.15.11 23:42</span></li>
+                        <li>Stress State<span>2023.15.11 23:32 - 2023.15.11 23:42</span></li>
                     </div>
-                    <div id="current">Stress State</div>
+                    
                 </div>
             </div>
-            
-           
         </div>
     </div>
-
     <script type="module" src="./script/index.js"></script>
 </body>
 </html>
