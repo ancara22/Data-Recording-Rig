@@ -1,0 +1,272 @@
+* {
+    font-family: Helvetica, sans-serif;
+    font-weight: 100;
+    margin: 0;
+}
+
+
+#nav {
+    width: 100%;
+    height: 70px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgb(48, 48, 124);
+    display: flex;
+    align-items: center;
+}
+
+#menu {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+#menu button {
+    width: 120px;
+    padding: 8px;
+    margin-left: 10px;
+    height: 100%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    font-size: 1rem;
+}
+
+
+#menu button:hover {
+    cursor: pointer;
+    background-color: blueviolet;
+
+}
+
+.fa-bars{
+    font-size: 26px;
+    margin-left: 50px;
+    color: white;
+    margin-right: 30px;
+}
+.fa-spinner {
+    font-size: 36px;
+}
+
+.fa-spin {
+    color: rgb(68, 255, 47);
+}
+
+.colorGray {
+    color: rgba(152, 152, 152, 0.184)
+}
+
+.colorGreen {
+    color: rgb(68, 255, 47);
+}
+
+.colorRed {
+    color: rgb(247, 125, 121);
+}
+
+
+#rig_status {
+    display: flex;
+    margin-right: 50px;
+    color: white;
+    align-items: center;
+
+}
+
+
+#rig_status p {
+    font-size: 12px;
+    margin-right: 20px;
+}
+
+
+#rig_data_box {
+    position: relative;
+    top: 100px;
+    margin: 40px 0 ;
+    background-color: white;
+    padding: 30px;
+}
+
+
+#rig_control {
+    display: flex;
+    position: relative;
+    top: 100px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+}
+
+#rig_control button {
+    font-size: 16px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+#startTime {
+    margin-left: 30px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    
+}
+
+
+#startTime span:first-child {
+    color: rgb(197, 197, 197);
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 5px;
+    
+}
+
+
+.backColorGreen {
+    border: 7px solid rgb(160, 253, 150);
+    background-color: rgb(67, 250, 0);
+    color: rgb(38, 146, 2);
+    
+}
+
+
+.backColorRed {
+    border: 7px solid rgb(247, 172, 169);
+    background-color: rgb(245, 16, 8);
+    color: rgb(254, 217, 216);
+ }
+
+
+
+
+
+ #counter {
+    display: flex;
+    height: fit-content;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.191);
+    min-width: fit-content;
+    padding: 2vh 10vw ;
+    flex-wrap: wrap;
+
+ }
+
+
+ #counter h2 {
+    min-width: fit-content;
+    height: max-content;
+    font-weight: bold;
+    color: rgb(85, 85, 85);
+ }
+
+ .counter_box {
+    min-width: fit-content;
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+
+ .counter_box span:first-child {
+    color: rgb(170, 168, 168);
+    margin-right: 5px;
+ }
+
+ .counter_box span:nth-child(2) {
+    font-size: 20px;
+    font-weight: bold;
+
+ }
+
+
+
+ #data {
+    width: 100%;
+    margin: 30px 0;
+    display: flex;
+    justify-content: space-between;
+ }
+
+
+.text_box_1, .text_box_2 {
+    border: 1px solid rgba(128, 128, 128, 0.309);
+    height: 400px;
+    padding: 10px;
+    padding-top: 20px;
+
+ }
+
+.text_box_1 {
+    width: 65%;
+    margin-right: 20px;
+ }
+
+ #data .text_box_2 {
+    width: 30%;
+ }
+
+.text_box_1 div, .text_box_2 div {
+    margin-top: 10px;
+    display: flex;
+    width: 100%;
+    height: 90%;
+    overflow: scroll;
+ }
+
+
+ #audio_text {
+    height: 90%;
+    width: 100%;
+
+    padding: 5px;
+    display: block;
+
+ }
+
+ #audio_text div li {
+    margin-top: 10px;
+    font-size: 14px;
+    list-style: none;
+ }
+
+
+
+ #audio_text div li span {
+    font-weight: bold;
+
+ }
+
+ #audio_text div {
+    width: 95%;
+    padding: 10px;
+    display: block;
+    border: 1px solid rgba(128, 128, 128, 0.234);
+    overflow: hidden;
+ }
+
+ 
+
+ .audio_text_emotion {
+    margin: 20px 0px;
+    text-align: center;
+    padding: 10px;
+    width: 95%;
+    background-color: rgb(218, 218, 249);
+ }
+
+
+ .timestamp {
+    font-size: 12px;
+    color: gray;
+    margin-bottom: 20px;
+    display: block;
+ }
