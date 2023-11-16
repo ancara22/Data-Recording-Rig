@@ -25,8 +25,8 @@
         </div>
         <div id="rig_control">
             <div id="change_status">
-                <button class="backColorGreen" @click="changeStatus" v-if="rigActive == false">Start</button>
-                <button class="backColorRed" @click="changeStatus" v-if="rigActive == true">Stop</button>
+                <button :class="{ 'backColorGreen': !rigActive, 'tempColorGray': tempColorGray }"  @click="startRig" v-if="rigActive == false">Start</button>
+                <button class="backColorRed" @click="stopRig" v-if="rigActive == true">Stop</button>
             </div>
             <div id="startTime">
                 <span>Start Time:</span>
@@ -39,46 +39,46 @@
                 <h3>Image</h3>
                 <div class="settings">
                     <label for="img_freq">Frequence</label>
-                    <input name="img_freq" type="number">
+                    <input v-model="imageSettings.frequence" name="img_freq" type="number">
                     <label for="img_frame">Framerate</label>
-                    <input name="img_frame" type="number">
+                    <input v-model="imageSettings.framerate" name="img_frame" type="number">
                     <label for="img_x">Image x</label>
-                    <input name="img_x" type="number">
+                    <input v-model="imageSettings.size_x"  name="img_x" type="number">
                     <label for="img_y">Image y</label>
-                    <input name="img_y" type="number">
+                    <input v-model="imageSettings.size_y" name="img_y" type="number">
                     <label for="img_host">Host</label>
-                    <input name="img_host" type="text">
+                    <input v-model="imageSettings.host" name="img_host" type="text">
                 </div>
             </div>
             <div class="settings_box">
                 <h3>Audio</h3>
                 <div class="settings">
                     <label for="aud_freq">Frequence</label>
-                    <input name="aud_freq" type="number">
+                    <input v-model="audioSettings.frequence" name="aud_freq" type="number">
                     <label for="aud_rate">Sample rate</label>
-                    <input name="aud_rate" type="number">
+                    <input v-model="audioSettings.sampleRate" name="aud_rate" type="number">
                     <label for="aud_chunk">Chunk</label>
-                    <input name="aud_chunk" type="number">
+                    <input v-model="audioSettings.chunk" name="aud_chunk" type="number">
                     <label for="aud_host">Host</label>
-                    <input name="aud_host" type="text">
+                    <input v-model="audioSettings.host" name="aud_host" type="text">
                 </div>
             </div>
             <div class="settings_box">
                 <h3>GSR</h3>
                 <div class="settings">
                     <label for="gsr_freq">Frequence</label>
-                    <input name="gsr_freq" type="number" disabled>
+                    <input v-model="gsrSettings.frequence" name="gsr_freq" type="number" disabled>
                     <label for="gsr_host">Host</label>
-                    <input name="gsr_host" type="text">
+                    <input v-model="gsrSettings.host" name="gsr_host" type="text">
                 </div>
                 <div class="settings">
                     <h3>Connection</h3>
                     <label for="connection_host">Host</label>
-                    <input name="connection_host" type="text">
+                    <input v-model="connectionSettings.host" name="connection_host" type="text">
                 </div>
             </div>
             <div id="saveBtn">
-                <button >Save</button>
+                <button @click="saveConfigFile">Save</button>
             </div>
         </div>
         <div id="rig_data_box" v-else-if="pageContent == 'data'">

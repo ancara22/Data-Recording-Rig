@@ -1,25 +1,54 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { processGSRoutput, saveData, rigConfiguration, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData } from './modules/utility.js'
+import { processGSRoutput, saveData, rigControl, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData} from './modules/utility.js'
 import { sendAudioToAWSS3 } from './modules/aws_services.js';
 import path from 'path';
 import { fileURLToPath } from 'url'
+import ini from 'ini';
 
 
 // Set the port for the server
 const port = 8080;
 const app = express();
 app.use(bodyParser.json());
+
+//Set the public folder
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'webclient')));
 
 
+
+//////////////////////////////////////////////////////////////////////////////////
+//Rig Status controler
+
+let toUpdateConfig = false;         //Flag to update the rig configs
+let rigActive = false;              //Rig status flag
+
+//Status update timer
+//Set status false
+function timerHandler() {
+    rigActive = false;
+    console.log('Rig is not active!');
+}
+
+//Reset the timer
+function resetTimer() {
+    rigActive = true
+    clearTimeout(timer); //Clear the current timer
+    timer = setTimeout(timerHandler, 5000);
+}
+
+//Create a timer
+let timer = setTimeout(timerHandler, 5000);
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//Rig webservice
+
 //Get image and save to a file. 
 //It will be saved in a temp direcotry to avoid processing incompleate images
-///##############################################
-
 app.post('/image', saveData('images', 'image'), (req, res) => {
     //Image is saved in the temporary direcotry
     let imageFile = req.file                //Image file
@@ -42,8 +71,6 @@ app.post('/image', saveData('images', 'image'), (req, res) => {
 
 
 //Get audio and save to the directory row_audio
-//##############################################
-
 app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
     const audioFile = req.file;
   
@@ -62,7 +89,7 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
             //identifySpeachInAudio(audioFile.filename) //Significall work/ Test
         }).then((isSpeech) => {
             if (isSpeech) {
-              sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
+              //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
             }
             res.sendStatus(200);
         })
@@ -70,8 +97,6 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
 
 
 //Get GSR 
-//##############################################
-
 //GSR section object
 let data = {
     startTime: null,
@@ -82,7 +107,7 @@ let data = {
 
 //Used for trainig
 let trainingFileStart = {
-    fileNumb: 8
+    fileNumb: 43
 }
 
 app.post('/gsr', (req, res) => {
@@ -94,25 +119,34 @@ app.post('/gsr', (req, res) => {
     }
     
     insertGSRData(data, gsrData['gsr_data'], trainingFileStart) //Insert gsr data/ Used for LM training 
-    //processGSRoutput(gsrData['gsr_data']);   /// Process GSr data, the permanent processor
+    processGSRoutput(gsrData['gsr_data'], false);   /// Process GSr data, the permanent processor
 
     res.sendStatus(200);
 });
 
-
-//For connection testing
+//For connection testing and rig config updating
 app.get('/connection', (req, res) => {
-    res.sendStatus(200);
+    res.json({ status: 200, updateConfig: toUpdateConfig})
+    toUpdateConfig = false;
+    resetTimer();
 })
 
 
-//Web interface
-//##############################################
 
+//////////////////////////////////////////////////////////////////////////////////
+//Web Client webservices
+
+//Web interface/web page
 app.get("/", (req, res)=> {
     res.sendFile(path.join(__dirname, '/webclient/index.html'));
 })
 
+//Get rig status for the web client /Web client webservice
+app.get('/rigStatus', (req, res) => {
+    res.json({ active: rigActive })
+})
+
+//Get gsr data from the file
 app.get('/gsrData', (req, res) => {
     const filePath = './data/gsr/gsr_data.csv';
   
@@ -129,54 +163,81 @@ app.get('/gsrData', (req, res) => {
         res.json({ header, gsr_data });
       }
     });
-  });
+});
+
+//getRigConfigFile
+app.get('/getConfig', (req, res) => {
+    const filePath = '../config.ini';
+  
+    //Read the file
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        res.status(500);
+      } else {
+        const config = ini.parse(data)
+        res.json({ config });
+      }
+    });
+});
+
+//Save new configs to the file
+app.post( "/saveConfig", (req, res) => {
+    const config = req.body.config;
+    const iniConfig = ini.stringify(config);
+
+    fs.writeFile('../config.ini', iniConfig, (err) => {
+        if (err) {
+            toUpdateConfig = false;
+            console.error('Error saving INI file:', err);
+            res.status(500);
+        } else {
+            toUpdateConfig = true;
+            rigControl('config');
+            res.status(200);
+        }
+      });
+});
+
+//Save new configs to the file
+app.get( "/rigStart", (req, res) => {
+    rigControl('start');
+
+    res.status(200);
+});
+
+//Save new configs to the file
+app.get( "/rigStop", (req, res) => {
+    rigControl('stop');
+
+    res.status(200);
+});
+
 
 
 //List the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
-    //rigConfiguration();
+    rigControl('config');
     //runImageProcessor();
 });
 
 
 
-
-
 //##############################################################################################################################################
-
-//Remove the colected images
+//Remove the colected data
 //Temp code, to be removed
-//###############################################
 setInterval(() => {
     let dirPath = 'data/images/processed_images';
     removeStreamFiles(dirPath);
 
     let dirPath2 = 'data/images/row_images';
-    //removeStreamFiles(dirPath2);
+    removeStreamFiles(dirPath2);
 
     let dirPath3 = 'data/audio/row_audio';
-    //removeStreamFiles(dirPath3);
+    removeStreamFiles(dirPath3);
 }, 30000)
 
 
 
-  
-
-//Text sentiment
-//Rig random pip
-//find the key words start - finish in the audio text (assign that text in a separate conversation section json)
-//Save gsr in a file//and after creating an section of 3 min - execute the lm_prediction
-        //Collect more data and improve the accuracy
-
-//Write the frontend
-    //Rig settings
-    //Rig Restart
-    //Run the app
-    //stop the app
-    //shutdown the rig
-    //GSR graph  /sentiment
-    //Audio files text/ sentiment
-    //images list and text
-    //data counter

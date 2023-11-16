@@ -26,7 +26,7 @@ function saveData(folder, fileType) {
 
 
 //Send the connfiguration, config.ini file to the raspberry pi
-function rigConfiguration() {
+function rigControl(startRig) {
     //SSH connection config
     let config = {
         host: "raspberry.local",
@@ -55,33 +55,37 @@ function rigConfiguration() {
                     return 0;
                 }
 
-                //Stop all the previews processes
-                ssh.exec('pkill -f python', (err, stream) => {
-                    const sleep = (milliseconds) => {
-                        return new Promise(resolve => setTimeout(resolve, milliseconds));
-                    };
+                if(startRig != 'config') {
+                    //Stop all the previews processes
+                    ssh.exec('pkill -f python', (err, stream) => {
+                        const sleep = (milliseconds) => {
+                            return new Promise(resolve => setTimeout(resolve, milliseconds));
+                        };
 
-                    sleep(1000).then(()=> {
-                        // Run the rig recording on the raspberry pi
-                        ssh.exec("python3 /home/rig/Documents/App/main/app.py", (err, stream) => {
-                            if (err) {
-                                console.error("Error running the app:", err);
-                                ssh.end();
-                                return;
-                            }
-                            
-                            stream.stderr.on('data', (data) => {
-                                console.error('Python Script Error:', data.toString());
-                        
-                            });
-                        
-                            stream.on("close", (code, signal) => { 
-                                console.log("Recording process closed. Exit code:", code, "Signal:", signal);
-                                ssh.end();
-                            });
-                        });
-                    })
-                }) 
+                        if(startRig == 'start') {
+                            sleep(1000).then(()=> {
+                                // Run the rig recording on the raspberry pi
+                                ssh.exec("python3 /home/rig/Documents/App/main/app.py", (err, stream) => {
+                                    if (err) {
+                                        console.error("Error running the app:", err);
+                                        ssh.end();
+                                        return;
+                                    }
+                                    
+                                    stream.stderr.on('data', (data) => {
+                                        console.error('Python Script Error:', data.toString());
+                                
+                                    });
+                                
+                                    stream.on("close", (code, signal) => { 
+                                        console.log("Recording process closed. Exit code:", code, "Signal:", signal);
+                                        ssh.end();
+                                    });
+                                });
+                            })
+                        }
+                    }) 
+                }
             })
             
             //On writing close, close the ssh connection
@@ -126,9 +130,15 @@ function processGSRoutput(data, nr) {
         let timestamp = Date.now();
         const data = `\n${timestamp}, ${value}`;
 
-        createFileIfNotExists(`./data/gsr/gsrData${nr}.csv`, "Timestamp,GSR");
+        let filePath = `./data/gsr/gsr_training_data/gsrData${nr}.csv`
 
-        fs.appendFile(`./data/gsr/gsrData${nr}.csv`, data, "utf-8", (err) => {
+        createFileIfNotExists(filePath , "Timestamp,GSR");
+
+        if(nr == false) {
+            filePath = `./data/gsr/gsr_data${nr}.csv`
+        }
+
+        fs.appendFile(filePath, data, "utf-8", (err) => {
             if (err) {
                 console.log(err);
             } else {
@@ -161,10 +171,11 @@ function insertGSRData(data, dataValue, data2) {
     processGSRoutput(dataValue, data2.fileNumb);
         
     if(Date.now() - data.startTime >= 3 * 60 * 1000 && data.startTime != null || data.gsrData.length >= 85) {
-        data.finishTime = Date.now();
-        writeSectionToCSV(data);
-        data2.fileNumb++;
-         
+       if(data.gsrData.length > 0) {
+            data.finishTime = Date.now();
+            writeSectionToCSV(data);
+            data2.fileNumb++;
+       }  
     }
 
 }
@@ -173,7 +184,7 @@ function insertGSRData(data, dataValue, data2) {
 function writeSectionToCSV(data) {
     const csvRow = `${data.startTime},${data.finishTime},[${data.gsrData.join(', ')}]\n`;
 
-    fs.appendFile("./data/gsr/gsrSections.csv",  csvRow, (err) => {
+    fs.appendFile("./data/gsr/gsr_training_data/gsr_sections_emotion.csv",  csvRow, (err) => {
         if (err) {
             console.error('Error writing to CSV file:', err);
         }
@@ -185,6 +196,13 @@ function writeSectionToCSV(data) {
     data.gsrData = [];
 }
 
+//Create the file if it doesnt exist
+function createFileIfNotExists(filePath, content) {
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, content || '', 'utf-8');
+      console.log(`File created: ${filePath}`);
+    }
+}
 
 //Identify speech in an audio file
 const execAsync = promisify(exec);
@@ -206,7 +224,6 @@ async function identifySpeachInAudio(audioFileName) {
             return false;
         });
 }
-
 
 //Temp function
 //Remove images from the directory
@@ -231,18 +248,10 @@ function removeStreamFiles(directoryPath) {
 }
 
 
-function createFileIfNotExists(filePath, content) {
-    if (!fs.existsSync(filePath)) {
-      fs.writeFileSync(filePath, content || '', 'utf-8');
-      console.log(`File created: ${filePath}`);
-    }
-}
-
-
 export {
     runImageProcessor,
     removeStreamFiles,
-    rigConfiguration,
+    rigControl,
     saveData,
     processGSRoutput,
     identifySpeachInAudio,

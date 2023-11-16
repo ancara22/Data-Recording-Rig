@@ -2,6 +2,10 @@ import AWS from 'aws-sdk';
 import fs from 'fs';
 import https from 'https'
 
+AWS.config.update({
+    region: 'eu-west-2'
+});
+
 let transcribeService = new AWS.TranscribeService();        //Init AWS Transcriber
 const s3 = new AWS.S3();                                    //Init AWS S3 Bucket
 
@@ -137,25 +141,27 @@ function insertToJSON(outputPath, audioFile) {
     newData.timestamp = timestamp;      //Add the audio start timestamp
 
     try {
-        //Read the final json file
-        fs.readFile(final_file_path, 'utf8', (err, data) => {
-            if (err) {
-                console.error('Error reading JSON file:', err);
-                return;
-            }
-
-            let dataObject = JSON.parse(data);  //Parse the json data to object
-            dataObject.push(newData);           //Add the new data to the file object
-
-            let dataJson = JSON.stringify(dataObject);      //Convert the object to json
-            
-            //Write the json file
-            fs.writeFile(final_file_path, dataJson, 'utf8', (err) => {
+        if(newData.text.length > 0) {
+            //Read the final json file
+            fs.readFile(final_file_path, 'utf8', (err, data) => {
                 if (err) {
-                  console.error('Error updating JSON file:', err);
+                    console.error('Error reading JSON file:', err);
+                    return;
                 }
+
+                let dataObject = JSON.parse(data);  //Parse the json data to object
+                dataObject.push(newData);           //Add the new data to the file object
+
+                let dataJson = JSON.stringify(dataObject);      //Convert the object to json
+                
+                //Write the json file
+                fs.writeFile(final_file_path, dataJson, 'utf8', (err) => {
+                    if (err) {
+                    console.error('Error updating JSON file:', err);
+                    }
+                })
             })
-        })
+        }
     } catch(e) {
         console.log('Error reading the audio json file.')
     }

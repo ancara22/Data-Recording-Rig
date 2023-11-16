@@ -365,3 +365,8 @@ body {
     background-color: rgb(251, 91, 91);
     transform: scale(1.1);
  }
+
+
+ .tempColorGray {
+    background-color: rgb(152, 152, 152);
+ }
