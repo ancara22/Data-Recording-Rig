@@ -29,7 +29,7 @@ def calculate_time_duration(row):
     return time_duration.total_seconds()
 
 
-data = pd.read_csv('../data/gsr/gsrSections.csv')
+data = pd.read_csv('../data/gsr/gsr_sections_emotion.csv')
 
 data['GSR'] = data['GSR'].apply(lambda x: safe_eval(x))
 data_expanded = data['GSR'].apply(pd.Series)

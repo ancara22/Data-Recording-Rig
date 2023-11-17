@@ -1,11 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fs from 'fs';
-import { processGSRoutput, saveData, rigControl, removeStreamFiles, runImageProcessor, identifySpeachInAudio, insertGSRData} from './modules/utility.js'
-import { sendAudioToAWSS3 } from './modules/aws_services.js';
+import ini from 'ini';
 import path from 'path';
 import { fileURLToPath } from 'url'
-import ini from 'ini';
+
+import { sendAudioToAWSS3 } from './modules/aws_services.js';
+import { processGSRoutput, saveData, rigControl, removeStreamFiles, runImageProcessor, 
+        identifySpeachInAudio, insertGSRData, concatinateWavFiles} from './modules/utility.js'
+
 
 
 // Set the port for the server
@@ -70,6 +73,8 @@ app.post('/image', saveData('images', 'image'), (req, res) => {
 });
 
 
+let vawArray = [];
+
 //Get audio and save to the directory row_audio
 app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
     const audioFile = req.file;
@@ -80,19 +85,36 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
     }
 
     //Row data path
-    const filePath = './data/audio/row_audio/' + audioFile.filename;
+    const dir = './data/audio/row_audio/'
+    const filePath = dir + audioFile.filename;
 
-    //Read the audio file/Promise
-    fs.promises.readFile(filePath)
-        .then(()=> {
-            return true;
-            //identifySpeachInAudio(audioFile.filename) //Significall work/ Test
-        }).then((isSpeech) => {
-            if (isSpeech) {
-              //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
-            }
-            res.sendStatus(200);
-        })
+    vawArray.push(filePath);
+
+    if(vawArray.length > 6) {
+        //Read the audio file/Promise
+        let outputFile = concatinateWavFiles(vawArray)
+
+        setTimeout(() => {
+            fs.promises.readFile(outputFile)
+            .then(()=> {
+                vawArray = []
+                //return true;
+                return identifySpeachInAudio(outputFile) //Significall work/ Test
+            }).then((isSpeech) => {
+                if (isSpeech) {
+                    console.log('first')
+                    //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
+                }
+                res.sendStatus(200);
+            })
+        }, 20000);
+
+    } else {
+        res.sendStatus(200)
+    }
+   
+
+    
 });
 
 
@@ -236,7 +258,7 @@ setInterval(() => {
     removeStreamFiles(dirPath2);
 
     let dirPath3 = 'data/audio/row_audio';
-    removeStreamFiles(dirPath3);
+    //removeStreamFiles(dirPath3);
 }, 30000)
 
 

@@ -3,7 +3,7 @@ import sys
 
 
 file_path_input = sys.argv[1]
-file_path = "./data/audio/row_audio/" + file_path_input
+file_path = file_path_input
 
 #Audio file direalizer, recognise the spearkers and speach timelines
 def extractSpeakersTimelines(file):

@@ -12,7 +12,7 @@ const s3 = new AWS.S3();                                    //Init AWS S3 Bucket
 
 //Insert audio file to the AWS S3 Bucket 
 function sendAudioToAWSS3(audioFile) {
-    let filePath = "./data/audio/row_audio/" + audioFile;
+    let filePath = "./data/audio/processed_audio/" + audioFile;
     
     //Configure the AWS bucket
     const bucketName = 'audiobucketfortranscirber';
