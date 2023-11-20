@@ -12,7 +12,7 @@ const s3 = new AWS.S3();                                    //Init AWS S3 Bucket
 
 //Insert audio file to the AWS S3 Bucket 
 function sendAudioToAWSS3(audioFile) {
-    let filePath = "./data/audio/processed_audio/" + audioFile;
+    let filePath = "./data/audio/row_audio/" + audioFile;
     
     //Configure the AWS bucket
     const bucketName = 'audiobucketfortranscirber';
@@ -84,6 +84,8 @@ function getTranscriptionStatus(transcriptionJobName, audioFile) {
         if(job_status == 'FAILED') {
             console.log('Transcriber process error!');
         } else if(job_status == 'COMPLETED') {
+            console.log('Transcriber process completed!')
+
             //Get the Trascriber result file url
             let result_file_url = data.TranscriptionJob.Transcript.TranscriptFileUri;
 
@@ -110,7 +112,6 @@ function getTranscriptionData(result_file_url, audioFile) {
         //Once request finish, get data
         file.on('finish', () => {
             file.close(() => {
-                //jsonToText(outputPath) //Convert aditionaly the speach in readable form
                 insertToJSON(outputPath, audioFile)
             });
         });
@@ -130,44 +131,61 @@ function insertToJSON(outputPath, audioFile) {
         timestamp: undefined,
         text: [],
         audio_file: undefined,
+        experienceDetected: ""
     }
 
     formatTheAudioJson(outputPath, newData);    //Format the comversation
 
-    let str = audioFile.match(/\d+/);           //Get the timestamp from the file name
-    let timestamp = str ? parseInt(str[0], 10) : null;  
+    setTimeout(()=> {
+        let str = audioFile.match(/\d+/);           //Get the timestamp from the file name
+        let timestamp = str ? parseInt(str[0], 10) : null;  
 
-    newData.audio_file = audioFile;     //Add the audio file name
-    newData.timestamp = timestamp;      //Add the audio start timestamp
+        newData.audio_file = audioFile;     //Add the audio file name
+        newData.timestamp = timestamp;      //Add the audio start timestamp
 
-    try {
-        if(newData.text.length > 0) {
-            //Read the final json file
-            fs.readFile(final_file_path, 'utf8', (err, data) => {
-                if (err) {
-                    console.error('Error reading JSON file:', err);
-                    return;
-                }
-
-                let dataObject = JSON.parse(data);  //Parse the json data to object
-                dataObject.push(newData);           //Add the new data to the file object
-
-                let dataJson = JSON.stringify(dataObject);      //Convert the object to json
-                
-                //Write the json file
-                fs.writeFile(final_file_path, dataJson, 'utf8', (err) => {
+        try {
+            if(newData.text.length > 0) {
+                //Read the final json file
+                fs.readFile(final_file_path, 'utf8', (err, data) => {
                     if (err) {
-                    console.error('Error updating JSON file:', err);
+                        console.error('Error reading JSON file:', err);
+                        return;
                     }
-                })
-            })
-        }
-    } catch(e) {
-        console.log('Error reading the audio json file.')
-    }
 
-    removeAJsonFile(outputPath);  //Remove the json file(the transcribed file from one audio data)
-    
+                    let experienceDetected = detectExterienceSampling(newData)
+                    
+
+                    setTimeout(() => {
+                        if(experienceDetected != "") {
+                            newData.experienceDetected = experienceDetected;
+                        } else {
+                            newData.experienceDetected = undefined
+                        }
+
+
+                        let dataObject = JSON.parse(data);  //Parse the json data to object
+                        dataObject.push(newData);           //Add the new data to the file object
+
+                        let dataJson = JSON.stringify(dataObject);      //Convert the object to json
+
+                        
+                        //Write the json file
+                        fs.writeFile(final_file_path, dataJson, 'utf8', (err) => {
+                            if (err) {
+                            console.error('Error updating JSON file:', err);
+                            }
+                        })
+                    }, 1000)
+                    
+                })
+            }
+        } catch(e) {
+            console.log('Error reading the audio json file.')
+        }
+
+        removeAJsonFile(outputPath);  //Remove the json file(the transcribed file from one audio data)
+        
+    }, 1000)
 }
 
 
@@ -242,7 +260,46 @@ function removeAJsonFile(filePath) {
 }
 
 
+function detectExterienceSampling(dataObject) {
+    let str = "";
+    let data = dataObject.text;
+
+    let startWords = "Start Recording";
+    let endWords = "Stop Recording";
+    let endMissing = 100;
+
+    for(let i=0; i < data.length; i++) {
+        str += data[i].text + " ";
+    }
+
+    const pattern1 = new RegExp(`${startWords}(.*?)(?:${endWords})`, 'i');
+    const pattern2 = new RegExp(`${startWords}(.*?)(?:${endWords}|\\b.{0,${endMissing}}\\b)`, 'i');
+    
+    const match1 = pattern1.exec(str);
+    const match2 = pattern2.exec(str);
+
+    if (match1 || match2) {
+        let extractedText = '';
+
+        if(match1 && match1[1] != '') {
+            // Extract the matched text
+            extractedText = match1[1].trim();
+
+        } else {
+            extractedText = (match2[0].trim()).slice(7);
+        }
+        
+        console.log('Found:', extractedText);
+        return extractedText;
+    } else {
+        console.log('No match found');
+        return null;
+    }
+}
+
 
 export {
-    sendAudioToAWSS3
+    sendAudioToAWSS3,
+    insertToJSON,
+    detectExterienceSampling
 }

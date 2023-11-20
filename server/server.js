@@ -5,9 +5,9 @@ import ini from 'ini';
 import path from 'path';
 import { fileURLToPath } from 'url'
 
-import { sendAudioToAWSS3 } from './modules/aws_services.js';
+import { sendAudioToAWSS3, detectExterienceSampling } from './modules/aws_services.js';
 import { processGSRoutput, saveData, rigControl, removeStreamFiles, runImageProcessor, 
-        identifySpeachInAudio, insertGSRData, concatinateWavFiles} from './modules/utility.js'
+        identifySpeachInAudio, insertGSRData } from './modules/utility.js'
 
 
 
@@ -73,7 +73,7 @@ app.post('/image', saveData('images', 'image'), (req, res) => {
 });
 
 
-let vawArray = [];
+let wavArray = [];
 
 //Get audio and save to the directory row_audio
 app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
@@ -88,32 +88,17 @@ app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
     const dir = './data/audio/row_audio/'
     const filePath = dir + audioFile.filename;
 
-    vawArray.push(filePath);
-
-    if(vawArray.length > 6) {
-        //Read the audio file/Promise
-        let outputFile = concatinateWavFiles(vawArray)
-
-        setTimeout(() => {
-            fs.promises.readFile(outputFile)
-            .then(()=> {
-                vawArray = []
-                //return true;
-                return identifySpeachInAudio(outputFile) //Significall work/ Test
-            }).then((isSpeech) => {
-                if (isSpeech) {
-                    console.log('first')
-                    //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
-                }
-                res.sendStatus(200);
-            })
-        }, 20000);
-
-    } else {
-        res.sendStatus(200)
-    }
-   
-
+    fs.promises.readFile(filePath)
+        .then(()=> {
+            return true;
+            //return identifySpeachInAudio(audioFile.filename) //Significall work/ Test
+        }).then((isSpeech) => {
+            if (isSpeech) {
+                console.log('speech detected/ Transcribe')
+                sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
+            }
+            res.sendStatus(200);
+        })
     
 });
 
@@ -242,7 +227,7 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
     rigControl('config');
-    //runImageProcessor();
+    runImageProcessor();
 });
 
 
@@ -252,10 +237,10 @@ app.listen(port, () => {
 //Temp code, to be removed
 setInterval(() => {
     let dirPath = 'data/images/processed_images';
-    removeStreamFiles(dirPath);
+    //removeStreamFiles(dirPath);
 
     let dirPath2 = 'data/images/row_images';
-    removeStreamFiles(dirPath2);
+    //removeStreamFiles(dirPath2);
 
     let dirPath3 = 'data/audio/row_audio';
     //removeStreamFiles(dirPath3);

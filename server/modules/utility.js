@@ -249,6 +249,7 @@ function removeStreamFiles(directoryPath) {
     });
 }
 
+/*
 //Concatinate more audio files
 function concatinateWavFiles(wavFilesArray) {
     let match = wavFilesArray[0].match(/(\d+)/);
@@ -257,29 +258,32 @@ function concatinateWavFiles(wavFilesArray) {
     match = wavFilesArray[wavFilesArray.length-1].match(/(\d+)/);
     const finishTimeshtamp = match ? match[0] : null;
 
-    let outputFile = "./data/audio/processed_audio/audio_" + startTimestamp + "_" + finishTimeshtamp + ".wav";
+    let fileDir = "./data/audio/processed_audio/";
+    let outputFile = "audio_" + startTimestamp + "_" + finishTimeshtamp + ".wav";
+    let filePath = fileDir + outputFile;
 
-    const writer = new wav.FileWriter(outputFile, {
+    const writer = new wav.FileWriter(filePath, {
         channels: 1,
         sampleRate: 44100,
         bitDepth: 16
     });
 
+    
     function concatFile(index) {
         if (index < wavFilesArray.length) {
             const reader = new wav.Reader();
 
             reader.on('format', (format) => {
                 if (!writer._writeState) {
-                    writer.pipe(fs.createWriteStream(outputFile, { flags: 'a' }));
+                    writer.pipe(fs.createWriteStream(filePath, { flags: 'a' }));
                 }
             });
 
             reader.on('end', () => {
-                fs.unlinkSync(wavFilesArray[index]);
-
                 concatFile(index + 1);
             });
+
+            reader.on('error', (er) => console.log('first', er))
 
             fs.createReadStream(wavFilesArray[index]).pipe(reader).pipe(writer, { end: false });
         } else {
@@ -291,6 +295,7 @@ function concatinateWavFiles(wavFilesArray) {
 
     return outputFile;
 }
+*/
 
 //Predict GSR section emotion
 function predictGSREmotion(inputGSR) {
@@ -323,6 +328,6 @@ export {
     processGSRoutput,
     identifySpeachInAudio,
     insertGSRData,
-    concatinateWavFiles,
+    //concatinateWavFiles,
     predictGSREmotion
 }
