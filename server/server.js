@@ -3,17 +3,17 @@ import bodyParser from 'body-parser';
 import fs from 'fs';
 import ini from 'ini';
 import path from 'path';
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'url';
 
-import { sendAudioToAWSS3, detectExterienceSampling } from './modules/aws_services.js';
+import { sendAudioToAWSS3 } from './modules/aws_services.js';
 import { processGSRoutput, saveData, rigControl, removeStreamFiles, runImageProcessor, 
-        identifySpeachInAudio, insertGSRData } from './modules/utility.js'
-
+        identifySpeachInAudio, insertGSRData, updateTheFinalFile, cleanOldRowData } from './modules/utility.js';
 
 
 // Set the port for the server
 const port = 8080;
 const app = express();
+
 app.use(bodyParser.json());
 
 //Set the public folder
@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'webclient')));
 
 //////////////////////////////////////////////////////////////////////////////////
 //Rig Status controler
+//////////////////////////////////////////////////////////////////////////////////
 
 let toUpdateConfig = false;         //Flag to update the rig configs
 let rigActive = false;              //Rig status flag
@@ -47,8 +48,11 @@ function resetTimer() {
 let timer = setTimeout(timerHandler, 5000);
 
 
+
+
 //////////////////////////////////////////////////////////////////////////////////
-//Rig webservice
+//Rig web-service
+//////////////////////////////////////////////////////////////////////////////////
 
 //Get image and save to a file. 
 //It will be saved in a temp direcotry to avoid processing incompleate images
@@ -73,37 +77,25 @@ app.post('/image', saveData('images', 'image'), (req, res) => {
 });
 
 
-let wavArray = [];
-
 //Get audio and save to the directory row_audio
 app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
-    const audioFile = req.file;
+    const audioFile = req.file;                                        //File name
+    const filePath = './data/audio/row_audio/' + audioFile.filename;   //Row data path
   
     if (!audioFile) {
         console.error('No audio file received');
-        return res.sendStatus(400);
+        res.sendStatus(400);
     }
 
-    //Row data path
-    const dir = './data/audio/row_audio/'
-    const filePath = dir + audioFile.filename;
-
+    //Procces the audio file
     fs.promises.readFile(filePath)
         .then(()=> {
-            return true;
-            //return identifySpeachInAudio(audioFile.filename) //Significall work/ Test
-        }).then((isSpeech) => {
-            if (isSpeech) {
-                console.log('speech detected/ Transcribe')
-                sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
-            }
+            //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
             res.sendStatus(200);
         })
-    
 });
 
 
-//Get GSR 
 //GSR section object
 let data = {
     startTime: null,
@@ -117,6 +109,7 @@ let trainingFileStart = {
     fileNumb: 43
 }
 
+//Receive GSR data
 app.post('/gsr', (req, res) => {
     const gsrData = req.body;
 
@@ -125,8 +118,8 @@ app.post('/gsr', (req, res) => {
         return res.sendStatus(400);
     }
     
-    insertGSRData(data, gsrData['gsr_data'], trainingFileStart) //Insert gsr data/ Used for LM training 
-    processGSRoutput(gsrData['gsr_data'], false);   /// Process GSr data, the permanent processor
+    insertGSRData(data, gsrData['gsr_data'], trainingFileStart); //Insert gsr data/ Used for LM training 
+    processGSRoutput(gsrData['gsr_data'], false);               //Process GSr data, the permanent processor
 
     res.sendStatus(200);
 });
@@ -140,8 +133,10 @@ app.get('/connection', (req, res) => {
 
 
 
+
 //////////////////////////////////////////////////////////////////////////////////
 //Web Client webservices
+//////////////////////////////////////////////////////////////////////////////////
 
 //Web interface/web page
 app.get("/", (req, res)=> {
@@ -155,7 +150,7 @@ app.get('/rigStatus', (req, res) => {
 
 //Get gsr data from the file
 app.get('/gsrData', (req, res) => {
-    const filePath = './data/gsr/gsr_data.csv';
+    const filePath = './data/gsr/gsr_graph.csv';
   
     //Read the file
     fs.readFile(filePath, 'utf8', (err, data) => {
@@ -222,13 +217,29 @@ app.get( "/rigStop", (req, res) => {
 
 
 
+
+
 //List the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
-    rigControl('config');
-    runImageProcessor();
+    cleanOldRowData();        //Clean old row data
+   
+    //rigControl('config');   //Configure the rig
+    //runImageProcessor();    //Run the python image processor
+    updateTheFinalFile();     //Update the final file / interval
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 

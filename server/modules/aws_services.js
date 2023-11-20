@@ -134,10 +134,11 @@ function insertToJSON(outputPath, audioFile) {
         experienceDetected: ""
     }
 
-    formatTheAudioJson(outputPath, newData);    //Format the comversation
+    formatTheAudioJson(outputPath, newData);        //Format the comversation
 
     setTimeout(()=> {
-        let str = audioFile.match(/\d+/);           //Get the timestamp from the file name
+        //Get the timestamp from the file name
+        let str = audioFile.match(/\d+/);           
         let timestamp = str ? parseInt(str[0], 10) : null;  
 
         newData.audio_file = audioFile;     //Add the audio file name
@@ -152,9 +153,9 @@ function insertToJSON(outputPath, audioFile) {
                         return;
                     }
 
+                    //Detect/Get the experience recording in the extracted text from audio
                     let experienceDetected = detectExterienceSampling(newData)
                     
-
                     setTimeout(() => {
                         if(experienceDetected != "") {
                             newData.experienceDetected = experienceDetected;
@@ -162,13 +163,11 @@ function insertToJSON(outputPath, audioFile) {
                             newData.experienceDetected = undefined
                         }
 
-
                         let dataObject = JSON.parse(data);  //Parse the json data to object
                         dataObject.push(newData);           //Add the new data to the file object
 
                         let dataJson = JSON.stringify(dataObject);      //Convert the object to json
 
-                        
                         //Write the json file
                         fs.writeFile(final_file_path, dataJson, 'utf8', (err) => {
                             if (err) {
@@ -176,7 +175,6 @@ function insertToJSON(outputPath, audioFile) {
                             }
                         })
                     }, 1000)
-                    
                 })
             }
         } catch(e) {
@@ -184,7 +182,6 @@ function insertToJSON(outputPath, audioFile) {
         }
 
         removeAJsonFile(outputPath);  //Remove the json file(the transcribed file from one audio data)
-        
     }, 1000)
 }
 
@@ -203,7 +200,7 @@ function formatTheAudioJson(filePath, respons) {
 
         words = JSON.parse(data)["results"]["items"];   //Get the extracted words
 
-        let s = 0; //speaker count
+        let s = 0; //Speakers count
 
         for(let i in words) {
             let speaker_label = words[i]["speaker_label"]; 
@@ -211,9 +208,11 @@ function formatTheAudioJson(filePath, respons) {
             //Control the current speaker id
             if(!speakerData.speaker) {
                 speakerData.speaker = speaker_label;        //Set the first speaker
-                respons.text.push(speakerData);             
+                respons.text.push(speakerData);             //Add the speakers data
             } else if(speakerData.speaker != speaker_label) {
+                //Clean the speaker data, prepare for the next speaker
                 newSpeaker = true;  
+
                 speakerData = {
                     speaker: '',
                     text: '' 
@@ -224,12 +223,14 @@ function formatTheAudioJson(filePath, respons) {
 
             //Change the speaker
             if(newSpeaker) {
-                s++;
+                s++;    //Next speaker
 
+                //Speaker data frame
                 speakerData.speaker = speaker_label;
-                speakerData.text = '';
 
+                speakerData.text = '';
                 content = '';
+
                 respons.text.push(speakerData);
                 respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
 
@@ -260,39 +261,42 @@ function removeAJsonFile(filePath) {
 }
 
 
+//Detect user exterience from the audio text
 function detectExterienceSampling(dataObject) {
     let str = "";
     let data = dataObject.text;
 
-    let startWords = "Start Recording";
-    let endWords = "Stop Recording";
-    let endMissing = 100;
+    //Start and end phrases
+    let startWords = "Start Recording";     //Experience start words
+    let endWords = "Stop Recording";        //Experience end words
+    let endMissing = 100;                   //if no end words. Record 100 words and stop
 
+    //Concatinate the discusion in one string
     for(let i=0; i < data.length; i++) {
         str += data[i].text + " ";
     }
 
-    const pattern1 = new RegExp(`${startWords}(.*?)(?:${endWords})`, 'i');
-    const pattern2 = new RegExp(`${startWords}(.*?)(?:${endWords}|\\b.{0,${endMissing}}\\b)`, 'i');
+    //Define the patterns
+    const pattern1 = new RegExp(`${startWords}(.*?)(?:${endWords})`, 'i');    //Patttern, start and end phrases
+    const pattern2 = new RegExp(`${startWords}(.*?)(?:${endWords}|\\b.{0,${endMissing}}\\b)`, 'i');  //Pattern, start - no end
     
-    const match1 = pattern1.exec(str);
-    const match2 = pattern2.exec(str);
+    //Find matches
+    const match1 = pattern1.exec(str);      
+    const match2 = pattern2.exec(str);       
 
+    //Get the result if match is not null
     if (match1 || match2) {
         let extractedText = '';
 
         if(match1 && match1[1] != '') {
             // Extract the matched text
             extractedText = match1[1].trim();
-
         } else {
-            extractedText = (match2[0].trim()).slice(7);
+            extractedText = (match2[0].trim()).slice(14);
         }
         
-        console.log('Found:', extractedText);
         return extractedText;
     } else {
-        console.log('No match found');
         return null;
     }
 }
