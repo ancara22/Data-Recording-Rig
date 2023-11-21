@@ -4,7 +4,6 @@ import { readdir, unlink } from 'fs';
 import { join } from 'path';
 import { exec } from 'child_process';
 import fs from 'fs';
-import { promisify } from 'util'
 import wav from 'wav';
 import Papa from 'papaparse';
 
@@ -84,6 +83,8 @@ function rigControl(startRig) {
                                         ssh.end();
                                     });
                                 });
+
+                                //runImageProcessor();  //Rund image processor
                             })
                         }
                     }) 
@@ -373,11 +374,46 @@ function removeStreamFiles(directoryPath) {
 
 //Clean old row files
 function cleanOldRowData() {
-    let folders = ["data/audio/row_audio", "data/audio/row_images", "data/audio/row_audio"];
+    let folders = ["data/audio/row_audio", "data/images/row_images"];
 
     folders.forEach(folder => {
         removeStreamFiles(folder);
     });
+}
+
+
+//Concatinate more audio files
+function concatinateWavFiles(wavFile) {
+    let match = wavFile.match(/(\d+)/),
+        fileEndTimestamp = match ? match[0] : null;     //The timestamp from the file name
+
+    let userRecordedFile = "./data/audio/...file",     //Start audio file for user detection
+        filePath = "./data/audio/processed_audio/audio_" + fileEndTimestamp + ".wav";
+
+    //Define the writer
+    const writer = new wav.FileWriter(filePath, {
+        channels: 1,
+        sampleRate: 44100,
+        bitDepth: 16
+    });
+
+    //Define the reader and handle the excetions
+    const reader = new wav.Reader();
+
+    reader.on('format', (format) => {
+        if (!writer._writeState) {
+            writer.pipe(fs.createWriteStream(userRecordedFile, { flags: 'a' }));
+        }
+    });
+
+    reader.on('error', (er) => console.log('first', er))
+
+    //Concatinate the files
+    fs.createReadStream(wavFile).pipe(reader).pipe(writer, { end: false });
+
+    writer.end();  ///End the writing
+
+    return outputFile;
 }
 
 
@@ -388,88 +424,15 @@ export {
     rigControl,
     saveData,
     processGSRoutput,
-    identifySpeachInAudio,
     insertGSRData,
-    //concatinateWavFiles,
+    concatinateWavFiles,
     predictGSREmotion,
     updateTheFinalFile,
-    cleanOldRowData
+    cleanOldRowData,
+    insertDataToFinalFile
 }
 
 
 
 
 
-
-
-
-
-//Identify speech in an audio file
-const execAsync = promisify(exec);
-
-async function identifySpeachInAudio(audioFileName) {
-    return execAsync(`python3 ./processors/audio_transcriber.py ${audioFileName}`)
-        .then(({ stdout, stderr }) => {
-            const outputString = stdout.trim();
-            if (outputString === 'true') {
-                return true;
-            } else if (outputString === 'false') {
-                return false;
-            } else {
-                return false;
-            }
-        })
-        .catch(error => {
-            console.error(`Error: ${error.message}`);
-            return false;
-        });
-}
-
-
-/*
-//Concatinate more audio files
-function concatinateWavFiles(wavFilesArray) {
-    let match = wavFilesArray[0].match(/(\d+)/);
-    const startTimestamp = match ? match[0] : null;
-
-    match = wavFilesArray[wavFilesArray.length-1].match(/(\d+)/);
-    const finishTimeshtamp = match ? match[0] : null;
-
-    let fileDir = "./data/audio/processed_audio/";
-    let outputFile = "audio_" + startTimestamp + "_" + finishTimeshtamp + ".wav";
-    let filePath = fileDir + outputFile;
-
-    const writer = new wav.FileWriter(filePath, {
-        channels: 1,
-        sampleRate: 44100,
-        bitDepth: 16
-    });
-
-    
-    function concatFile(index) {
-        if (index < wavFilesArray.length) {
-            const reader = new wav.Reader();
-
-            reader.on('format', (format) => {
-                if (!writer._writeState) {
-                    writer.pipe(fs.createWriteStream(filePath, { flags: 'a' }));
-                }
-            });
-
-            reader.on('end', () => {
-                concatFile(index + 1);
-            });
-
-            reader.on('error', (er) => console.log('first', er))
-
-            fs.createReadStream(wavFilesArray[index]).pipe(reader).pipe(writer, { end: false });
-        } else {
-            writer.end();
-        }
-    }
-
-    concatFile(0);
-
-    return outputFile;
-}
-*/

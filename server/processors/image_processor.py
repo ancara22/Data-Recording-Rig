@@ -32,8 +32,8 @@ def processImage(imagePath):
             image[y:y+roi.shape[0], x:x+roi.shape[1]] = roi 
 
         #Processing for text detection
-        ret, thresh1 = cv2.threshold(gray, 128, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV) #cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV 
-        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (80, 80))
+        ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY) #cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV 
+        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (20, 20))
         dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
         contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         image2 = image.copy()
@@ -74,7 +74,7 @@ def processImage(imagePath):
 #New image handler
 class ImageHandler(FileSystemEventHandler):
     def __init__(self):
-        self.thread_pool = ThreadPoolExecutor(max_workers=3)
+        self.thread_pool = ThreadPoolExecutor(max_workers=1)
 
     def on_created(self, event):
         if not event.is_directory and event.src_path.endswith(".jpg"):

@@ -1,14 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import fs from 'fs';
-import ini from 'ini';
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import { rigControl, removeStreamFiles, runImageProcessor, updateTheFinalFile, cleanOldRowData, insertDataToFinalFile } from './modules/utility.js';
+import { imageRoute, audioRoute, gsrRoute, connectionRoute } from './modules/routes.js';
+import { webClientRoutes } from './modules/client-routes.js';
 import { sendAudioToAWSS3 } from './modules/aws_services.js';
-import { processGSRoutput, saveData, rigControl, removeStreamFiles, runImageProcessor, 
-        identifySpeachInAudio, insertGSRData, updateTheFinalFile, cleanOldRowData } from './modules/utility.js';
-
 
 // Set the port for the server
 const port = 8080;
@@ -21,225 +18,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'webclient')));
 
-
-
-//////////////////////////////////////////////////////////////////////////////////
-//Rig Status controler
-//////////////////////////////////////////////////////////////////////////////////
-
-let toUpdateConfig = false;         //Flag to update the rig configs
-let rigActive = false;              //Rig status flag
-
-//Status update timer
-//Set status false
-function timerHandler() {
-    rigActive = false;
-    console.log('Rig is not active!');
-}
-
-//Reset the timer
-function resetTimer() {
-    rigActive = true
-    clearTimeout(timer); //Clear the current timer
-    timer = setTimeout(timerHandler, 5000);
-}
-
-//Create a timer
-let timer = setTimeout(timerHandler, 5000);
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////
-//Rig web-service
-//////////////////////////////////////////////////////////////////////////////////
-
-//Get image and save to a file. 
-//It will be saved in a temp direcotry to avoid processing incompleate images
-app.post('/image', saveData('images', 'image'), (req, res) => {
-    //Image is saved in the temporary direcotry
-    let imageFile = req.file                //Image file
-    let imageName = imageFile.filename;     //Image name
-    let dirPath = 'data/images/';           //Images directory
-    let tempPath = dirPath + imageName;     //Temp saving directory
-    let destinationPath = dirPath + 'row_images/' + imageName;  //Final directory, row_images
-
-    //Check if image is receved
-    if (!imageFile) {
-        console.error('No image file received');
-        return res.sendStatus(400);
-    }
-  
-    //Relocate image from the temporary directory to destination direcotry
-    fs.rename(tempPath, destinationPath, (err) => {});
-  
-    res.sendStatus(200);
-});
-
-
-//Get audio and save to the directory row_audio
-app.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
-    const audioFile = req.file;                                        //File name
-    const filePath = './data/audio/row_audio/' + audioFile.filename;   //Row data path
-  
-    if (!audioFile) {
-        console.error('No audio file received');
-        res.sendStatus(400);
-    }
-
-    //Procces the audio file
-    fs.promises.readFile(filePath)
-        .then(()=> {
-            //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
-            res.sendStatus(200);
-        })
-});
-
-
-//GSR section object
-let data = {
-    startTime: null,
-    finishTime: null,
-    gsrData: [],
-    artefacts: 0
-}  
-
-//Used for trainig
-let trainingFileStart = {
-    fileNumb: 43
-}
-
-//Receive GSR data
-app.post('/gsr', (req, res) => {
-    const gsrData = req.body;
-
-    if (!gsrData) {
-        console.error('No GSR data received');
-        return res.sendStatus(400);
-    }
-    
-    insertGSRData(data, gsrData['gsr_data'], trainingFileStart); //Insert gsr data/ Used for LM training 
-    processGSRoutput(gsrData['gsr_data'], false);               //Process GSr data, the permanent processor
-
-    res.sendStatus(200);
-});
-
-//For connection testing and rig config updating
-app.get('/connection', (req, res) => {
-    res.json({ status: 200, updateConfig: toUpdateConfig})
-    toUpdateConfig = false;
-    resetTimer();
-})
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////
-//Web Client webservices
-//////////////////////////////////////////////////////////////////////////////////
-
-//Web interface/web page
-app.get("/", (req, res)=> {
-    res.sendFile(path.join(__dirname, '/webclient/index.html'));
-})
-
-//Get rig status for the web client /Web client webservice
-app.get('/rigStatus', (req, res) => {
-    res.json({ active: rigActive })
-})
-
-//Get gsr data from the file
-app.get('/gsrData', (req, res) => {
-    const filePath = './data/gsr/gsr_graph.csv';
-  
-    //Read the file
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500);
-      } else {
-        let rows = data.trim().split('\n');
-        let header = rows[0].split(',');
-        let gsr_data = rows.slice(1).map(row => row.split(',').map(parseFloat));
-  
-        res.json({ header, gsr_data });
-      }
-    });
-});
-
-//getRigConfigFile
-app.get('/getConfig', (req, res) => {
-    const filePath = '../config.ini';
-  
-    //Read the file
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500);
-      } else {
-        const config = ini.parse(data)
-        res.json({ config });
-      }
-    });
-});
-
-//Save new configs to the file
-app.post( "/saveConfig", (req, res) => {
-    const config = req.body.config;
-    const iniConfig = ini.stringify(config);
-
-    fs.writeFile('../config.ini', iniConfig, (err) => {
-        if (err) {
-            toUpdateConfig = false;
-            console.error('Error saving INI file:', err);
-            res.status(500);
-        } else {
-            toUpdateConfig = true;
-            rigControl('config');
-            res.status(200);
-        }
-      });
-});
-
-//Save new configs to the file
-app.get( "/rigStart", (req, res) => {
-    rigControl('start');
-
-    res.status(200);
-});
-
-//Save new configs to the file
-app.get( "/rigStop", (req, res) => {
-    rigControl('stop');
-
-    res.status(200);
-});
-
-
-
-
+//Routes
+app.use('/gsr', gsrRoute);                  //GSR data receiver route
+app.use('/audio', audioRoute);              //Audio receiver route
+app.use('/image', imageRoute);              //Image receiver route
+app.use('/connection', connectionRoute);    //Rig Connection checking route
+app.use('/', webClientRoutes);              //Web clien route
 
 //List the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
     cleanOldRowData();        //Clean old row data
-   
-    //rigControl('config');   //Configure the rig
-    //runImageProcessor();    //Run the python image processor
+    rigControl('config');       //Configure the rig
+    runImageProcessor();      //Run the python image processor
     updateTheFinalFile();     //Update the final file / interval
+
+    //sendAudioToAWSS3("audio_1700586321.wav");  //DEMO
+    //insertDataToFinalFile()                    //DEMO
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -251,7 +48,7 @@ setInterval(() => {
     //removeStreamFiles(dirPath);
 
     let dirPath2 = 'data/images/row_images';
-    //removeStreamFiles(dirPath2);
+    removeStreamFiles(dirPath2);
 
     let dirPath3 = 'data/audio/row_audio';
     //removeStreamFiles(dirPath3);
