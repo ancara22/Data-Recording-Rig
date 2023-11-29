@@ -10,10 +10,14 @@ from concurrent.futures import ThreadPoolExecutor
 row_images = "./data/images/row_images"
 processed_images = "./data/images/processed_images"
 
+# Track the processed images
+processed_images_array = []
 
 #Read the image, face detection, face bluring, dext recognition, text extraction
 def processImage(imagePath):
     try:
+        processed_images_array.append(imagePath)
+
         #Get image
         image = cv2.imread(imagePath) 
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -67,6 +71,10 @@ def processImage(imagePath):
         # Remove the old image
         os.remove(imagePath)
 
+        if len(processed_images_array) > 30:
+            del processed_images_array[0]
+
+
     except Exception as exc:
         print(exc)
 
@@ -80,7 +88,9 @@ class ImageHandler(FileSystemEventHandler):
         if not event.is_directory and event.src_path.endswith(".jpg"):
             imagePath = event.src_path  #Get the image path
 
-            self.thread_pool.submit(processImage, imagePath)
+            if imagePath not in processed_images_array:
+                self.thread_pool.submit(processImage, imagePath)
+
 
 if __name__ == "__main__":
     #Observe the row_images folder content

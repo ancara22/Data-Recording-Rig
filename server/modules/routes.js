@@ -1,7 +1,7 @@
 import express from 'express';
 import fs from 'fs';
 import { sendAudioToAWSS3 } from './aws_services.js';
-import { processGSRoutput, saveData } from './utility.js';
+import { processGSRoutput, saveData, insertGSRData } from './utility.js';
 import { resetTimer } from './timer.js';
 
 
@@ -9,30 +9,16 @@ import { resetTimer } from './timer.js';
 //Rig web-service
 //////////////////////////////////////////////////////////////////////////////////
 
-//Initiate routes
-let imageRoute = express.Router(),
-    gsrRoute = express.Router(),
-    audioRoute = express.Router(),
-    connectionRoute = express.Router();
+const serverRoutes = express.Router();
 
-let toUpdateConfig = false;         //Flag to update the rig configs
+let config = { toUpdateConfig: false };     //Flag to update the rig configs
+let data = { startTime: null, finishTime: null,  gsrData: [], artefacts: 0 }  //GSR section object
+let trainingFileStart = { fileNumb: 43 };   //Used for trainig
 
-//GSR section object
-let data = {
-    startTime: null,
-    finishTime: null,
-    gsrData: [],
-    artefacts: 0
-}  
-
-//Used for trainig
-let trainingFileStart = {
-    fileNumb: 43
-}
 
 //Get image and save to a file. 
 //It will be saved in a temp direcotry to avoid processing incompleate images
-imageRoute.post('/image', saveData('images', 'image'), (req, res) => {
+serverRoutes.post('/image', saveData('images', 'image'), (req, res) => {
     //Image is saved in the temporary direcotry
     let imageFile = req.file;                //Image file
     let imageName = imageFile.filename;     //Image name
@@ -52,9 +38,8 @@ imageRoute.post('/image', saveData('images', 'image'), (req, res) => {
     res.sendStatus(200);
 });
 
-
 //Get audio and save to the directory row_audio
-audioRoute.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
+serverRoutes.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
     const audioFile = req.file;                                        //File name
     const filePath = './data/audio/row_audio/' + audioFile.filename;   //Row data path
   
@@ -71,9 +56,8 @@ audioRoute.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
         })
 });
 
-
 //Receive GSR data
-gsrRoute.post('/gsr', (req, res) => {
+serverRoutes.post('/gsr', (req, res) => {
     const gsrData = req.body;
 
     if (!gsrData) {
@@ -87,19 +71,12 @@ gsrRoute.post('/gsr', (req, res) => {
     res.sendStatus(200);
 });
 
-
 //For connection testing and rig config updating
-connectionRoute.get('/connection', (req, res) => {
-    res.json({ status: 200, updateConfig: toUpdateConfig})
-    toUpdateConfig = false;
+serverRoutes.get('/connection', (req, res) => {
+    res.json({ status: 200, updateConfig: config.toUpdateConfig})
+    config.toUpdateConfig = false;
     resetTimer();
 })
 
 
-export {
-    imageRoute,
-    audioRoute,
-    gsrRoute,
-    connectionRoute,
-    toUpdateConfig
-}
+export { serverRoutes, config }

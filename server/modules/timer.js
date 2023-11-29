@@ -20,5 +20,4 @@ function resetTimer() {
 timer = setTimeout(timerHandler, 5000);
 
 
-
 export { resetTimer, rigActive };

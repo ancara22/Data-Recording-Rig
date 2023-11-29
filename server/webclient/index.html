@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     
     <link rel="stylesheet" href="style.css">
@@ -25,7 +26,7 @@
         </div>
         <div id="rig_control">
             <div id="change_status">
-                <button :class="{ 'backColorGreen': !rigActive, 'tempColorGray': tempColorGray }"  @click="startRig" v-if="rigActive == false">Start</button>
+                <button :disabled="isRunDisabled" :class="{ 'backColorGreen': !rigActive, 'tempColorGray': tempColorGray, 'disabled': isRunDisabled }"  @click="startRig" v-if="rigActive == false">Start</button>
                 <button class="backColorRed" @click="stopRig" v-if="rigActive == true">Stop</button>
             </div>
             <div id="startTime">
@@ -34,6 +35,23 @@
             </div>
         </div>
         <div v-if="pageContent == 'settings'" id="settings_container">
+            
+            <div id="user_settings">
+                <div id="control">
+                    <div id="user_control_box" :class="{'show': isUserMenuDisplayed, 'moveDown': !isUserMenuDisplayed}">
+                        <button @click="setNewUser"  :class="{'hide': isUserMenuDisplayed}">Set User</button>
+                        <button @click="continueRecording" :class="{'hide': !isUserMenuDisplayed}">Continue</button>
+                    </div>
+                    <span>Current user: {{ userName }}</span>
+                    <label for="user_name">username</label>
+                    <input v-model="userName" name="user_name" type="text">
+                </div>
+                <div id="audio_recording_box" :class="{'hide': hideAudioRecording, 'show': !hideAudioRecording}">
+                    <button @click="startRecording" :disabled="recording">Start Recording</button>
+                    <button @click="saveRecording" :disabled="!audioData || recording">Save Recording</button>
+                    <span v-if="recording">Recording... {{ recordingTimer }}sec</span>
+                </div>
+            </div>
             <h1>Rig Settings</h1>
             <div class="settings_box">
                 <h3>Image</h3>
@@ -137,12 +155,11 @@
                 <div id="gsrGraph"></div>
                 <div id="gsr_emotions">
                     <div id="history">
-                        <li class="current" ><span>Current State</span>Stress State</li>
-                        <li>Relaxing State<span>2023.15.11 23:32 - 2023.15.11 23:42</span></li>
-                        <li>Stress State<span>2023.15.11 23:32 - 2023.15.11 23:42</span></li>
-                        <li>Stress State<span>2023.15.11 23:32 - 2023.15.11 23:42</span></li>
+                        <li v-for="emotion in emotionsList" :class="{'current': emotion.current}">
+                            {{ emotion.emotion }}
+                            <span>{{ emotion.startTime }} - {{ emotion.endTime }} </span>
+                        </li>
                     </div>
-                    
                 </div>
             </div>
         </div>

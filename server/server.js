@@ -2,10 +2,12 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { rigControl, removeStreamFiles, runImageProcessor, updateTheFinalFile, cleanOldRowData, insertDataToFinalFile } from './modules/utility.js';
-import { imageRoute, audioRoute, gsrRoute, connectionRoute } from './modules/routes.js';
+import { rigControl, removeStreamFiles, updateTheFinalFile, cleanOldRowData } from './modules/utility.js';
+import { serverRoutes } from './modules/routes.js';
 import { webClientRoutes } from './modules/client-routes.js';
-import { sendAudioToAWSS3 } from './modules/aws_services.js';
+//import { sendAudioToAWSS3 } from './modules/aws_services.js';
+//import { runImageProcessor, insertDataToFinalFile } from './modules/utility.js';
+
 
 // Set the port for the server
 const port = 8080;
@@ -19,33 +21,29 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'webclient')));
 
 //Routes
-app.use('/gsr', gsrRoute);                  //GSR data receiver route
-app.use('/audio', audioRoute);              //Audio receiver route
-app.use('/image', imageRoute);              //Image receiver route
-app.use('/connection', connectionRoute);    //Rig Connection checking route
-app.use('/', webClientRoutes);              //Web clien route
+app.use('/', webClientRoutes);              //Web clien routes
+app.use('/', serverRoutes);                 //Server client routes
 
 //List the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
     cleanOldRowData();        //Clean old row data
-    rigControl('config');       //Configure the rig
-    runImageProcessor();      //Run the python image processor
+    rigControl('config');     //Configure the rig
     updateTheFinalFile();     //Update the final file / interval
 
-    //sendAudioToAWSS3("audio_1700586321.wav");  //DEMO
-    //insertDataToFinalFile()                    //DEMO
+    //runImageProcessor();                       //TEMP
+    //sendAudioToAWSS3("audio_1700586321.wav");  //TEMP
+    //insertDataToFinalFile()                    //TEMP
 });
 
 
 
-//##############################################################################################################################################
 //Remove the colected data
 //Temp code, to be removed
 setInterval(() => {
     let dirPath = 'data/images/processed_images';
-    //removeStreamFiles(dirPath);
+    removeStreamFiles(dirPath);
 
     let dirPath2 = 'data/images/row_images';
     removeStreamFiles(dirPath2);

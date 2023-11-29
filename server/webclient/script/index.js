@@ -1,15 +1,23 @@
-
 const vueApp = new Vue({
     el: '#app',
     data: {
         pageContent: 'settings',        //Page content manager
         graphInterval: null,            //Graph update interval
         rigActive: false,               //Rig status
-        statusText: 'OFFLINE',           //Rig status label
+        statusText: 'OFFLINE',          //Rig status label
         startTime: '0000.00.00 00:00',  //Rig start time
-        tempColorGreen: false,
+        tempColorGray: false,           //Temp button colors status
+        emotionsList: [],               //GSR Emotions list from the server
+        isUserMenuDisplayed: true,      //To display the user menu or not
+        userName: '',                   //Current user name
+        oldUsername: '',                //Old user name
+        audioData: null,                //Recorded Audio data
+        recording: false,               //Audio Recording status
+        recordingTimer: 15,             //Audio Recording timer
+        hideAudioRecording: true,       //Show/hide audio recording menu
+        isRunDisabled: true,            //Disable the Start button
 
-        //Rig configurations
+        //Rig image configurations
         imageSettings: {
             frequence: undefined,
             framerate: undefined,
@@ -17,22 +25,30 @@ const vueApp = new Vue({
             size_x: undefined,
             size_y: undefined
         },
+
+        //Rig audio configurations
         audioSettings: {
             frequence: undefined,
             sampleRate: undefined,
             chunk: undefined,
             host: undefined
         },
+
+        //Rig GSR configurationss
         gsrSettings: {
             frequence: undefined,
             host: undefined
         },
+
+        //Rig connection configurations
         connectionSettings: {
             host: undefined
         }
     },
 
     mounted() {
+        this.getGSREmotions();
+
         //Check the Rig Status in interval of time
         setInterval(()=> {
             this.getRigStatus() 
@@ -167,10 +183,10 @@ const vueApp = new Vue({
 
         //Start the rig
         startRig() {
-            this.tempColorGreen = true;
+            this.tempColorGray = true;
 
             setTimeout(() => {
-              this.tempColorGreen = false;
+              this.tempColorGray = false;
             }, 1000);
 
             fetch("/rigStart")
@@ -212,7 +228,147 @@ const vueApp = new Vue({
                     Plotly.newPlot('gsrGraph', [trace], layout);
                 })
                 .catch(error => console.error('Error fetching GSR data:', error));
-       }
+            this.getGSREmotions();
+        },
+
+        //GET GSR Emotions from the server
+        getGSREmotions() {
+            let currentArrayLength = this.emotionsList.length;
+            fetch('/getEmotions')
+                .then(res => res.json())
+                .then(data => {
+                    if(currentArrayLength < data.emotions.length) {
+                        this.emotionsList = [];
+                        this.renderEmotions(data.emotions);
+                    }
+                })
+                .catch(error => console.error('Error fetching GSR Emotions:', error));
+        },
+
+        //Render GSR emotions on the page
+        renderEmotions(data) {
+            if(data.length > 0) {
+                let reversedData = data.reverse();
+
+                reversedData.forEach(element => {
+                    let emotion = {
+                        startTime: element[0],
+                        endTime: element[1],
+                        emotion: element[2].replace("\"", "").replace("\"", ""),
+                        current: false
+                    }
+
+                    this.emotionsList.push(emotion)
+                });
+
+                this.emotionsList[0].current = true;
+            }
+        },
+
+        //Set a new user
+        setNewUser: function() {
+            this.isUserMenuDisplayed = false;
+
+            if(this.userName != this.oldUsername) {
+                fetch("/setNewUserName", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify({ userName: this.userName })
+                })
+            }
+
+            this.hideAudioRecording = false;
+
+            this.continueRecording();
+        },
+
+        //Ccontinue with the same user
+        continueRecording: function() {
+            this.isUserMenuDisplayed = false;
+
+            fetch('/getUserName')
+                .then(res => res.json())
+                .then(data => {
+                    this.userName = data.currentUser;
+                    this.oldUsername = data.currentUser;
+                    this.startTime = data.sessionStart;
+
+                    this.isRunDisabled = false;
+                })
+                .catch(error => console.error('Error fetching GSR Emotions:', error));
+        },
+
+        //Start audio recording
+        startRecording: function() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    this.recording = true;
+                    this.audioData = null;
+
+                    // Create an audio context and a recorder
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    this.recorder = new Recorder(audioContext.createMediaStreamSource(stream));
+
+                    // Start recording
+                    this.recorder.record();
+
+                    this.recordingTimer = 15; 
+                    this.recordingTimerInterval = setInterval(() => {
+                        if (this.recordingTimer > 0) {
+                            this.recordingTimer--;
+                        } else {
+                            this.stopRecording(); 
+                        }
+                    }, 1000);
+                   
+                }).catch(error => {
+                    console.error('Error accessing microphone:', error);
+                });
+
+           
+        },
+
+        //Stop audio recording
+        stopRecording: function() {
+            this.recording = false;
+
+            this.recorder.stop();   // Stop recording
+        
+            // Export the recorded data as a WAV format
+            this.recorder.exportWAV(data => {
+                if (!data || data.size === 0) {
+                    console.error('No audio data exported or empty audio data.');
+                    return;
+                }
+                this.audioData = new Blob([data], { type: 'audio/wav' });
+            });
+
+         
+            clearInterval(this.recordingTimerInterval);
+            this.recorder.clear();  //Clear the recorder for the next recording
+        },
+
+        //Send recording to the server and save
+        saveRecording() {
+            if (this.audioData) {
+                const formData = new FormData();
+                formData.append('audio', this.audioData, 'userIntro.wav');
+
+                fetch("/saveAudioIntro", {
+                    method: 'POST',
+                    body: formData,
+                }).then(response => response.json()
+                ).then(data => {
+                    console.log('Server response:', data);
+                    this.isRunDisabled = false;
+                }).catch(error => {
+                    console.error('Error sending data to server:', error);
+                });
+            }
+            this.continueRecording();
+            this.hideAudioRecording = true;
+        }
+
     }
 })
 

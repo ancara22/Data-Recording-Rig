@@ -10,9 +10,19 @@ let transcribeService = new AWS.TranscribeService();        //Init AWS Transcrib
 const s3 = new AWS.S3();                                    //Init AWS S3 Bucket
 
 
+const STARTKEYWORDS = "Start Recording";     //Experience start words
+const ENDKEYWORDS = "Stop Recording";        //Experience end words
+const ENDLENGTH = 100;                       //if no end words. Record 100 words and stop
+
+const ROW_AUDIO_FOLDER_PATH = "./data/audio/row_audio/";
+const AUDIO_TEXT_FILE_PATH = './data/audio/audio_text.json';
+
+
 //Insert audio file to the AWS S3 Bucket 
 function sendAudioToAWSS3(audioFile) {
-    let filePath = "./data/audio/row_audio/" + audioFile;
+    let filePath = ROW_AUDIO_FOLDER_PATH + audioFile;
+
+    //concatinateWavFiles(filePath);
     
     //Configure the AWS bucket
     const bucketName = 'audiobucketfortranscirber';
@@ -34,7 +44,6 @@ function sendAudioToAWSS3(audioFile) {
         })
     }); 
 }
-
 
 //Create and run the Transcriber job on the AWS Transcriber service
 function transcribeTheAudioFile(audioFile) {
@@ -66,7 +75,6 @@ function transcribeTheAudioFile(audioFile) {
     });  
 }    
 
-
 //Request to the AWS Trascriber job, to get the job status
 function getTranscriptionStatus(transcriptionJobName, audioFile) {
     //Send the request
@@ -97,7 +105,6 @@ function getTranscriptionStatus(transcriptionJobName, audioFile) {
     })
 }
 
-
 //Get Transcriber output
 function getTranscriptionData(result_file_url, audioFile) {
     let outputPath = './data/audio/' + (audioFile.replace('.wav', '.json')); //Output file name
@@ -121,11 +128,8 @@ function getTranscriptionData(result_file_url, audioFile) {
     });
 }
 
-
 //Insert audio transcribed data in an json file
 function insertToJSON(outputPath, audioFile) {
-    let final_file_path = './data/audio/audio_text.json';
-
     //One speaker data
     let newData = {
         timestamp: undefined,
@@ -147,7 +151,7 @@ function insertToJSON(outputPath, audioFile) {
         try {
             if(newData.text.length > 0) {
                 //Read the final json file
-                fs.readFile(final_file_path, 'utf8', (err, data) => {
+                fs.readFile(AUDIO_TEXT_FILE_PATH, 'utf8', (err, data) => {
                     if (err) {
                         console.error('Error reading JSON file:', err);
                         return;
@@ -169,9 +173,9 @@ function insertToJSON(outputPath, audioFile) {
                         let dataJson = JSON.stringify(dataObject);      //Convert the object to json
 
                         //Write the json file
-                        fs.writeFile(final_file_path, dataJson, 'utf8', (err) => {
+                        fs.writeFile(AUDIO_TEXT_FILE_PATH, dataJson, 'utf8', (err) => {
                             if (err) {
-                            console.error('Error updating JSON file:', err);
+                                console.error('Error updating JSON file:', err);
                             }
                         })
                     }, 1000)
@@ -184,7 +188,6 @@ function insertToJSON(outputPath, audioFile) {
         removeAJsonFile(outputPath);  //Remove the json file(the transcribed file from one audio data)
     }, 1000)
 }
-
 
 //Format the conversation to json format
 function formatTheAudioJson(filePath, respons) {
@@ -250,7 +253,6 @@ function formatTheAudioJson(filePath, respons) {
    
 }
 
-
 //Remove the a file
 function removeAJsonFile(filePath) {
     fs.unlink(filePath, (err) => {
@@ -260,16 +262,10 @@ function removeAJsonFile(filePath) {
     });
 }
 
-
 //Detect user exterience from the audio text
 function detectExterienceSampling(dataObject) {
     let str = "";
     let data = dataObject.text;
-
-    //Start and end phrases
-    let startWords = "Start Recording";     //Experience start words
-    let endWords = "Stop Recording";        //Experience end words
-    let endMissing = 100;                   //if no end words. Record 100 words and stop
 
     //Concatinate the discusion in one string
     for(let i=0; i < data.length; i++) {
@@ -277,8 +273,8 @@ function detectExterienceSampling(dataObject) {
     }
 
     //Define the patterns
-    const pattern1 = new RegExp(`${startWords}(.*?)(?:${endWords})`, 'i');    //Patttern, start and end phrases
-    const pattern2 = new RegExp(`${startWords}(.*?)(?:${endWords}|\\b.{0,${endMissing}}\\b)`, 'i');  //Pattern, start - no end
+    const pattern1 = new RegExp(`${STARTKEYWORDS}(.*?)(?:${ENDKEYWORDS})`, 'i');    //Patttern, start and end phrases
+    const pattern2 = new RegExp(`${STARTKEYWORDS}(.*?)(?:${ENDKEYWORDS}|\\b.{0,${ENDLENGTH}}\\b)`, 'i');  //Pattern, start - no end
     
     //Find matches
     const match1 = pattern1.exec(str);      

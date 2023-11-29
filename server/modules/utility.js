@@ -1,12 +1,25 @@
 import multer, { diskStorage } from 'multer';
 import { Client } from 'ssh2';
-import { readdir, unlink } from 'fs';
+import fs, { readdir, unlink } from 'fs';
 import { join } from 'path';
 import { exec } from 'child_process';
-import fs from 'fs';
 import wav from 'wav';
 import Papa from 'papaparse';
+import util from "util";
 
+const CONFIG_FILE_PATH = '../config.ini';
+const GSR_SECTIONS_JSON_PATH = './data/gsr/gsr_sections.json';
+const CLIENT_EMOTIONS_PATH = `./data/gsr/client_graph/client_emotions.csv`;
+const GSR_TRAINING_FILE_PATH = "./data/gsr/gsr_training_data/gsr_training.csv";
+const AUDIO_TEXT_FILE_PATH = "./data/audio/audio_text.json";
+const SESSION_OUTPUT_FILE_PATH = './data/recording_output.json';
+const IMAGE_TEXT_FILE_PATH = './data/images/image_text/image_text.csv';
+
+
+
+
+let current_session = "";   //Current session file name
+let isDataUpdated = false;  //To update the GSR session
 
 
 //Save data to a file
@@ -24,7 +37,6 @@ function saveData(folder, fileType) {
     const upload = multer({ storage: storage });
     return upload.single(fileType);
 }
-
 
 //Send the connfiguration, config.ini file to the raspberry pi
 function rigControl(startRig) {
@@ -48,7 +60,7 @@ function rigControl(startRig) {
             let rigDirectory = "/home/rig/Documents/App/main/";   //Raspberry pi config.ini directory
 
             //Copy file to the raspberry pi directory
-            sftp.fastPut('../config.ini', `${rigDirectory}config.ini`, (err) => {
+            sftp.fastPut(CONFIG_FILE_PATH, `${rigDirectory}config.ini`, (err) => {
                 if (err) {
                     console.error('Error transferring the file:', err);
                     sftp.end(); 
@@ -84,7 +96,7 @@ function rigControl(startRig) {
                                     });
                                 });
 
-                                //runImageProcessor();  //Rund image processor
+                                runImageProcessor();  //Rund image processor
                             })
                         }
                     }) 
@@ -119,13 +131,32 @@ function runImageProcessor() {
           return;
         }
         console.log(`Output: ${stdout}`);
-      });
+    });
 }   
-
 
 
 ////////////////////////////////////////////////////////////////////////////
 //GSR DATA PROCESSORS
+////////////////////////////////////////////////////////////////////////////
+
+//Predict GSR section emotion
+async function predictGSREmotion(inputGSR) {
+    try {
+        const inputGSRString = inputGSR.join(',');
+        const command = `python3 ./processors/gsr_predict_emotion.py ${inputGSRString}`;
+
+        const { stdout, stderr } = await util.promisify(exec)(command);
+        const emotion = stdout.trim();
+
+        return emotion;
+    } catch(error) {
+        console.error(`Error: ${error.message}`);
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+//FILE WRITERS
 ////////////////////////////////////////////////////////////////////////////
 
 //Save GSR data to a csv file/ used for graphs visualisation
@@ -141,7 +172,7 @@ function processGSRoutput(data, nr) {
         let filePath = `./data/gsr/gsr_training_data/gsrData${nr}.csv`; //Creates a file that represent the gsr section for graph visualisation
 
         if(nr == false) {
-            filePath = `./data/gsr/gsr_graph.csv`
+            filePath = `./data/gsr/client_graph/gsr_graph.csv`
         }
 
         createFileIfNotExists(filePath , "Timestamp,GSR");
@@ -156,14 +187,16 @@ function processGSRoutput(data, nr) {
     }
 }
 
-
-//Insert data into 3 minuts sections
+//Insert data into 3 minuts sections All files
 function insertGSRData(data, dataValue, data2) {
     let value = parseInt(dataValue) 
     let notConnectedvalue = 600;
 
     if(value < notConnectedvalue) {
-        if(data.startTime == null) data.startTime = Math.floor(Date.now() / 1000);
+        if(data.startTime == null) {
+            data.startTime = Math.floor(Date.now() / 1000);
+            isDataUpdated = true;
+        }
         data.gsrData.push(value);
     } else {
         data.artefacts ++;
@@ -175,85 +208,70 @@ function insertGSRData(data, dataValue, data2) {
     }
 
     processGSRoutput(dataValue, data2.fileNumb); //Creates separate files of each section/for manual lm training
-        
-    if(Math.floor(Date.now() / 1000) - data.startTime >= 3 * 60 * 1000 && data.startTime != null || (data.gsrData).length >= 85) {
+    
+    if(Math.floor(Date.now() / 1000) - data.startTime >= 3 * 60 && data.startTime != null && (data.gsrData).length >= 85 && isDataUpdated) {
+            console.log('yess')
             data.finishTime = Math.floor(Date.now() / 1000); 
-            writeSectionToCSV(data);     //For model training
-            writeSectionTOJSON(data);    //Save data in a json file
-            data2.fileNumb++;
+            isDataUpdated = false;
+
+            writeSectionToCSV(data, () => {
+                data2.fileNumb++;
+                isDataUpdated = true;
+            });  
+           
     }
 }
 
-
-//Predict GSR section emotion
-function predictGSREmotion(inputGSR) {
-    return new Promise((resolve, reject) => {
-        const inputGSRString = inputGSR.join(',');
-        const command = `python3 ./processors/gsr_predict_emotion.py ${inputGSRString}`;
-
-        exec(command, (error, stdout, stderr) => {
-            if (error) {
-            console.error(`Error: ${error.message}`);
-            reject(error.message);
-            }
-            if (stderr) {
-            console.error(`Stderr: ${stderr}`);
-            reject(stderr);
-            }
-            const emotion = stdout.trim();
-
-            console.log(`Output: ${emotion}`);
-            resolve(emotion);
-        });
-    })
+//Append the GSR section to the json output file 
+async function writeSectionTOJSON(gsrSection) {
+    readJSONFile(GSR_SECTIONS_JSON_PATH, (dataObject) => {
+        dataObject.push(gsrSection);                       // Append new data
+        writeJSONFile(GSR_SECTIONS_JSON_PATH, dataObject); // Rewrite the JSON file
+    });
 }
 
+//Write gsr emotions
+function writeClientGSREmotionsToCSV(data) {
+    createFileIfNotExists(CLIENT_EMOTIONS_PATH, "Emotion");
+
+    const csvRow = `${data.startTime},${data.endTime},"${ data.emotion_state }"\n`;
 
 
-////////////////////////////////////////////////////////////////////////////
-//FILE WRITERS
-////////////////////////////////////////////////////////////////////////////
-
-//Append the GSR section to the json output file
-async function writeSectionTOJSON(gsrSection) {
-    let gsr_file_path = "./data/gsr/gsr_sections.json";
-
-    fs.readFile(gsr_file_path, 'utf8', (err, data) => {
+    fs.appendFile(CLIENT_EMOTIONS_PATH, csvRow, "utf-8", (err) => {
         if (err) {
-            console.error('Error reading JSON file:', err);
-            return;
+            console.log(err);
         }
-
-        let dataObject = JSON.parse(data);  //Get the data from the json file
-        dataObject.push(gsrSection);        //Append new data
-
-        //Rewrite the json file
-        fs.writeFile(gsr_file_path, dataObject, 'utf8', (err) => {
-            if (err) {
-            console.error('Error updating JSON file:', err);
-            }
-        })
-
-    })
+    });
 }
 
 //Insert the section to csv file
-async function writeSectionToCSV(data) {
+async function writeSectionToCSV(data, callback) {
     try {
         const emotion = await predictGSREmotion(data.gsrData);
         const csvRow = `${data.startTime},${data.finishTime},"[${data.gsrData.join(', ')}]",${emotion}\n`;
 
-        fs.appendFile("./data/gsr/gsr_training.csv",  csvRow, (err) => {
+        fs.appendFile(GSR_TRAINING_FILE_PATH,  csvRow, (err) => {
             if (err) {
                 console.error('Error writing to CSV file:', err);
             }
         });
 
+        let newData = {
+            startTime: data.startTime,
+            endTime: data.finishTime,
+            gsr_section: data.gsrData,
+            emotion_state: emotion
+        }
+
+        writeClientGSREmotionsToCSV(newData); //Write emotiuon in a csv file for user interface display
+        writeSectionTOJSON(newData);    //Save data in a json file
+
         // Clear the data for the next section
         data.startTime = null;
         data.finishTime = null;
         data.gsrData = [];
-    
+
+        callback();
     } catch(e) {
         console.log('Error: ', e)
     }
@@ -261,9 +279,26 @@ async function writeSectionToCSV(data) {
 }
 
 //Read the json file
-function readJSONFile(filename) {
-    const data = fs.readFileSync(filename, 'utf8');
-    return JSON.parse(data);
+function readJSONFile(filePath, callback = (dataObject) => {}) {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading JSON file:', err);
+            callback(err, null);
+            return;
+        }
+
+        const dataObject = JSON.parse(data);
+        callback(dataObject);
+    });
+}
+
+//Write json file
+function writeJSONFile(filePath, data) {
+    try {
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+    } catch (error) {
+        console.error(`Error writing JSON file (${filePath}):`, error);
+    }
 }
 
 //Create the file if it doesnt exist
@@ -282,14 +317,8 @@ function createFileIfNotExists(filePath, content) {
 
 //Create finnal output file
 function insertDataToFinalFile() {
-    //Data files paths
-    let audio_file_path = "./data/audio/audio_text.json",
-        gsr_file_path = "./data/gsr/gsr_sections.json",
-        final_file_path = './data/recording_output.json',
-        image_file_path = './data/images/image_text/image_text.csv';
-
-    let audioData = readJSONFile(audio_file_path);  //Audio text data
-    let gsrData = readJSONFile(gsr_file_path);      //GSR data
+    let audioData = readJSONFile(AUDIO_TEXT_FILE_PATH);  //Audio text data
+    let gsrData = readJSONFile(GSR_SECTIONS_JSON_PATH );      //GSR data
 
     let mergedData = []; //Final file content
 
@@ -307,7 +336,7 @@ function insertDataToFinalFile() {
         })
 
         //Read the image text csv file
-        let imageCsv = fs.readFileSync(image_file_path, 'utf8');
+        let imageCsv = fs.readFileSync(IMAGE_TEXT_FILE_PATH, 'utf8');
         let parsedData = Papa.parse(imageCsv, { header: true }); //Parse CSV data
 
         //Filter all the images data in the interval of 3 min ultin timestamp reference
@@ -333,9 +362,9 @@ function insertDataToFinalFile() {
 
     let mergedJson = JSON.stringify(mergedData, null, 2);   //Convert mergedData array to JSON
    
-    fs.writeFileSync(final_file_path, mergedJson, 'utf8');    // Write the merged data to a new file
+    fs.writeFileSync(SESSION_OUTPUT_FILE_PATH, mergedJson, 'utf8');    // Write the merged data to a new file
 
-    console.log(`Merged data written to ${final_file_path}`);
+    console.log(`Merged data written to ${SESSION_OUTPUT_FILE_PATH}`);
 }
 
 //Run the final file content update by interval
@@ -387,7 +416,7 @@ function concatinateWavFiles(wavFile) {
     let match = wavFile.match(/(\d+)/),
         fileEndTimestamp = match ? match[0] : null;     //The timestamp from the file name
 
-    let userRecordedFile = "./data/audio/...file",     //Start audio file for user detection
+    let userRecordedFile = "./data/user/userIntro.wav",     //Start audio file for user detection
         filePath = "./data/audio/processed_audio/audio_" + fileEndTimestamp + ".wav";
 
     //Define the writer
@@ -415,6 +444,7 @@ function concatinateWavFiles(wavFile) {
 
     return outputFile;
 }
+
 
 
 
