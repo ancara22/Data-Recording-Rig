@@ -8,6 +8,7 @@ AWS.config.update({
 
 let transcribeService = new AWS.TranscribeService();        //Init AWS Transcriber
 const s3 = new AWS.S3();                                    //Init AWS S3 Bucket
+const comprehend = new AWS.Comprehend();                    //Init AWS Comprehend
 
 
 const STARTKEYWORDS = "Start Recording";     //Experience start words
@@ -135,120 +136,141 @@ function insertToJSON(outputPath, audioFile) {
         timestamp: undefined,
         text: [],
         audio_file: undefined,
-        experienceDetected: ""
+        experienceDetected: "",
+        text_emotion: ""
     }
 
-    formatTheAudioJson(outputPath, newData);        //Format the comversation
+    //Format the comversation
+    formatTheAudioJson(outputPath, newData)
+        .then(() => {
+             //Get the timestamp from the file name
+            let str = audioFile.match(/\d+/);           
+            let timestamp = str ? parseInt(str[0], 10) : null;  
 
-    setTimeout(()=> {
-        //Get the timestamp from the file name
-        let str = audioFile.match(/\d+/);           
-        let timestamp = str ? parseInt(str[0], 10) : null;  
+            newData.audio_file = audioFile;     //Add the audio file name
+            newData.timestamp = timestamp;      //Add the audio start timestamp
 
-        newData.audio_file = audioFile;     //Add the audio file name
-        newData.timestamp = timestamp;      //Add the audio start timestamp
-
-        try {
-            if(newData.text.length > 0) {
-                //Read the final json file
-                fs.readFile(AUDIO_TEXT_FILE_PATH, 'utf8', (err, data) => {
-                    if (err) {
-                        console.error('Error reading JSON file:', err);
-                        return;
-                    }
-
-                    //Detect/Get the experience recording in the extracted text from audio
-                    let experienceDetected = detectExterienceSampling(newData)
-                    
-                    setTimeout(() => {
-                        if(experienceDetected != "") {
-                            newData.experienceDetected = experienceDetected;
-                        } else {
-                            newData.experienceDetected = undefined
+            try {
+                if(newData.text.length > 0) {
+                    //Read the final json file
+                    fs.readFile(AUDIO_TEXT_FILE_PATH, 'utf8', (err, data) => {
+                        if (err) {
+                            console.error('Error reading JSON file:', err);
+                            return;
                         }
 
-                        let dataObject = JSON.parse(data);  //Parse the json data to object
-                        dataObject.push(newData);           //Add the new data to the file object
-
-                        let dataJson = JSON.stringify(dataObject);      //Convert the object to json
-
-                        //Write the json file
-                        fs.writeFile(AUDIO_TEXT_FILE_PATH, dataJson, 'utf8', (err) => {
-                            if (err) {
-                                console.error('Error updating JSON file:', err);
+                        //Detect/Get the experience recording in the extracted text from audio
+                        let experienceDetected = detectExterienceSampling(newData)
+                        
+                        setTimeout(() => {
+                            if(experienceDetected != "") {
+                                newData.experienceDetected = experienceDetected;
+                            } else {
+                                newData.experienceDetected = undefined
                             }
-                        })
-                    }, 1000)
-                })
-            }
-        } catch(e) {
-            console.log('Error reading the audio json file.')
-        }
 
-        removeAJsonFile(outputPath);  //Remove the json file(the transcribed file from one audio data)
-    }, 1000)
+                            let dataObject = JSON.parse(data);  //Parse the json data to object
+                            dataObject.push(newData);           //Add the new data to the file object
+
+                            let dataJson = JSON.stringify(dataObject);      //Convert the object to json
+
+                            //Write the json file
+                            fs.writeFile(AUDIO_TEXT_FILE_PATH, dataJson, 'utf8', (err) => {
+                                if (err) {
+                                    console.error('Error updating JSON file:', err);
+                                }
+                            })
+                        }, 1000)
+                    })
+                }
+            } catch(e) {
+                console.log('Error reading the audio json file.')
+            }
+
+            removeAJsonFile(outputPath);  //Remove the json file(the transcribed file from one audio data)
+        })      
 }
 
 //Format the conversation to json format
 function formatTheAudioJson(filePath, respons) {
-    let words, content = '', newSpeaker = false;
+    return new Promise( async (resolve, reject) => {
+        try {
+            let words, content = '', newSpeaker = false;
 
-    //Read the input file/from transcriber
-    fs.readFile(filePath, (err, data) => {
-        //One speaker data
-        let speakerData = {
-            speaker: undefined,
-            text: '' 
-        }
-
-        words = JSON.parse(data)["results"]["items"];   //Get the extracted words
-
-        let s = 0; //Speakers count
-
-        for(let i in words) {
-            let speaker_label = words[i]["speaker_label"]; 
-
-            //Control the current speaker id
-            if(!speakerData.speaker) {
-                speakerData.speaker = speaker_label;        //Set the first speaker
-                respons.text.push(speakerData);             //Add the speakers data
-            } else if(speakerData.speaker != speaker_label) {
-                //Clean the speaker data, prepare for the next speaker
-                newSpeaker = true;  
-
-                speakerData = {
-                    speaker: '',
+            //Read the input file/from transcriber
+            fs.readFile(filePath, (err, data) => {
+                //One speaker data
+                let speakerData = {
+                    speaker: undefined,
                     text: '' 
-                }    
-            }
+                }
 
-            respons.text[s].text = content.replace(/\s([.,?!])/g, '$1'); //Update the speaker speach
+                //To be tested
+                extractEmotionsFromText(data.text)
+                    .then(emotion => {
+                        console.log('resp', emotion)
+                        respons.text_emotion = emotion;
 
-            //Change the speaker
-            if(newSpeaker) {
-                s++;    //Next speaker
+                        return true;
+                    }).then(()=> {
+                        words = JSON.parse(data)["results"]["items"];   //Get the extracted words
 
-                //Speaker data frame
-                speakerData.speaker = speaker_label;
+                        let s = 0; //Speakers count
+        
+                        for(let i in words) {
+                            let speaker_label = words[i]["speaker_label"]; 
+        
+                            //Control the current speaker id
+                            if(!speakerData.speaker) {
+                                speakerData.speaker = speaker_label;        //Set the first speaker
+                                respons.text.push(speakerData);             //Add the speakers data
+                            } else if(speakerData.speaker != speaker_label) {
+                                //Clean the speaker data, prepare for the next speaker
+                                newSpeaker = true;  
+        
+                                speakerData = {
+                                    speaker: '',
+                                    text: '' 
+                                }    
+                            }
+        
+                            respons.text[s].text = content.replace(/\s([.,?!])/g, '$1'); //Update the speaker speach
+        
+                            //Change the speaker
+                            if(newSpeaker) {
+                                s++;    //Next speaker
+        
+                                //Speaker data frame
+                                speakerData.speaker = speaker_label;
+        
+                                speakerData.text = '';
+                                content = '';
+        
+                                respons.text.push(speakerData);
+                                respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
+        
+                                newSpeaker = false;
+                            } else {
+                                content += ' ';
+                            }
+        
+                            //Add the next word
+                            content += words[i]["alternatives"][0]["content"];
+        
+                            respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
+                        }
+        
+                        console.log('data', data)
 
-                speakerData.text = '';
-                content = '';
+                        resolve();
+                    })
+            });
 
-                respons.text.push(speakerData);
-                respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
-
-                newSpeaker = false;
-            } else {
-                content += ' ';
-            }
-
-            //Add the next word
-            content += words[i]["alternatives"][0]["content"];
-
-            respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
+        } catch (err) {
+            reject(err);
         }
-
-    });
+    })
+    
     
    
 }
@@ -296,6 +318,25 @@ function detectExterienceSampling(dataObject) {
         return null;
     }
 }
+
+function extractEmotionsFromText(text) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const params = {
+                LanguageCode: 'en',
+                Text: text,
+            };
+          
+            const result = await comprehend.detectSentiment(params).promise();
+            
+            resolve(result);
+        } catch(error) {
+            reject(error)
+        }
+    });
+    
+}
+
 
 
 export {

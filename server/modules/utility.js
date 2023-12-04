@@ -280,16 +280,21 @@ async function writeSectionToCSV(data, callback) {
 
 //Read the json file
 function readJSONFile(filePath, callback = (dataObject) => {}) {
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading JSON file:', err);
-            callback(err, null);
-            return;
-        }
-
-        const dataObject = JSON.parse(data);
-        callback(dataObject);
-    });
+    try {
+        fs.readFile(filePath, 'utf8', (err, data) => {
+            if (err) {
+                console.error('Error reading JSON file:', err);
+                callback(err, null);
+                return;
+            }
+    
+            const dataObject = JSON.parse(data);
+            callback(dataObject);
+        });
+    } catch(err) {
+        console.log('Error reading file: ', err)
+    }
+    
 }
 
 //Write json file
@@ -317,54 +322,58 @@ function createFileIfNotExists(filePath, content) {
 
 //Create finnal output file
 function insertDataToFinalFile() {
-    let audioData = readJSONFile(AUDIO_TEXT_FILE_PATH);  //Audio text data
-    let gsrData = readJSONFile(GSR_SECTIONS_JSON_PATH );      //GSR data
+    //Audio text data
+    readJSONFile(AUDIO_TEXT_FILE_PATH, (audioData) => {
+        //GSR data
+        readJSONFile(GSR_SECTIONS_JSON_PATH, (gsrData) => {
+            let mergedData = []; //Final file content
 
-    let mergedData = []; //Final file content
+            //Get the audio timestamp as a section timestamp reference
+            audioData.forEach(audioSection => {
+                let referenceTimestamp = parseInt(audioSection.timestamp);  //Audio file end timestamp
 
-    //Get the audio timestamp as a section timestamp reference
-    audioData.forEach(audioSection => {
-        let referenceTimestamp = parseInt(audioSection.timestamp);  //Audio file end timestamp
+                //Find the gsr section according to the reference 3 min + - 1
+                let gsrSection = gsrData.filter(section => {
+                    let gsrEndTimestamp = parseInt(section.endTime);
+                    let dif1 = Math.abs(gsrEndTimestamp - referenceTimestamp);
+                    let dif2 = Math.abs(referenceTimestamp - gsrEndTimestamp);
 
-        //Find the gsr section according to the reference 3 min + - 1
-        let gsrSection = gsrData.filter(section => {
-            let gsrEndTimestamp = parseInt(section.endTime);
-            let dif1 = Math.abs(gsrEndTimestamp - referenceTimestamp);
-            let dif2 = Math.abs(referenceTimestamp - gsrEndTimestamp);
+                    return dif1 < 90 || dif2 < 90;
+                })
 
-            return dif1 < 90 || dif2 < 90;
-        })
+                //Read the image text csv file
+                let imageCsv = fs.readFileSync(IMAGE_TEXT_FILE_PATH, 'utf8');
+                let parsedData = Papa.parse(imageCsv, { header: true }); //Parse CSV data
 
-        //Read the image text csv file
-        let imageCsv = fs.readFileSync(IMAGE_TEXT_FILE_PATH, 'utf8');
-        let parsedData = Papa.parse(imageCsv, { header: true }); //Parse CSV data
+                //Filter all the images data in the interval of 3 min ultin timestamp reference
+                let filteredImages = parsedData.data.filter(row => {
+                    let imageName = row.image,
+                        timestamp = imageName.match(/(\d+)/);
+                    
+                    timestamp = timestamp ? parseInt(timestamp[0]) : null;
 
-        //Filter all the images data in the interval of 3 min ultin timestamp reference
-        let filteredImages = parsedData.data.filter(row => {
-            let imageName = row.image,
-                timestamp = imageName.match(/(\d+)/);
-            
-            timestamp = timestamp ? parseInt(timestamp[0]) : null;
+                    return timestamp && timestamp >= referenceTimestamp - (3 * 60) && timestamp <= referenceTimestamp;
+                })
 
-            return timestamp && timestamp >= referenceTimestamp - (3 * 60) && timestamp <= referenceTimestamp;
-        })
+                // Create the final data format
+                let merged = {
+                    endTimestamp: referenceTimestamp,
+                    audio: audioSection,
+                    gsr: gsrSection,
+                    img: filteredImages
+                }
 
-        // Create the final data format
-        let merged = {
-            endTimestamp: referenceTimestamp,
-            audio: audioSection,
-            gsr: gsrSection,
-            img: filteredImages
-        }
+                mergedData.push(merged);
+            });
 
-        mergedData.push(merged);
-    });
+            let mergedJson = JSON.stringify(mergedData, null, 2);   //Convert mergedData array to JSON
+        
+            fs.writeFileSync(SESSION_OUTPUT_FILE_PATH, mergedJson, 'utf8');    // Write the merged data to a new file
 
-    let mergedJson = JSON.stringify(mergedData, null, 2);   //Convert mergedData array to JSON
+            console.log(`Merged data written to ${SESSION_OUTPUT_FILE_PATH}`);
+        });     
+    });        
    
-    fs.writeFileSync(SESSION_OUTPUT_FILE_PATH, mergedJson, 'utf8');    // Write the merged data to a new file
-
-    console.log(`Merged data written to ${SESSION_OUTPUT_FILE_PATH}`);
 }
 
 //Run the final file content update by interval

@@ -91,7 +91,7 @@ webClientRoutes.post('/setNewUserName', (req, res) => {
         let updatedData = JSON.stringify(userData, null, 2);
 
         //Rewrite the json file
-        fs.writeFile(user_file_path, updatedData, 'utf8', (err) => {
+        fs.writeFile(USER_FILE_PATH, updatedData, 'utf8', (err) => {
             if (err) {
                 console.error('Error updating JSON file:', err);
             }
