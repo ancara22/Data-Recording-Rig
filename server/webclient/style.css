@@ -1,396 +1,394 @@
 * {
-    font-family: Helvetica, sans-serif;
-    font-weight: 100;
-    margin: 0;
+   font-family: Helvetica, sans-serif;
+   font-weight: 100;
+   margin: 0;
 }
 
 body {
-    min-width: 800px;
-    overflow-x: hidden;
+   min-width: 800px;
+   overflow-x: hidden;
 }
 
-#nav, #counter, #menu, #rig_status, #rig_control, #gsr_box, 
-#startTime, .counter_box, #data, .text_box_1 div, #image_text, 
-#settings_container,  .settings, #saveBtn, #gsr_emotions #history {
-    display: flex;
+#nav, #counter, #menu, #rig_status, #rig_control, #gsr_box,
+#startTime, .counter_box, #data, .text_box_1 div, #image_text,
+#settings_container, .settings, #saveBtn, #gsr_emotions #history {
+   display: flex;
 }
 
-#nav, #menu, #rig_status, #rig_control, #startTime,  #counter, 
-.counter_box,  #gsr_emotions #history, .settings {
-    align-items: center;
+#nav, #menu, #rig_status, #rig_control, #startTime,
+#counter, .counter_box, #gsr_emotions #history, .settings {
+   align-items: center;
 }
 
-
-#nav, #menu, #rig_control, #data, .text_box_1 div, #image_text,
-#audio_text, #image_text, #gsr_emotions #history li, 
+#nav, #menu, #rig_control, #data, .text_box_1 div,
+#image_text, #audio_text, #image_text, #gsr_emotions #history li,
 #settings_container h1, .settings label, #saveBtn {
-    width: 100%;
+   width: 100%;
 }
 
-#menu button, .fa-bars, #rig_status,  #saveBtn button {
-    color: white;
+#menu button, .fa-bars, #rig_status, #saveBtn button {
+   color: white;
 }
 
-#rig_control button, #startTime span:first-child,  #counter h2,
-.counter_box span:nth-child(2),  #audio_text div li span, #image_text li span,
-#gsr_emotions #history li, .settings_box h3 {
-    font-weight: bold;
+#rig_control button, #startTime span:first-child, #counter h2, .counter_box span:nth-child(2),
+#audio_text div li span, #image_text li span, #gsr_emotions #history li, .settings_box h3 {
+   font-weight: bold;
 }
 
-#audio_text, #image_text, #audio_text div, .timestamp,
-#gsr_emotions #history li span, #settings_container h1, .settings label {
-    display: block;
+#audio_text, #image_text, #audio_text div, .timestamp, #gsr_emotions #history li span,
+#settings_container h1, .settings label {
+   display: block;
 }
 
 #nav {
-    height: 70px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: rgb(48, 48, 124);
+   height: 70px;
+   position: absolute;
+   top: 0;
+   left: 0;
+   background-color: rgb(48, 48, 124);
 }
 
 #menu {
-    height: 70px;
+   height: 70px;
 }
 
 #menu button {
-    width: 120px;
-    padding: 8px;
-    margin-left: 10px;
-    height: 100%;
-    border: none;
-    background-color: rgba(255, 255, 255, 0);
-    font-size: 1rem;
+   width: 120px;
+   padding: 8px;
+   margin-left: 10px;
+   height: 100%;
+   border: none;
+   background-color: rgba(255, 255, 255, 0);
+   font-size: 1rem;
 }
 
 #menu button:hover {
-    cursor: pointer;
-    background-color: blueviolet;
+   cursor: pointer;
+   background-color: blueviolet;
 }
 
 .fa-bars {
-    font-size: 26px;
-    margin-left: 50px;
-    margin-right: 30px;
+   font-size: 26px;
+   margin-left: 50px;
+   margin-right: 30px;
 }
 
 .fa-spinner {
-    font-size: 36px;
+   font-size: 36px
 }
 
-.fa-spin, .colorGreen {
-    color: rgb(68, 255, 47);
+.fa-spin,
+.colorGreen {
+   color: rgb(68, 255, 47)
 }
 
 .colorGray {
-    color: rgba(152, 152, 152, 0.184)
+   color: rgba(152, 152, 152, 0.184)
 }
 
 .colorRed {
-    color: rgb(247, 125, 121);
+   color: rgb(247, 125, 121)
 }
 
 #rig_status {
-    margin-right: 50px;
+   margin-right: 50px
 }
 
 #rig_status p {
-    font-size: 12px;
-    margin-right: 20px;
+   font-size: 12px;
+   margin-right: 20px;
 }
 
 #rig_data_box {
-    position: relative;
-    top: 100px;
-    margin: 40px 0 ;
-    background-color: white;
-    padding: 30px;
+   position: relative;
+   top: 100px;
+   margin: 40px 0;
+   background-color: white;
+   padding: 30px;
 }
 
 #rig_control {
-    position: relative;
-    top: 100px;
-    justify-content: center;
+   position: relative;
+   top: 100px;
+   justify-content: center;
 }
 
 #rig_control button {
-    font-size: 16px;
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    cursor: pointer;
+   font-size: 16px;
+   width: 70px;
+   height: 70px;
+   border-radius: 50%;
+   cursor: pointer;
 }
 
 #startTime {
-    margin-left: 30px;
-    font-size: 14px;
+   margin-left: 30px;
+   font-size: 14px;
 }
 
 #startTime span:first-child {
-    color: rgb(197, 197, 197);
-    font-size: 18px;
-    margin-right: 5px;
+   color: rgb(197, 197, 197);
+   font-size: 18px;
+   margin-right: 5px;
 }
 
 .backColorGreen {
-    border: 7px solid rgb(160, 253, 150);
-    background-color: rgb(67, 250, 0);
-    color: rgb(38, 146, 2);
+   border: 7px solid rgb(160, 253, 150);
+   background-color: rgb(67, 250, 0);
+   color: rgb(38, 146, 2);
 }
 
 .backColorRed {
-    border: 7px solid rgb(247, 172, 169);
-    background-color: rgb(245, 16, 8);
-    color: rgb(254, 217, 216);
- }
+   border: 7px solid rgb(247, 172, 169);
+   background-color: rgb(245, 16, 8);
+   color: rgb(254, 217, 216);
+}
 
- #counter {
-    height: fit-content;
-    justify-content: space-around;
-    border: 1px solid rgba(128, 128, 128, 0.191);
-    min-width: fit-content;
-    padding: 2vh 10vw ;
-    flex-wrap: wrap;
- }
+#counter {
+   height: fit-content;
+   justify-content: space-around;
+   border: 1px solid rgba(128, 128, 128, 0.191);
+   min-width: fit-content;
+   padding: 2vh 10vw;
+   flex-wrap: wrap;
+}
 
- #counter h2 {
-    min-width: fit-content;
-    height: max-content;
-    color: rgb(85, 85, 85);
- }
+#counter h2 {
+   min-width: fit-content;
+   height: max-content;
+   color: rgb(85, 85, 85);
+}
 
- .counter_box {
-    min-width: fit-content;
-    margin: 20px;
-    justify-content: center;
- }
+.counter_box {
+   min-width: fit-content;
+   margin: 20px;
+   justify-content: center;
+}
 
- .counter_box span:first-child {
-    color: rgb(170, 168, 168);
-    margin-right: 5px;
- }
+.counter_box span:first-child {
+   color: rgb(170, 168, 168);
+   margin-right: 5px;
+}
 
- .counter_box span:nth-child(2) {
-    font-size: 20px;
- }
+.counter_box span:nth-child(2) {
+   font-size: 20px;
+}
 
- #data {
-    margin: 30px 0;
-    justify-content: space-between;
- }
+#data {
+   margin: 30px 0;
+   justify-content: space-between;
+}
 
-.text_box_1, .text_box_2 {
-    border: 1px solid rgba(128, 128, 128, 0.124);
-    height: 400px;
-    padding: 10px;
-    padding-top: 20px;
- }
+.text_box_1,
+.text_box_2 {
+   border: 1px solid rgba(128, 128, 128, 0.124);
+   height: 400px;
+   padding: 10px;
+   padding-top: 20px;
+}
 
 .text_box_1 {
-    width: 65%;
-    margin-right: 20px;
- }
+   width: 65%;
+   margin-right: 20px;
+}
 
- #data .text_box_2 {
-    width: 30%;
- }
+#data .text_box_2 {
+   width: 30%;
+}
 
-.text_box_1 div, #image_text {
-    margin-top: 10px;
-    height: 90%;
-    overflow: scroll;
- }
+.text_box_1 div,
+#image_text {
+   margin-top: 10px;
+   height: 90%;
+   overflow: scroll;
+}
 
- #audio_text {
-    height: 90%;
- }
- 
- #audio_text, #image_text {
-    padding: 5px;
- }
+#audio_text {
+   height: 90%;
+}
 
- #image_text  {
-    height: 85%;
-    overflow: scroll;
- }
+#audio_text,
+#image_text {
+   padding: 5px;
+}
 
- #audio_text div li, #image_text li {
+#image_text {
+   height: 85%;
+   overflow: scroll;
+}
+
+#audio_text div li,
+#image_text li {
    font-size: 14px;
    list-style: none;
    width: 95%;
    margin: 15px auto;
- }
+}
 
 
- #audio_text div, #image_text {
+#audio_text div,
+#image_text {
    width: 95%;
    justify-items: center;
    padding: 10px;
    border: 1px solid rgba(128, 128, 128, 0.124);
    overflow: hidden;
- }
+}
 
+#audio_text div {
+   height: auto
+}
 
- #audio_text div {
-   height: auto;
- }
- 
+.audio_text_emotion {
+   margin: 20px 0px;
+   text-align: center;
+   padding: 10px;
+   width: 95%;
+   background-color: rgb(218, 218, 249);
+   margin: 0 auto;
+   height: max-content;
+}
 
- .audio_text_emotion {
-    margin: 20px 0px;
-    text-align: center;
-    padding: 10px;
-    width: 95%;
-    background-color: rgb(218, 218, 249);
-    margin: 0 auto;
-    height: max-content;
- }
+.timestamp {
+   font-size: 12px;
+   color: gray;
+   margin-bottom: 20px;
+}
 
+#gsr_box {
+   border: 1px solid rgba(128, 128, 128, 0.124);
+   height: 500px;
+}
 
- .timestamp {
-    font-size: 12px;
-    color: gray;
-    margin-bottom: 20px;
- }
+#gsrGraph {
+   width: 85%;
+   border: 1px solid rgba(128, 128, 128, 0.069);
+}
 
- #gsr_box {
-    border: 1px solid rgba(128, 128, 128, 0.124);
-    height: 500px;
- }
+#gsr_emotions {
+   width: 15%;
+}
 
- #gsrGraph {
-    width: 85%;
-    border: 1px solid rgba(128, 128, 128, 0.069);
- }
+#gsr_emotions #history {
+   flex-direction: column;
+   padding: 10px;
+   text-decoration: none;
+   list-style: none;
+   overflow: scroll;
+   height: 95%;
+   overflow-x: hidden;
+}
 
- #gsr_emotions {
-    width: 15%;
- }
+#gsr_emotions #history li {
+   background-color: rgba(225, 225, 225, 0.654);
+   margin-top: 5px;
+   padding: 5px;
+   padding-left: 10px;
+   font-size: 14px;
+   color: rgb(137, 137, 137);
+}
 
- #gsr_emotions #history {
-    flex-direction: column;
-    padding: 10px;
-    text-decoration: none;
-    list-style: none;
-    overflow: scroll;
-    height: 95%;
-    overflow-x: hidden;
- }
+#gsr_emotions #history li span {
+   font-size: 10px;
+   margin-top: 5px;
+   color: gray;
+}
 
- #gsr_emotions #history li {
-    background-color: rgba(225, 225, 225, 0.654);
-    margin-top: 5px;
-    padding: 5px;
-    padding-left: 10px;
-    font-size: 14px;
-    color: rgb(137, 137, 137);
- }
+#gsr_emotions #history .current {
+   color: rgb(80, 80, 80);
+   padding: 10px 5px;
+   padding-left: 10px;
+   background-color: rgb(101, 250, 84);
+}
 
- #gsr_emotions #history li span {
-    font-size: 10px;
-    margin-top: 5px;
-    color: gray;
- }
+#gsr_emotions #history .current span {
+   color: black;
+   margin-bottom: 5px;
+}
 
- #gsr_emotions #history .current {
-    color: rgb(80, 80, 80);
-    padding: 10px 5px;
-    padding-left: 10px;
-    background-color: rgb(101, 250, 84);
- }
+#settings_container {
+   border: 1px solid rgba(128, 128, 128, 0.084);
+   position: relative;
+   top: 170px;
+   padding: 20px;
+   flex-wrap: wrap;
+   justify-content: center;
+}
 
- #gsr_emotions #history .current span {
-    color: black;
-    margin-bottom: 5px;
- }
+#settings_container h1 {
+   min-width: 800px;
+   margin-bottom: 30px;
+   text-align: center;
+}
 
- #settings_container {
-    border: 1px solid rgba(128, 128, 128, 0.084);
-    position: relative;
-    top: 170px;
-    padding: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
- }
+.settings_box {
+   border: 1px solid rgba(128, 128, 128, 0.178);
+   width: 300px;
+   height: 400px;
+   margin: 20px;
+   border-radius: 5px;
+   padding: 20px;
+   background-color: rgb(232, 232, 255);
+}
 
- #settings_container h1 {
-    min-width: 800px;
-    margin-bottom: 30px;
-    text-align: center;
- }
+.settings_box h3 {
+   margin-bottom: 10px;
+   text-align: center;
+}
 
- .settings_box {
-    border: 1px solid rgba(128, 128, 128, 0.178);
-    width: 300px;
-    height: 400px;
-    margin: 20px;
-    border-radius: 5px;
-    padding: 20px;
-    background-color: rgb(232, 232, 255);
- }
+.settings {
+   flex-direction: column;
+}
 
- .settings_box h3 {
-    margin-bottom: 10px;
-    text-align: center;
- }
+.settings label {
+   color: rgb(88, 88, 88);
+   margin-bottom: 5px;
+   margin-top: 15px;
+}
 
- .settings {
-    flex-direction: column;
- }
+.settings input {
+   width: 95%;
+   padding: 5px;
+}
 
- .settings label {
-    color: rgb(88, 88, 88);
-    margin-bottom: 5px;
-    margin-top: 15px;
- }
+.settings h3 {
+   margin-top: 80px;
+}
 
- .settings input {
-    width: 95%;
-    padding: 5px;
- }
+#saveBtn {
+   justify-content: center;
+   margin-bottom: 100px;
+   margin-top: 50px;
+}
 
- .settings h3 {
-    margin-top: 80px;
- }
+#saveBtn button {
+   padding: 15px 40px;
+   border: none;
+   font-size: 14px;
+   background-color: rgb(250, 32, 32);
+   transition: all 0.2s ease-in;
+}
 
- #saveBtn {
-    justify-content: center;
-    margin-bottom: 100px;
-    margin-top: 50px;
- }
+#saveBtn button:hover {
+   cursor: pointer;
+   background-color: rgb(251, 91, 91);
+   transform: scale(1.1);
+}
 
- #saveBtn button {
-    padding: 15px 40px;
-    border: none;
-    font-size: 14px;
-    background-color: rgb(250, 32, 32);
-    transition: all 0.2s ease-in;
- }
+.tempColorGray {
+   background-color: rgb(226, 226, 226);
+   border: none;
+}
 
- #saveBtn button:hover {
-    cursor: pointer;
-    background-color: rgb(251, 91, 91);
-    transform: scale(1.1);
- }
-
-
- .tempColorGray {
-    background-color: rgb(226, 226, 226);
-    border: none;
- }
-
-
- #user_settings {
+#user_settings {
    width: 100%;
    height: 350px;
    display: flex;
    justify-content: center;
    position: relative;
- }
+}
 
-
- #user_settings #control {
+#user_settings #control {
    background-color: rgb(144, 144, 254);
    width: 500px;
    height: 200px;
@@ -400,27 +398,25 @@ body {
    flex-direction: column;
    color: white;
    border-radius: 10px;
- }
+}
 
- #user_settings #control input {
+#user_settings #control input {
    text-align: center;
    width: 70%;
    padding: 10px;
-   
- }
+}
 
- #user_settings #control label {
+#user_settings #control label {
    margin-bottom: 5px;
    font-size: 16px;
    margin-top: 10px;
- }
+}
 
-
- #user_settings #control span {
+#user_settings #control span {
    font-weight: bold;
- }
+}
 
- #user_control_box {
+#user_control_box {
    width: 500px;
    border-radius: 10px;
    position: absolute;
@@ -428,26 +424,26 @@ body {
    align-items: center;
    z-index: 99999;
    filter: blur(5);
- }
+}
 
- .show {
+.show {
    display: flex;
    height: 200px;
    background-color: rgba(23, 23, 23, 0.959);
- }
+}
 
- .moveDown {
+.moveDown {
    display: flex;
    height: 70px;
    top: 160px;
    background-color: rgb(144, 144, 254);
- }
+}
 
 .hide {
    display: none;
 }
 
- #user_control_box button {
+#user_control_box button {
    margin: 15px;
    padding: 10px 20px;
    cursor: pointer;
@@ -456,14 +452,13 @@ body {
    font-size: 16px;
    font-weight: bold;
    color: white;
- }
+}
 
- #user_control_box button:hover {
+#user_control_box button:hover {
    background-color: rgb(249, 108, 0);
- }
+}
 
-
- #audio_recording_box {
+#audio_recording_box {
    position: absolute;
    width: 100%;
    height: 100%;
@@ -471,43 +466,39 @@ body {
    z-index: 99999;
    flex-wrap: wrap;
    align-content: center;
-   
-   
- }
+}
 
- #audio_recording_box h2 {
+#audio_recording_box h2 {
    width: 100%;
    text-align: center;
    margin-bottom: 30px;
+}
 
- }
-
- .show {
+.show {
    display: flex;
    justify-content: center;
    align-items: center;
- }
+}
 
-
- #audio_recording_box button {
+#audio_recording_box button {
    background-color: rgb(251, 200, 145);
    margin-right: 20px;
    padding: 15px 20px;
    border: none;
    font-size: 16px;
- }
+}
 
- #audio_recording_box span {
+#audio_recording_box span {
    position: absolute;
    background-color: rgba(255, 255, 255, 0.855);
    width: 500px;
    height: 200px;
    text-align: center;
    z-index: 999999;
- }
+}
 
- .disabled {
+.disabled {
    background-color: rgb(195, 195, 195);
    border: none;
    color: white;
- }
+}
