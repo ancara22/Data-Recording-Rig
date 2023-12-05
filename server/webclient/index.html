@@ -34,7 +34,7 @@
             </div>
             <div id="startTime">
                 <span>Start Time:</span>
-                <span>{{ startTime }}</span>
+                <span>{{ startTime ? new Date(startTime * 1000).toLocaleString(): "0000.00.00 00:00" }}</span>
             </div>
         </div>
         <div v-if="pageContent == 'settings'" id="settings_container">
@@ -50,6 +50,7 @@
                     <input v-model="userName" name="user_name" type="text">
                 </div>
                 <div id="audio_recording_box" :class="{'hide': hideAudioRecording, 'show': !hideAudioRecording}">
+                    <h2>Press <b>"Start Recording"</b> and introduce yourself!</h2>
                     <button @click="startRecording" :disabled="recording">Start Recording</button>
                     <button @click="saveRecording" :disabled="!audioData || recording">Save Recording</button>
                     <span v-if="recording">Recording... {{ recordingTimer }}sec</span>
@@ -107,15 +108,15 @@
                 <h2>Data Collected:</h2>
                 <div class="counter_box images_counter">
                     <span>Images:</span>
-                    <span>00</span>
+                    <span>{{ imagesNumber }}</span>
                 </div>
                 <div class="counter_box audio_counter">
                     <span>Audio:</span>
-                    <span>00</span>
+                    <span>{{ audioNumber }}</span>
                 </div>
                 <div class="counter_box audio_counter">
                     <span>GSR:</span>
-                    <span>00h:00min</span>
+                    <span>{{ gsrTime }}</span>
                 </div>
             </div>
             <div id="data">
@@ -123,23 +124,11 @@
                     <span>Text from audio:</span>
                     <div>
                         <div id="audio_text">
-                            <div>
-                                <span class="timestamp">Time: 2023.15.11 23:32 - 2023.15.11 23:42</span>
-                                <li><span>speaker_0:</span> Fascinating, uh, conversely, what sorts of openers, um, do you think, establish the best rapport and , um , you know , be never .</li>
-                                <li><span>speaker_1:</span> And I don't recall ever quote unquote cashing in on any of that . But he was exactly right . When I eventually decided to move institutions , we've given away so much .</li>
-                                <li><span>speaker_0:</span> Yes.</li>
-                                <li><span>speaker_1:</span> Fascinating , uh , conversely , what sorts of openers , um , do you think , establish the best rapport and , um , you know , be never .</li>
-                                <li><span>speaker_0:</span> And I don't recall ever quote unquote cashing in on any of that . But he was exactly right . When I eventually decided to move institutions , we've given away so much .</li>
-                                <li class="audio_text_emotion"><span>Text Emotion: </span>Relaxing</li>
-                            </div>
-                            <div>
-                                <span class="timestamp">Time: 2023.15.11 23:42 - 2023.15.11 23:52</span>
-                                <li><span>speaker_0:</span> Fascinating , uh , conversely , what sorts of openers , um , do you think , establish the best rapport and , um , you know , be never .</li>
-                                <li><span>speaker_1:</span> And I don't recall ever quote unquote cashing in on any of that . But he was exactly right . When I eventually decided to move institutions , we've given away so much .</li>
-                                <li><span>speaker_0:</span> Yes.</li>
-                                <li><span>speaker_1:</span> Fascinating , uh , conversely , what sorts of openers , um , do you think , establish the best rapport and , um , you know , be never .</li>
-                                <li><span>speaker_0:</span> And I don't recall ever quote unquote cashing in on any of that . But he was exactly right . When I eventually decided to move institutions , we've given away so much .</li>
-                                <li class="audio_text_emotion"><span>Text Emotion: </span>Stress</li>
+                            <div v-for="conv in audioText">
+                                <span class="timestamp">Time: {{ new Date( parseInt(conv.timestamp) * 1000).toLocaleString() }} - 2023.15.11 23:42</span>
+                                <li v-for="speach in conv.text"><span>{{ speach.speaker }}: </span>{{ speach.text }}</li>
+                                <li class="audio_text_emotion"><span>Experience Detected: </span>{{ conv.experienceDetected }}</li>
+                                <li class="audio_text_emotion"><span>Text Emotion: </span>{{ conv.sentiment }}</li>
                             </div>
                         </div>
                     </div>
@@ -147,10 +136,7 @@
                 <div class="text_box_2" >
                     <span>Text from image:</span>
                     <div id="image_text">
-                        <li><span>2023.15.11 23:32: </span>Costa</li>
-                        <li><span>2023.15.11 23:32: </span>dsda</li>
-                        <li><span>2023.15.11 23:32: </span>Hello</li>
-                        <li><span>2023.15.11 23:32: </span>Alexa is ...</li>
+                        <li v-for="image in imageText"><span>{{ image.imageTime }}:  </span>{{ image.text }}</li>
                     </div>
                 </div>
             </div>

@@ -6,16 +6,7 @@ import { exec } from 'child_process';
 import wav from 'wav';
 import Papa from 'papaparse';
 import util from "util";
-
-const CONFIG_FILE_PATH = '../config.ini';
-const GSR_SECTIONS_JSON_PATH = './data/gsr/gsr_sections.json';
-const CLIENT_EMOTIONS_PATH = `./data/gsr/client_graph/client_emotions.csv`;
-const GSR_TRAINING_FILE_PATH = "./data/gsr/gsr_training_data/gsr_training.csv";
-const AUDIO_TEXT_FILE_PATH = "./data/audio/audio_text.json";
-const SESSION_OUTPUT_FILE_PATH = './data/recording_output.json';
-const IMAGE_TEXT_FILE_PATH = './data/images/image_text/image_text.csv';
-
-
+import { FILE_PATHS } from "./server_settings.js";
 
 
 let current_session = "";   //Current session file name
@@ -60,7 +51,7 @@ function rigControl(startRig) {
             let rigDirectory = "/home/rig/Documents/App/main/";   //Raspberry pi config.ini directory
 
             //Copy file to the raspberry pi directory
-            sftp.fastPut(CONFIG_FILE_PATH, `${rigDirectory}config.ini`, (err) => {
+            sftp.fastPut(FILE_PATHS.CONFIG_FILE_PATH, `${rigDirectory}config.ini`, (err) => {
                 if (err) {
                     console.error('Error transferring the file:', err);
                     sftp.end(); 
@@ -112,7 +103,11 @@ function rigControl(startRig) {
 
     //On ssh connection error
     ssh.on("error", (err) => {
-        console.log('SSH connection error: ', err)
+        if(err.code == 'ENOTFOUND') {
+            console.log('SSH connection error. The RIG is Offline.')
+        } else {
+            console.log('SSH connection error: ', err)
+        }
     })
 
     ssh.connect(config); //Start connection
@@ -224,20 +219,20 @@ function insertGSRData(data, dataValue, data2) {
 
 //Append the GSR section to the json output file 
 async function writeSectionTOJSON(gsrSection) {
-    readJSONFile(GSR_SECTIONS_JSON_PATH, (dataObject) => {
+    readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (dataObject) => {
         dataObject.push(gsrSection);                       // Append new data
-        writeJSONFile(GSR_SECTIONS_JSON_PATH, dataObject); // Rewrite the JSON file
+        writeJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, dataObject); // Rewrite the JSON file
     });
 }
 
 //Write gsr emotions
 function writeClientGSREmotionsToCSV(data) {
-    createFileIfNotExists(CLIENT_EMOTIONS_PATH, "Emotion");
+    createFileIfNotExists(FILE_PATHS.CLIENT_EMOTIONS_PATH, "Emotion");
 
     const csvRow = `${data.startTime},${data.endTime},"${ data.emotion_state }"\n`;
 
 
-    fs.appendFile(CLIENT_EMOTIONS_PATH, csvRow, "utf-8", (err) => {
+    fs.appendFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, csvRow, "utf-8", (err) => {
         if (err) {
             console.log(err);
         }
@@ -250,7 +245,7 @@ async function writeSectionToCSV(data, callback) {
         const emotion = await predictGSREmotion(data.gsrData);
         const csvRow = `${data.startTime},${data.finishTime},"[${data.gsrData.join(', ')}]",${emotion}\n`;
 
-        fs.appendFile(GSR_TRAINING_FILE_PATH,  csvRow, (err) => {
+        fs.appendFile(FILE_PATHS.GSR_TRAINING_FILE_PATH,  csvRow, (err) => {
             if (err) {
                 console.error('Error writing to CSV file:', err);
             }
@@ -322,58 +317,60 @@ function createFileIfNotExists(filePath, content) {
 
 //Create finnal output file
 function insertDataToFinalFile() {
-    //Audio text data
-    readJSONFile(AUDIO_TEXT_FILE_PATH, (audioData) => {
-        //GSR data
-        readJSONFile(GSR_SECTIONS_JSON_PATH, (gsrData) => {
+    //Read Audio text data
+    readJSONFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, (audioData) => {
+        //Read GSR data
+        readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (gsrData) => {
             let mergedData = []; //Final file content
 
             //Get the audio timestamp as a section timestamp reference
             audioData.forEach(audioSection => {
-                let referenceTimestamp = parseInt(audioSection.timestamp);  //Audio file end timestamp
+                const endTimestamp = parseInt(audioSection.timestamp);     //Audio file end timestamp
+                const gsrSection = filterGSRData(gsrData, endTimestamp);   //Find the gsr section according to the reference 3 min + - 1
+                const imagesData = filterImages(3, endTimestamp);          //Filter all the images data in the interval of 3 min ultin timestamp reference
+                
+                readJSONFile(FILE_PATHS.USER_FILE_PATH, (data) => { 
+                    let user = data;
+                    const merged = { user, endTimestamp, audioSection, gsrSection, imagesData }   // Create the final data format
 
-                //Find the gsr section according to the reference 3 min + - 1
-                let gsrSection = gsrData.filter(section => {
-                    let gsrEndTimestamp = parseInt(section.endTime);
-                    let dif1 = Math.abs(gsrEndTimestamp - referenceTimestamp);
-                    let dif2 = Math.abs(referenceTimestamp - gsrEndTimestamp);
+                    mergedData.push(merged);
 
-                    return dif1 < 90 || dif2 < 90;
+                    const mergedJson = JSON.stringify(mergedData, null, 2);            //Convert mergedData array to JSON
+                    fs.writeFileSync(FILE_PATHS.SESSION_OUTPUT_FILE_PATH, mergedJson, 'utf8');    // Write the merged data to a new file
+
+                    console.log(`Merged data written to ${FILE_PATHS.SESSION_OUTPUT_FILE_PATH}`);
                 })
-
-                //Read the image text csv file
-                let imageCsv = fs.readFileSync(IMAGE_TEXT_FILE_PATH, 'utf8');
-                let parsedData = Papa.parse(imageCsv, { header: true }); //Parse CSV data
-
-                //Filter all the images data in the interval of 3 min ultin timestamp reference
-                let filteredImages = parsedData.data.filter(row => {
-                    let imageName = row.image,
-                        timestamp = imageName.match(/(\d+)/);
-                    
-                    timestamp = timestamp ? parseInt(timestamp[0]) : null;
-
-                    return timestamp && timestamp >= referenceTimestamp - (3 * 60) && timestamp <= referenceTimestamp;
-                })
-
-                // Create the final data format
-                let merged = {
-                    endTimestamp: referenceTimestamp,
-                    audio: audioSection,
-                    gsr: gsrSection,
-                    img: filteredImages
-                }
-
-                mergedData.push(merged);
             });
-
-            let mergedJson = JSON.stringify(mergedData, null, 2);   //Convert mergedData array to JSON
-        
-            fs.writeFileSync(SESSION_OUTPUT_FILE_PATH, mergedJson, 'utf8');    // Write the merged data to a new file
-
-            console.log(`Merged data written to ${SESSION_OUTPUT_FILE_PATH}`);
         });     
     });        
    
+}
+
+//Filter data in interval
+function filterGSRData(gsrData, referenceTimestamp) {
+    //Find the gsr section according to the reference 3 min + - 1
+    return gsrData.filter(section => {
+        let gsrEndTimestamp = parseInt(section.endTime);
+        let dif1 = Math.abs(gsrEndTimestamp - referenceTimestamp);
+        let dif2 = Math.abs(referenceTimestamp - gsrEndTimestamp);
+
+        return dif1 < 90 || dif2 < 90;
+    })
+}
+
+//Get image text in interval
+function filterImages(interval, referenceTimestamp) {
+    const imageCsv = fs.readFileSync(FILE_PATHS.IMAGE_TEXT_FILE_PATH, 'utf8');  //Read the image text csv file
+    const parsedData = Papa.parse(imageCsv, { header: true });       //Parse CSV data    
+
+    return parsedData.data.filter(row => {
+        let imageName = row.image,
+            timestamp = imageName.match(/(\d+)/);
+        
+        timestamp = timestamp ? parseInt(timestamp[0]) : null;
+
+        return timestamp && timestamp >= referenceTimestamp - (interval * 60) && timestamp <= referenceTimestamp;
+    })
 }
 
 //Run the final file content update by interval
@@ -419,14 +416,12 @@ function cleanOldRowData() {
     });
 }
 
-
 //Concatinate more audio files
 function concatinateWavFiles(wavFile) {
     let match = wavFile.match(/(\d+)/),
-        fileEndTimestamp = match ? match[0] : null;     //The timestamp from the file name
+        fileEndTimestamp = match ? match[0] : null;         //The timestamp from the file name
 
-    let userRecordedFile = "./data/user/userIntro.wav",     //Start audio file for user detection
-        filePath = "./data/audio/processed_audio/audio_" + fileEndTimestamp + ".wav";
+    let filePath = "./data/audio/processed_audio/audio_" + fileEndTimestamp + ".wav";
 
     //Define the writer
     const writer = new wav.FileWriter(filePath, {
@@ -440,7 +435,7 @@ function concatinateWavFiles(wavFile) {
 
     reader.on('format', (format) => {
         if (!writer._writeState) {
-            writer.pipe(fs.createWriteStream(userRecordedFile, { flags: 'a' }));
+            writer.pipe(fs.createWriteStream(FILE_PATHS.USER_INTRO_AUDIO_PATH , { flags: 'a' }));
         }
     });
 
@@ -455,8 +450,6 @@ function concatinateWavFiles(wavFile) {
 }
 
 
-
-
 export {
     runImageProcessor,
     removeStreamFiles,
@@ -468,7 +461,8 @@ export {
     predictGSREmotion,
     updateTheFinalFile,
     cleanOldRowData,
-    insertDataToFinalFile
+    insertDataToFinalFile,
+    readJSONFile
 }
 
 

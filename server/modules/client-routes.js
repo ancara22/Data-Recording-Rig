@@ -4,12 +4,13 @@ import ini from 'ini';
 import { config } from './routes.js';
 import { rigActive  } from './timer.js';
 import fs, { readFile } from 'fs';
+import { FILE_PATHS } from "./server_settings.js";
+import csv from 'csv-parser';
+import { imagesNumber, audioNumber, gsrNumber } from './timer.js';
 
 
-const CLIENT_EMOTIONS_FILE_PATH = './data/gsr/client_graph/client_emotions.csv';
-const CLIENT_GSR_GRAPH_FILE_PATH = './data/gsr/client_graph/gsr_graph.csv';
-const CONFIG_FILE_PATH = '../config.ini';
-const USER_FILE_PATH = './data/user/user.json';
+
+
 
 //////////////////////////////////////////////////////////////////////////////////
 //Clien web-service
@@ -17,12 +18,11 @@ const USER_FILE_PATH = './data/user/user.json';
 
 const webClientRoutes = express.Router();
 
-
 //Web interface/web page
 webClientRoutes.get("/", (req, res) => res.sendFile(path.join(__dirname, '/webclient/index.html')));
 
 //Get rig status for the web client /Web client webservice
-webClientRoutes.get('/rigStatus', (req, res) => res.json({ active: rigActive }));
+webClientRoutes.get('/rigStatus', (req, res) => res.json({ rigActive, imagesNumber, audioNumber, gsrNumber }));
 
 //Save new configs to the file
 webClientRoutes.get( "/rigStart", (req, res) => handleRigControl(req, res, "start"));
@@ -32,7 +32,7 @@ webClientRoutes.get( "/rigStop", (req, res) => handleRigControl(req, res, "stop"
 
 //Get gsr data from the file
 webClientRoutes.get('/gsrData', (req, res) => {
-  readFileAndHandleErrors(CLIENT_GSR_GRAPH_FILE_PATH, res, (data) => {
+  readFileAndHandleErrors(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, res, (data) => {
       let rows = data.trim().split('\n');
       let header = rows[0].split(',');
       let gsr_data = rows.slice(1).map(row => row.split(',').map(parseFloat));
@@ -43,7 +43,7 @@ webClientRoutes.get('/gsrData', (req, res) => {
 
 //getRigConfigFile
 webClientRoutes.get('/getConfig', (req, res) => {
-  readFileAndHandleErrors(CONFIG_FILE_PATH, res, (data) => {
+  readFileAndHandleErrors(FILE_PATHS.CONFIG_FILE_PATH, res, (data) => {
     const config = ini.parse(data)
     res.status(200).json({ config });
   })
@@ -54,7 +54,7 @@ webClientRoutes.post( "/saveConfig", (req, res) => {
     const config = req.body.config;
     const iniConfig = ini.stringify(config);
 
-    fs.writeFile(CONFIG_FILE_PATH, iniConfig, (err) => {
+    fs.writeFile(FILE_PATHS.CONFIG_FILE_PATH, iniConfig, (err) => {
         if (err) {
             config.toUpdateConfig = false;
             console.error('Error saving INI file:', err);
@@ -69,7 +69,7 @@ webClientRoutes.post( "/saveConfig", (req, res) => {
 
 //Save new configs to the file
 webClientRoutes.get( "/getEmotions", (req, res) => {
-    readFileAndHandleErrors(CLIENT_EMOTIONS_FILE_PATH, res, (data) => {
+    readFileAndHandleErrors(FILE_PATHS.CLIENT_EMOTIONS_FILE_PATH, res, (data) => {
         let rows = data.trim().split('\n');
         let header = rows[0].split(',');
         let emotions = rows.slice(1).map(row => row.split(','));
@@ -82,7 +82,7 @@ webClientRoutes.get( "/getEmotions", (req, res) => {
 webClientRoutes.post('/setNewUserName', (req, res) => {
     let name = req.body.userName;
 
-    readFileAndHandleErrors(USER_FILE_PATH, res, (data) => {
+    readFileAndHandleErrors(FILE_PATHS.USER_FILE_PATH, res, (data) => {
         let userData = JSON.parse(data);     //Get the data from the json file
             
         userData.sessionStart = Math.floor(Date.now() / 1000); 
@@ -91,7 +91,7 @@ webClientRoutes.post('/setNewUserName', (req, res) => {
         let updatedData = JSON.stringify(userData, null, 2);
 
         //Rewrite the json file
-        fs.writeFile(USER_FILE_PATH, updatedData, 'utf8', (err) => {
+        fs.writeFile(FILE_PATHS.USER_FILE_PATH, updatedData, 'utf8', (err) => {
             if (err) {
                 console.error('Error updating JSON file:', err);
             }
@@ -103,11 +103,23 @@ webClientRoutes.post('/setNewUserName', (req, res) => {
 
 //Get the user name and session start time
 webClientRoutes.get('/getUserName', (req, res) => {
-    readFileAndHandleErrors(USER_FILE_PATH, res, (data) => {
-        let userData = JSON.parse(data);     //Get the data from the json file
-        res.status(200).json(userData)
+    readFileAndHandleErrors(FILE_PATHS.USER_FILE_PATH, res, (data) => {
+        res.send(data);
     })
 })
+
+
+webClientRoutes.get('/getAudioText', (req, res) => {
+    readFileAndHandleErrors(FILE_PATHS.AUDIO_TEXT_FILE_PATH, res, (data) => {
+        res.send(data)
+    })
+});
+
+webClientRoutes.get('/getImageText', (req, res) => {
+    readCsvAndHandleErrors(FILE_PATHS.IMAGE_TEXT_FILE_PATH, res, (data) => {
+        res.json(data)
+    })
+});
 
 // Save audio user intro
 webClientRoutes.post("/saveAudioIntro", saveData('user', 'audio'), (req, res) => {
@@ -131,6 +143,38 @@ function readFileAndHandleErrors(filePath, res, callback) {
 function handleRigControl(req, res, action) {
   rigControl(action);
   res.status(200);
+}
+
+
+function readCsvAndHandleErrors(filePath, res, callback) {
+    try {
+        const data = [];
+
+        fs.createReadStream(filePath)
+            .pipe(csv())
+            .on('data', (row) => {
+                data.push(row);
+            })
+            .on('end', () => {
+                // Transform data and extract information
+                const transformedData = data.map((item) => {
+                    const imageNameMatch = item.image.match(/img_(\d+)\.jpg/);
+                    const imageId = imageNameMatch ? imageNameMatch[1] : null;
+
+                    return {
+                        imageName: item.image,
+                        imageTime: new Date(parseInt(imageId) * 1000).toLocaleString(),
+                        text: item.text,
+                    };
+                });
+
+                callback(transformedData);
+            })
+            .on('error', (err) => {
+                console.error('Error reading CSV:', err);
+                res.status(500).send('Internal Server Error');
+            });
+    } catch(err) {}
 }
 
 

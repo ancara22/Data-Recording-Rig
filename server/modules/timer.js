@@ -1,5 +1,6 @@
 let timer;
 let rigActive = false;
+let imagesNumber = 0, audioNumber = 0, gsrNumber = 0;
 
 //Rig status check timer
 
@@ -20,4 +21,4 @@ function resetTimer() {
 timer = setTimeout(timerHandler, 5000);
 
 
-export { resetTimer, rigActive };
+export { resetTimer, rigActive, imagesNumber, audioNumber, gsrNumber };

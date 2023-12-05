@@ -216,19 +216,25 @@ body {
  }
 
  #audio_text div li, #image_text li {
-    margin-top: 10px;
-    font-size: 14px;
-    list-style: none;
+   font-size: 14px;
+   list-style: none;
+   width: 95%;
+   margin: 15px auto;
  }
 
 
  #audio_text div, #image_text {
-    width: 95%;
-    padding: 10px;
-    border: 1px solid rgba(128, 128, 128, 0.124);
-    overflow: hidden;
+   width: 95%;
+   justify-items: center;
+   padding: 10px;
+   border: 1px solid rgba(128, 128, 128, 0.124);
+   overflow: hidden;
  }
 
+
+ #audio_text div {
+   height: auto;
+ }
  
 
  .audio_text_emotion {
@@ -237,6 +243,8 @@ body {
     padding: 10px;
     width: 95%;
     background-color: rgb(218, 218, 249);
+    margin: 0 auto;
+    height: max-content;
  }
 
 
@@ -391,6 +399,7 @@ body {
    align-items: center;
    flex-direction: column;
    color: white;
+   border-radius: 10px;
  }
 
  #user_settings #control input {
@@ -413,12 +422,11 @@ body {
 
  #user_control_box {
    width: 500px;
-
+   border-radius: 10px;
    position: absolute;
    justify-content: center;
    align-items: center;
    z-index: 99999;
-   
    filter: blur(5);
  }
 
@@ -461,8 +469,17 @@ body {
    height: 100%;
    background-color: white;
    z-index: 99999;
+   flex-wrap: wrap;
+   align-content: center;
    
    
+ }
+
+ #audio_recording_box h2 {
+   width: 100%;
+   text-align: center;
+   margin-bottom: 30px;
+
  }
 
  .show {
@@ -484,8 +501,9 @@ body {
    position: absolute;
    background-color: rgba(255, 255, 255, 0.855);
    width: 500px;
-   height: 60px;
+   height: 200px;
    text-align: center;
+   z-index: 999999;
  }
 
  .disabled {

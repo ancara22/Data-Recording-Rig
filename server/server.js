@@ -2,10 +2,10 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { rigControl, removeStreamFiles, updateTheFinalFile, cleanOldRowData } from './modules/utility.js';
+import { rigControl, removeStreamFiles, updateTheFinalFile, cleanOldRowData, concatinateWavFiles } from './modules/utility.js';
 import { serverRoutes } from './modules/routes.js';
 import { webClientRoutes } from './modules/client-routes.js';
-//import { sendAudioToAWSS3 } from './modules/aws_services.js';
+//import { sendAudioToAWSS3,  extractEmotionsFromText } from './modules/aws_services.js';
 //import { runImageProcessor, insertDataToFinalFile } from './modules/utility.js';
 
 
@@ -32,9 +32,9 @@ app.listen(port, () => {
     rigControl('config');     //Configure the rig
     updateTheFinalFile();     //Update the final file / interval
 
-    //runImageProcessor();                       //TEMP
     //sendAudioToAWSS3("audio_1700586321.wav");  //TEMP
-    //insertDataToFinalFile()                    //TEMP
+    
+    //concatinateWavFiles("audio_1700586321.wav"); //TEST
 });
 
 
@@ -51,6 +51,3 @@ setInterval(() => {
     let dirPath3 = 'data/audio/row_audio';
     //removeStreamFiles(dirPath3);
 }, 30000)
-
-
-

@@ -1,7 +1,12 @@
 [
   {
+    "user": {
+      "sessionStart": 1701816547,
+      "currentUser": "Deniss",
+      "lastSessionFile": "session_1701126350.json"
+    },
     "endTimestamp": 1700441006,
-    "audio": {
+    "audioSection": {
       "timestamp": 1700441006,
       "text": [
         {
@@ -10,10 +15,11 @@
         }
       ],
       "audio_file": "audio_1700441006.wav",
-      "experienceDetected": "Recording. Have very"
+      "experienceDetected": "Recording. Have very",
+      "sentiment": "NEUTRU"
     },
-    "gsr": [],
-    "img": [
+    "gsrSection": [],
+    "imagesData": [
       {
         "image": "img_1700441006.jpg",
         "text": "hellooo world"
@@ -25,8 +31,13 @@
     ]
   },
   {
+    "user": {
+      "sessionStart": 1701816547,
+      "currentUser": "Deniss",
+      "lastSessionFile": "session_1701126350.json"
+    },
     "endTimestamp": 1700586321,
-    "audio": {
+    "audioSection": {
       "timestamp": 1700586321,
       "text": [
         {
@@ -43,9 +54,10 @@
         }
       ],
       "audio_file": "audio_1700586321.wav",
-      "experienceDetected": ". Hello. My name is Dennis and I'm feeling excited,"
+      "experienceDetected": ". Hello. My name is Dennis and I'm feeling excited,",
+      "sentiment": "NEUTRU"
     },
-    "gsr": [],
-    "img": []
+    "gsrSection": [],
+    "imagesData": []
   }
 ]

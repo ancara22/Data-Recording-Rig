@@ -8,7 +8,8 @@
             }
         ],
         "audio_file": "audio_1700441006.wav",
-        "experienceDetected": "Recording. Have very"
+        "experienceDetected": "Recording. Have very",
+        "sentiment": "NEUTRU"
     },
     {
         "timestamp": 1700586321,
@@ -27,6 +28,7 @@
             }
         ],
         "audio_file": "audio_1700586321.wav",
-        "experienceDetected": ". Hello. My name is Dennis and I'm feeling excited,"
+        "experienceDetected": ". Hello. My name is Dennis and I'm feeling excited,",
+        "sentiment": "NEUTRU"
     }
 ]
