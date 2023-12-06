@@ -1,15 +1,11 @@
-import express from 'express';
-import { rigControl, saveData } from './utility.js';
-import ini from 'ini';
-import { config } from './routes.js';
-import { rigActive  } from './timer.js';
-import fs, { readFile } from 'fs';
-import { FILE_PATHS } from "./server_settings.js";
-import csv from 'csv-parser';
+import express                                  from 'express';
+import ini                                      from 'ini';
+import fs                                       from 'fs';
+import csv                                      from 'csv-parser';
+import { rigControl, saveData }                 from './utility.js';
+import { rigActive }                            from './timer.js';
+import { FILE_PATHS }                           from './server_settings.js';
 import { imagesNumber, audioNumber, gsrNumber } from './timer.js';
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -22,37 +18,45 @@ const webClientRoutes = express.Router();
 webClientRoutes.get("/", (req, res) => res.sendFile(path.join(__dirname, '/webclient/index.html')));
 
 //Get rig status for the web client /Web client webservice
-webClientRoutes.get('/rigStatus', (req, res) => res.json({ rigActive, imagesNumber, audioNumber, gsrNumber }));
+webClientRoutes.get('/rigStatus', (req, res) => res.json({
+    rigActive,
+    imagesNumber,
+    audioNumber,
+    gsrNumber
+}));
 
 //Save new configs to the file
-webClientRoutes.get( "/rigStart", (req, res) => handleRigControl(req, res, "start"));
+webClientRoutes.get("/rigStart", (req, res) => handleRigControl(req, res, "start"));
 
 //Save new configs to the file
-webClientRoutes.get( "/rigStop", (req, res) => handleRigControl(req, res, "stop"));
+webClientRoutes.get("/rigStop", (req, res) => handleRigControl(req, res, "stop"));
 
 //Get gsr data from the file
 webClientRoutes.get('/gsrData', (req, res) => {
-  readFileAndHandleErrors(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, res, (data) => {
-      let rows = data.trim().split('\n');
-      let header = rows[0].split(',');
-      let gsr_data = rows.slice(1).map(row => row.split(',').map(parseFloat));
+    readFileAndHandleErrors(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, res, (data) => {
+        let rows = data.trim().split('\n'),
+            header = rows[0].split(','),
+            gsr_data = rows.slice(1).map(row => row.split(',').map(parseFloat));
 
-      res.status(200).json({ header, gsr_data });
-  });
+        res.status(200).json({
+            header,
+            gsr_data
+        });
+    })
 });
 
 //getRigConfigFile
 webClientRoutes.get('/getConfig', (req, res) => {
-  readFileAndHandleErrors(FILE_PATHS.CONFIG_FILE_PATH, res, (data) => {
-    const config = ini.parse(data)
-    res.status(200).json({ config });
-  })
+    readFileAndHandleErrors(FILE_PATHS.CONFIG_FILE_PATH, res, (data) => {
+        const config = ini.parse(data)
+        res.status(200).json({ config });
+    })
 });
 
 //Save new configs to the file
-webClientRoutes.post( "/saveConfig", (req, res) => {
-    const config = req.body.config;
-    const iniConfig = ini.stringify(config);
+webClientRoutes.post("/saveConfig", (req, res) => {
+    const config = req.body.config,
+          iniConfig = ini.stringify(config);
 
     fs.writeFile(FILE_PATHS.CONFIG_FILE_PATH, iniConfig, (err) => {
         if (err) {
@@ -64,17 +68,20 @@ webClientRoutes.post( "/saveConfig", (req, res) => {
             rigControl('config');
             res.status(200);
         }
-      });
+    });
 });
 
 //Save new configs to the file
-webClientRoutes.get( "/getEmotions", (req, res) => {
+webClientRoutes.get("/getEmotions", (req, res) => {
     readFileAndHandleErrors(FILE_PATHS.CLIENT_EMOTIONS_FILE_PATH, res, (data) => {
-        let rows = data.trim().split('\n');
-        let header = rows[0].split(',');
-        let emotions = rows.slice(1).map(row => row.split(','));
+        let rows = data.trim().split('\n'),
+            header = rows[0].split(','),
+            emotions = rows.slice(1).map(row => row.split(','));
 
-        res.status(200).json({ header, emotions });
+        res.status(200).json({
+            header,
+            emotions
+        });
     });
 });
 
@@ -83,18 +90,16 @@ webClientRoutes.post('/setNewUserName', (req, res) => {
     let name = req.body.userName;
 
     readFileAndHandleErrors(FILE_PATHS.USER_FILE_PATH, res, (data) => {
-        let userData = JSON.parse(data);     //Get the data from the json file
-            
-        userData.sessionStart = Math.floor(Date.now() / 1000); 
+        let userData = JSON.parse(data); //Get the data from the json file
+
+        userData.sessionStart = Math.floor(Date.now() / 1000);
         userData.currentUser = name;
 
         let updatedData = JSON.stringify(userData, null, 2);
 
         //Rewrite the json file
         fs.writeFile(FILE_PATHS.USER_FILE_PATH, updatedData, 'utf8', (err) => {
-            if (err) {
-                console.error('Error updating JSON file:', err);
-            }
+            if (err) console.error('Error updating JSON file:', err)
         })
 
         res.status(200)
@@ -108,44 +113,47 @@ webClientRoutes.get('/getUserName', (req, res) => {
     })
 })
 
-
+//Get Extracted Audio text
 webClientRoutes.get('/getAudioText', (req, res) => {
     readFileAndHandleErrors(FILE_PATHS.AUDIO_TEXT_FILE_PATH, res, (data) => {
         res.send(data)
     })
 });
 
+//Get extracted Image text
 webClientRoutes.get('/getImageText', (req, res) => {
     readCsvAndHandleErrors(FILE_PATHS.IMAGE_TEXT_FILE_PATH, res, (data) => {
         res.json(data)
     })
 });
 
-// Save audio user intro
+//Save audio user intro
 webClientRoutes.post("/saveAudioIntro", saveData('user', 'audio'), (req, res) => {
-    res.json({ success: true, message: 'Audio data saved successfully.' });
+    res.json({
+        success: true,
+        message: 'Audio data saved successfully.'
+    });
 });
-
 
 //Read a JSON file function with callback
 function readFileAndHandleErrors(filePath, res, callback) {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-          console.error(err);
-          res.status(500);
-      } else {
-          callback(data);
-      }
-  });
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500);
+        } else {
+            callback(data);
+        }
+    });
 }
 
 //Handle rig control
 function handleRigControl(req, res, action) {
-  rigControl(action);
-  res.status(200);
+    rigControl(action);
+    res.status(200);
 }
 
-
+//Read CSV file
 function readCsvAndHandleErrors(filePath, res, callback) {
     try {
         const data = [];
@@ -158,8 +166,8 @@ function readCsvAndHandleErrors(filePath, res, callback) {
             .on('end', () => {
                 // Transform data and extract information
                 const transformedData = data.map((item) => {
-                    const imageNameMatch = item.image.match(/img_(\d+)\.jpg/);
-                    const imageId = imageNameMatch ? imageNameMatch[1] : null;
+                    const imageNameMatch = item.image.match(/img_(\d+)\.jpg/),
+                          imageId = imageNameMatch ? imageNameMatch[1] : null;
 
                     return {
                         imageName: item.image,
@@ -169,13 +177,16 @@ function readCsvAndHandleErrors(filePath, res, callback) {
                 });
 
                 callback(transformedData);
-            })
-            .on('error', (err) => {
+            }).on('error', (err) => {
                 console.error('Error reading CSV:', err);
                 res.status(500).send('Internal Server Error');
             });
-    } catch(err) {}
+    } catch (err) {
+        console.log('Error reading CSV file: ', err);
+    }
 }
 
 
-export { webClientRoutes }
+export {
+    webClientRoutes
+}

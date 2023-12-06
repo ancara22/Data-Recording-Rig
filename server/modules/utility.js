@@ -1,12 +1,12 @@
-import multer, { diskStorage } from 'multer';
-import { Client } from 'ssh2';
-import fs, { readdir, unlink } from 'fs';
-import { join } from 'path';
-import { exec } from 'child_process';
-import wav from 'wav';
-import Papa from 'papaparse';
-import util from "util";
-import { FILE_PATHS } from "./server_settings.js";
+import multer, { diskStorage }      from 'multer';
+import { Client }                   from 'ssh2';
+import fs, { readdir, unlink }      from 'fs';
+import { join }                     from 'path';
+import { exec }                     from 'child_process';
+import wav                          from 'wav';
+import Papa                         from 'papaparse';
+import util                         from "util";
+import { FILE_PATHS, RIG_CONFIG }   from "./server_settings.js";
 
 
 let current_session = "";   //Current session file name
@@ -31,14 +31,6 @@ function saveData(folder, fileType) {
 
 //Send the connfiguration, config.ini file to the raspberry pi
 function rigControl(startRig) {
-    //SSH connection config
-    let config = {
-        host: "raspberry.local",
-        port: 22,
-        username: "rig",
-        password: "raspberry"
-    }
-
     const ssh = new Client();
 
     //On connection ready send the configs
@@ -76,10 +68,7 @@ function rigControl(startRig) {
                                         return;
                                     }
                                     
-                                    stream.stderr.on('data', (data) => {
-                                        console.error('Python Script Error:', data.toString());
-                                
-                                    });
+                                    stream.stderr.on('data', (data) => console.error('Python Script Error:', data.toString()));
                                 
                                     stream.on("close", (code, signal) => { 
                                         console.log("Recording process closed. Exit code:", code, "Signal:", signal);
@@ -94,10 +83,7 @@ function rigControl(startRig) {
                 }
             })
             
-            //On writing close, close the ssh connection
-            sftp.on('close', () => {
-                ssh.end();
-            })
+            sftp.on('close', () => ssh.end());       //On writing close, close the ssh connection
         })
     })
 
@@ -110,7 +96,7 @@ function rigControl(startRig) {
         }
     })
 
-    ssh.connect(config); //Start connection
+    ssh.connect(RIG_CONFIG); //Start connection
 }
 
 
@@ -156,36 +142,31 @@ async function predictGSREmotion(inputGSR) {
 
 //Save GSR data to a csv file/ used for graphs visualisation
 function processGSRoutput(data, nr) {
-    let value = parseInt(data) 
-    let notConnectedvalue = 600; //600+ when the sensors are not connected
+    let value = parseInt(data), 
+        notConnectedvalue = 600;    //600+ when the sensors are not connected
     
     if(value < notConnectedvalue) {
         //Save dat  to a csv file
         let timestamp =  Math.floor(Date.now() / 1000); 
         const data = `\n${timestamp}, ${value}`;
 
-        let filePath = `./data/gsr/gsr_training_data/gsrData${nr}.csv`; //Creates a file that represent the gsr section for graph visualisation
+        let filePath = `./data/gsr/gsr_training_data/gsrData${nr}.csv`;     //Creates a file that represent the gsr section for graph visualisation
 
-        if(nr == false) {
-            filePath = `./data/gsr/client_graph/gsr_graph.csv`
-        }
+        if(nr == false) filePath = `./data/gsr/client_graph/gsr_graph.csv`;
 
         createFileIfNotExists(filePath , "Timestamp,GSR");
 
         fs.appendFile(filePath, data, "utf-8", (err) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("GSR data saved: " + value);
-            }
+            if (err) console.log(err);
+            else console.log("GSR data saved: " + value);
         });
     }
 }
 
 //Insert data into 3 minuts sections All files
 function insertGSRData(data, dataValue, data2) {
-    let value = parseInt(dataValue) 
-    let notConnectedvalue = 600;
+    let value = parseInt(dataValue),
+        notConnectedvalue = 600;
 
     if(value < notConnectedvalue) {
         if(data.startTime == null) {
@@ -213,15 +194,14 @@ function insertGSRData(data, dataValue, data2) {
                 data2.fileNumb++;
                 isDataUpdated = true;
             });  
-           
     }
 }
 
 //Append the GSR section to the json output file 
 async function writeSectionTOJSON(gsrSection) {
     readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (dataObject) => {
-        dataObject.push(gsrSection);                       // Append new data
-        writeJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, dataObject); // Rewrite the JSON file
+        dataObject.push(gsrSection);                                    // Append new data
+        writeJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, dataObject);   // Rewrite the JSON file
     });
 }
 
@@ -231,11 +211,8 @@ function writeClientGSREmotionsToCSV(data) {
 
     const csvRow = `${data.startTime},${data.endTime},"${ data.emotion_state }"\n`;
 
-
     fs.appendFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, csvRow, "utf-8", (err) => {
-        if (err) {
-            console.log(err);
-        }
+        if (err) console.log(err)
     });
 }
 
@@ -246,9 +223,7 @@ async function writeSectionToCSV(data, callback) {
         const csvRow = `${data.startTime},${data.finishTime},"[${data.gsrData.join(', ')}]",${emotion}\n`;
 
         fs.appendFile(FILE_PATHS.GSR_TRAINING_FILE_PATH,  csvRow, (err) => {
-            if (err) {
-                console.error('Error writing to CSV file:', err);
-            }
+            if (err) console.error('Error writing to CSV file:', err)
         });
 
         let newData = {
@@ -258,8 +233,8 @@ async function writeSectionToCSV(data, callback) {
             emotion_state: emotion
         }
 
-        writeClientGSREmotionsToCSV(newData); //Write emotiuon in a csv file for user interface display
-        writeSectionTOJSON(newData);    //Save data in a json file
+        writeClientGSREmotionsToCSV(newData);   //Write emotiuon in a csv file for user interface display
+        writeSectionTOJSON(newData);            //Save data in a json file
 
         // Clear the data for the next section
         data.startTime = null;
@@ -310,7 +285,6 @@ function createFileIfNotExists(filePath, content) {
 }
 
 
-
 ////////////////////////////////////////////////////////////////////////////
 //FORMAT THE DATA, MERGE AND SAVE TO A FILE
 ////////////////////////////////////////////////////////////////////////////
@@ -321,7 +295,7 @@ function insertDataToFinalFile() {
     readJSONFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, (audioData) => {
         //Read GSR data
         readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (gsrData) => {
-            let mergedData = []; //Final file content
+            let mergedData = [];    //Final file content
 
             //Get the audio timestamp as a section timestamp reference
             audioData.forEach(audioSection => {
@@ -350,9 +324,9 @@ function insertDataToFinalFile() {
 function filterGSRData(gsrData, referenceTimestamp) {
     //Find the gsr section according to the reference 3 min + - 1
     return gsrData.filter(section => {
-        let gsrEndTimestamp = parseInt(section.endTime);
-        let dif1 = Math.abs(gsrEndTimestamp - referenceTimestamp);
-        let dif2 = Math.abs(referenceTimestamp - gsrEndTimestamp);
+        let gsrEndTimestamp = parseInt(section.endTime),
+            dif1 = Math.abs(gsrEndTimestamp - referenceTimestamp),
+            dif2 = Math.abs(referenceTimestamp - gsrEndTimestamp);
 
         return dif1 < 90 || dif2 < 90;
     })
@@ -375,11 +349,8 @@ function filterImages(interval, referenceTimestamp) {
 
 //Run the final file content update by interval
 function updateTheFinalFile() {
-    setInterval(() => {
-        insertDataToFinalFile();
-    }, 3 * 60 * 1000)
+    setInterval(() => insertDataToFinalFile(), 3 * 60 * 1000);
 }
-
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -398,9 +369,7 @@ function removeStreamFiles(directoryPath) {
             if (file.includes('stream') || file.includes('audio')) {
                 const filePath = join(directoryPath, file);
                 unlink(filePath, (error) => {
-                    if (error) {
-                        console.error(`Error deleting file ${file}:`, error);
-                    }
+                    if (error) console.error(`Error deleting file ${file}:`, error)
                 });
             }
         });
@@ -441,10 +410,9 @@ function concatinateWavFiles(wavFile) {
 
     reader.on('error', (er) => console.log('first', er))
 
-    //Concatinate the files
-    fs.createReadStream(wavFile).pipe(reader).pipe(writer, { end: false });
+    fs.createReadStream(wavFile).pipe(reader).pipe(writer, { end: false }); //Concatinate the files
 
-    writer.end();  ///End the writing
+    writer.end();  //End the writing
 
     return outputFile;
 }

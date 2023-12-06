@@ -1,8 +1,12 @@
-let timer;
-let rigActive = false;
-let imagesNumber = 0, audioNumber = 0, gsrNumber = 0;
+let timer,
+    rigActive = false,
+    imagesNumber = 0,
+    audioNumber = 0,
+    gsrNumber = 0;
 
+//##############################################################
 //Rig status check timer
+//##############################################################
 
 //Switch rig status to offline
 function timerHandler() {
@@ -21,4 +25,10 @@ function resetTimer() {
 timer = setTimeout(timerHandler, 5000);
 
 
-export { resetTimer, rigActive, imagesNumber, audioNumber, gsrNumber };
+export {
+  resetTimer,
+  rigActive,
+  imagesNumber,
+  audioNumber,
+  gsrNumber
+};
