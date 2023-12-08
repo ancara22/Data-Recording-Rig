@@ -1,5 +1,11 @@
 {
-  "sessionStart": 1701816547,
+  "sessionStart": 1702070013327,
   "currentUser": "Deniss",
-  "lastSessionFile": "session_1701126350.json"
+  "sessionFile": "session_1702070013327.json",
+  "version": 0.2,
+  "duration": 3000,
+  "blockchain": {
+    "authority": "self",
+    "hash": "isjlsj-jkljl=klklj"
+  }
 }

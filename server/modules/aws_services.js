@@ -1,7 +1,7 @@
 import AWS                  from 'aws-sdk';
 import fs                   from 'fs';
 import https                from 'https';
-import { readJSONFile }     from "./utility.js";
+import { readJSONFile, concatinateWavFiles }     from "./utility.js";
 import { FILE_PATHS, EXPERIENCE_START_KEYWORDS, EXPERIENCE_END_KEYWORDS, EXPERIENCE_AUTO_LENGTH } from "./server_settings.js";
 
 AWS.config.update({ region: 'eu-west-2' });
@@ -15,8 +15,8 @@ const comprehend = new AWS.Comprehend();                //Init AWS Comprehend
 function sendAudioToAWSS3(audioFile) {
     let filePath = FILE_PATHS.ROW_AUDIO_FOLDER_PATH + audioFile;
 
-    //concatinateWavFiles(filePath, callback);
-
+    concatinateWavFiles(filePath);
+    
     //Configure the AWS bucket
     const bucketName = 'audiobucketfortranscirber';
 
@@ -33,6 +33,9 @@ function sendAudioToAWSS3(audioFile) {
             else transcribeTheAudioFile(audioFile); //Run the Transcriber job
         })
     });
+
+
+    
 }
 
 //Create and run the Transcriber job on the AWS Transcriber service

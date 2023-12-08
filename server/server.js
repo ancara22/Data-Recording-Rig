@@ -31,8 +31,6 @@ app.listen(port, () => {
     cleanOldRowData();        //Clean old row data
     rigControl('config');     //Configure the rig
     updateTheFinalFile();     //Update the final file / interval
-
-    //sendAudioToAWSS3("audio_1700586321.wav");  //TEMP
     
     //concatinateWavFiles("audio_1700586321.wav"); //TEST
 });
@@ -43,10 +41,10 @@ app.listen(port, () => {
 //Temp code, to be removed
 setInterval(() => {
     let dirPath = 'data/images/processed_images';
-    removeStreamFiles(dirPath);
+    //removeStreamFiles(dirPath);
 
     let dirPath2 = 'data/images/row_images';
-    removeStreamFiles(dirPath2);
+    //removeStreamFiles(dirPath2);
 
     let dirPath3 = 'data/audio/row_audio';
     //removeStreamFiles(dirPath3);
