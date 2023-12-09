@@ -1,8 +1,6 @@
-let timer,
-    rigActive = false,
-    imagesNumber = 0,
-    audioNumber = 0,
-    gsrNumber = 0;
+import { SERVER_CONFIG } from './server_settings.js';
+
+let timer;
 
 //##############################################################
 //Rig status check timer
@@ -10,25 +8,17 @@ let timer,
 
 //Switch rig status to offline
 function timerHandler() {
-  rigActive = false;
-  console.log('Rig is not active!');
+    SERVER_CONFIG.rigActive = false;
+    console.log('Rig is not active!');
 }
 
 //Reset the timer
 function resetTimer() {
-  rigActive = true;
-  clearTimeout(timer);
-  timer = setTimeout(timerHandler, 5000);
+    SERVER_CONFIG.rigActive = true;
+    clearTimeout(timer);
+    timer = setTimeout(timerHandler, 5000);
 }
 
-//Initiate the timer
-timer = setTimeout(timerHandler, 5000);
+timer = setTimeout(timerHandler, 5000); //Initiate the timer
 
-
-export {
-  resetTimer,
-  rigActive,
-  imagesNumber,
-  audioNumber,
-  gsrNumber
-};
+export { resetTimer };

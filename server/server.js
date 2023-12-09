@@ -1,12 +1,12 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { rigControl, removeStreamFiles, updateTheFinalFile, cleanOldRowData, concatinateWavFiles } from './modules/utility.js';
-import { serverRoutes } from './modules/routes.js';
-import { webClientRoutes } from './modules/client-routes.js';
-//import { sendAudioToAWSS3,  extractEmotionsFromText } from './modules/aws_services.js';
-//import { runImageProcessor, insertDataToFinalFile } from './modules/utility.js';
+import express                          from 'express';
+import bodyParser                       from 'body-parser';
+import path                             from 'path';
+import { fileURLToPath }                from 'url';
+import { updateTheFinalFile }           from './modules/utility.js';
+import { rigControl }                   from './modules/rig_controller.js';
+import { cleanOldRowData, removeStreamFiles } from './modules/file_cleaners.js';
+import { serverRoutes }                 from './modules/routes.js';
+import { webClientRoutes }              from './modules/client-routes.js';
 
 
 // Set the port for the server
@@ -21,8 +21,8 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'webclient')));
 
 //Routes
-app.use('/', webClientRoutes);              //Web clien routes
-app.use('/', serverRoutes);                 //Server client routes
+app.use('/', webClientRoutes); //Web clien routes
+app.use('/', serverRoutes);    //Server client routes
 
 //List the server
 app.listen(port, () => {

@@ -1,11 +1,11 @@
-import express                                  from 'express';
-import ini                                      from 'ini';
-import fs                                       from 'fs';
-import csv                                      from 'csv-parser';
-import { rigControl, saveData }                 from './utility.js';
-import { rigActive }                            from './timer.js';
-import { FILE_PATHS }                           from './server_settings.js';
-import { imagesNumber, audioNumber, gsrNumber } from './timer.js';
+import express from 'express';
+import ini from 'ini';
+import fs from 'fs';
+import csv from 'csv-parser';
+import { saveData } from './utility.js';
+import { FILE_PATHS } from './server_settings.js';
+import { SERVER_CONFIG } from './server_settings.js';
+import { rigControl } from './rig_controller.js'
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -19,10 +19,10 @@ webClientRoutes.get("/", (req, res) => res.sendFile(path.join(__dirname, '/webcl
 
 //Get rig status for the web client /Web client webservice
 webClientRoutes.get('/rigStatus', (req, res) => res.json({
-    rigActive,
-    imagesNumber,
-    audioNumber,
-    gsrNumber
+    rigActive: SERVER_CONFIG.rigActive,
+    imagesNumber: SERVER_CONFIG.imagesNumber,
+    audioNumber: SERVER_CONFIG.audioNumber,
+    gsrNumber: SERVER_CONFIG.gsrNumber
 }));
 
 //Save new configs to the file
@@ -38,10 +38,7 @@ webClientRoutes.get('/gsrData', (req, res) => {
             header = rows[0].split(','),
             gsr_data = rows.slice(1).map(row => row.split(',').map(parseFloat));
 
-        res.status(200).json({
-            header,
-            gsr_data
-        });
+        res.status(200).json({ header, gsr_data });
     })
 });
 
@@ -56,7 +53,7 @@ webClientRoutes.get('/getConfig', (req, res) => {
 //Save new configs to the file
 webClientRoutes.post("/saveConfig", (req, res) => {
     const config = req.body.config,
-          iniConfig = ini.stringify(config);
+        iniConfig = ini.stringify(config);
 
     fs.writeFile(FILE_PATHS.CONFIG_FILE_PATH, iniConfig, (err) => {
         if (err) {
@@ -78,10 +75,7 @@ webClientRoutes.get("/getEmotions", (req, res) => {
             header = rows[0].split(','),
             emotions = rows.slice(1).map(row => row.split(','));
 
-        res.status(200).json({
-            header,
-            emotions
-        });
+        res.status(200).json({ header, emotions });
     });
 });
 
@@ -167,7 +161,7 @@ function readCsvAndHandleErrors(filePath, res, callback) {
                 // Transform data and extract information
                 const transformedData = data.map((item) => {
                     const imageNameMatch = item.image.match(/img_(\d+)\.jpg/),
-                          imageId = imageNameMatch ? imageNameMatch[1] : null;
+                        imageId = imageNameMatch ? imageNameMatch[1] : null;
 
                     return {
                         imageName: item.image,

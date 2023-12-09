@@ -1,14 +1,14 @@
-import AWS                  from 'aws-sdk';
-import fs                   from 'fs';
-import https                from 'https';
-import { readJSONFile, concatinateWavFiles }     from "./utility.js";
-import { FILE_PATHS, EXPERIENCE_START_KEYWORDS, EXPERIENCE_END_KEYWORDS, EXPERIENCE_AUTO_LENGTH } from "./server_settings.js";
+import AWS from 'aws-sdk';
+import fs from 'fs';
+import https from 'https';
+import { readJSONFile, concatinateWavFiles } from "./utility.js";
+import { FILE_PATHS,  EXPERIENCE_START_KEYWORDS, EXPERIENCE_END_KEYWORDS, EXPERIENCE_AUTO_LENGTH } from "./server_settings.js";
 
 AWS.config.update({ region: 'eu-west-2' });
 
-const transcribeService = new AWS.TranscribeService();  //Init AWS Transcriber
-const S3 = new AWS.S3();                                //Init AWS S3 Bucket
-const comprehend = new AWS.Comprehend();                //Init AWS Comprehend
+const transcribeService = new AWS.TranscribeService(); //Init AWS Transcriber
+const S3 = new AWS.S3(); //Init AWS S3 Bucket
+const comprehend = new AWS.Comprehend(); //Init AWS Comprehend
 
 
 //Insert audio file to the AWS S3 Bucket 
@@ -16,7 +16,7 @@ function sendAudioToAWSS3(audioFile) {
     let filePath = FILE_PATHS.ROW_AUDIO_FOLDER_PATH + audioFile;
 
     concatinateWavFiles(filePath);
-    
+
     //Configure the AWS bucket
     const bucketName = 'audiobucketfortranscirber';
 
@@ -33,9 +33,6 @@ function sendAudioToAWSS3(audioFile) {
             else transcribeTheAudioFile(audioFile); //Run the Transcriber job
         })
     });
-
-
-    
 }
 
 //Create and run the Transcriber job on the AWS Transcriber service
@@ -46,7 +43,9 @@ function transcribeTheAudioFile(audioFile) {
     const params = {
         TranscriptionJobName: transcriptionJobName,
         LanguageCode: "en-US",
-        Media: { MediaFileUri: "s3://audiobucketfortranscirber/" + audioFile },
+        Media: {
+            MediaFileUri: "s3://audiobucketfortranscirber/" + audioFile
+        },
         MediaFormat: "wav",
         MediaSampleRateHertz: 44100,
         Settings: {
@@ -57,7 +56,7 @@ function transcribeTheAudioFile(audioFile) {
 
     //Run the transcriber
     transcribeService.startTranscriptionJob(params, (err, resp) => {
-        if(err) console.log(err, err.stack);
+        if (err) console.log(err, err.stack);
         else getTranscriptionStatus(transcriptionJobName, audioFile); //Check the job status
     });
 }
@@ -65,14 +64,16 @@ function transcribeTheAudioFile(audioFile) {
 //Request to the AWS Trascriber job, to get the job status
 function getTranscriptionStatus(transcriptionJobName, audioFile) {
     //Send the request
-    transcribeService.getTranscriptionJob({ TranscriptionJobName: transcriptionJobName }, (err, data) => {
+    transcribeService.getTranscriptionJob({
+        TranscriptionJobName: transcriptionJobName
+    }, (err, data) => {
         //Check connection
         if (err) {
             console.log('Transcriber Job error:', err);
             return 0;
         }
 
-        let job_status = data.TranscriptionJob.TranscriptionJobStatus;                          //Get the status
+        let job_status = data.TranscriptionJob.TranscriptionJobStatus; //Get the status
 
         //Manage the status
         if (job_status == 'FAILED') {
@@ -80,8 +81,8 @@ function getTranscriptionStatus(transcriptionJobName, audioFile) {
         } else if (job_status == 'COMPLETED') {
             console.log('Transcriber process completed!')
 
-            let result_file_url = data.TranscriptionJob.Transcript.TranscriptFileUri;           //Get the Trascriber result file url
-            getTranscriptionData(result_file_url, audioFile);                                   //Get the Transcriber data from the url
+            let result_file_url = data.TranscriptionJob.Transcript.TranscriptFileUri; //Get the Trascriber result file url
+            getTranscriptionData(result_file_url, audioFile); //Get the Transcriber data from the url
         } else {
             setImmediate(() => getTranscriptionStatus(transcriptionJobName, audioFile), 20000); //Repeat the request, if there is no result yet
         }
@@ -91,7 +92,7 @@ function getTranscriptionStatus(transcriptionJobName, audioFile) {
 //Get Transcriber output
 function getTranscriptionData(result_file_url, audioFile) {
     let outputPath = './data/audio/' + (audioFile.replace('.wav', '.json')); //Output file name
-    let file = fs.createWriteStream(outputPath);                             //Create a empty file
+    let file = fs.createWriteStream(outputPath); //Create a empty file
 
     //Request the data
     https.get(result_file_url, (response) => {
@@ -104,7 +105,7 @@ function getTranscriptionData(result_file_url, audioFile) {
             });
         });
 
-    }).on('error', (err) =>  console.error('Error downloading JSON file:', err));
+    }).on('error', (err) => console.error('Error downloading JSON file:', err));
 }
 
 //Insert audio transcribed data in an json file
@@ -125,8 +126,8 @@ function insertToJSON(outputPath, audioFile) {
             let str = audioFile.match(/\d+/);
             let timestamp = str ? parseInt(str[0], 10) : null;
 
-            newData.audio_file = audioFile;     //Add the audio file name
-            newData.timestamp = timestamp;      //Add the audio start timestamp
+            newData.audio_file = audioFile; //Add the audio file name
+            newData.timestamp = timestamp; //Add the audio start timestamp
 
             try {
                 if (newData.text.length > 0) {
@@ -137,16 +138,16 @@ function insertToJSON(outputPath, audioFile) {
                             return;
                         }
 
-                        let experienceDetected = detectExterienceSampling(newData);      //Detect/Get the experience recording in the extracted text from audio
+                        let experienceDetected = detectExterienceSampling(newData); //Detect/Get the experience recording in the extracted text from audio
 
                         setTimeout(() => {
-                            if(experienceDetected != "") newData.experienceDetected = experienceDetected;
+                            if (experienceDetected != "") newData.experienceDetected = experienceDetected;
                             else newData.experienceDetected = undefined;
 
-                            let dataObject = JSON.parse(data);          //Parse the json data to object
-                            dataObject.push(newData);                   //Add the new data to the file object
+                            let dataObject = JSON.parse(data); //Parse the json data to object
+                            dataObject.push(newData); //Add the new data to the file object
 
-                            let dataJson = JSON.stringify(dataObject);  //Convert the object to json
+                            let dataJson = JSON.stringify(dataObject); //Convert the object to json
 
                             //Write the json file
                             fs.writeFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, dataJson, 'utf8', (err) => {
@@ -159,7 +160,7 @@ function insertToJSON(outputPath, audioFile) {
                 console.log('Error reading the audio json file.')
             }
 
-            removeAJsonFile(outputPath);    //Remove the json file(the transcribed file from one audio data)
+            removeAJsonFile(outputPath); //Remove the json file(the transcribed file from one audio data)
         })
 }
 
@@ -177,7 +178,7 @@ function formatTheAudioJson(filePath, respons) {
                     let speakerData = {
                         speaker: undefined,
                         text: ''
-                    } 
+                    }
 
                     extractEmotionsFromText(data.text)
                         .then(emotion => {
@@ -186,32 +187,35 @@ function formatTheAudioJson(filePath, respons) {
 
                             return true;
                         }).then(() => {
-                            words = JSON.parse(data)["results"]["items"];   //Get the extracted words
+                            words = JSON.parse(data)["results"]["items"]; //Get the extracted words
 
-                            let s = 0;                                      //Speakers count
+                            let s = 0; //Speakers count
 
                             for (let i in words) {
                                 let speaker_label = words[i]["speaker_label"];
 
                                 //Control the current speaker id
                                 if (!speakerData.speaker) {
-                                    speakerData.speaker = speaker_label;    //Set the first speaker
+                                    speakerData.speaker = speaker_label; //Set the first speaker
 
                                     if (speakerData.speaker == "spk_0")
                                         speakerData.speaker = user.currentUser;
 
-                                    respons.text.push(speakerData);         //Add the speakers data
+                                    respons.text.push(speakerData); //Add the speakers data
                                 } else if (speakerData.speaker != speaker_label) {
                                     newSpeaker = true;
-                                    speakerData = { speaker: '', text: '' } //Clean the speaker data, prepare for the next speaker
+                                    speakerData = {
+                                        speaker: '',
+                                        text: ''
+                                    } //Clean the speaker data, prepare for the next speaker
                                 }
 
                                 respons.text[s].text = content.replace(/\s([.,?!])/g, '$1'); //Update the speaker speach
 
                                 //Change the speaker
                                 if (newSpeaker) {
-                                    s++;                                    //Next speaker
-                                    speakerData.speaker = speaker_label;    //Speaker data frame
+                                    s++; //Next speaker
+                                    speakerData.speaker = speaker_label; //Speaker data frame
                                     speakerData.text = '';
                                     content = '';
 
@@ -223,7 +227,7 @@ function formatTheAudioJson(filePath, respons) {
                                     content += ' ';
                                 }
 
-                                content += words[i]["alternatives"][0]["content"];  //Add the next word
+                                content += words[i]["alternatives"][0]["content"]; //Add the next word
                                 respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
                             }
 
@@ -256,7 +260,7 @@ function detectExterienceSampling(dataObject) {
         data = dataObject.text;
 
     //Concatinate the discusion in one string
-    for (let i = 0; i < data.length; i++) 
+    for (let i = 0; i < data.length; i++)
         str += data[i].text + " ";
 
     //Define the patterns
@@ -272,7 +276,7 @@ function detectExterienceSampling(dataObject) {
         let extractedText = '';
 
         // Extract the matched text
-        if (match1 && match1[1] != '') extractedText = match1[1].trim();   
+        if (match1 && match1[1] != '') extractedText = match1[1].trim();
         else extractedText = (match2[0].trim()).slice(14);
 
         return extractedText;
@@ -285,7 +289,10 @@ function detectExterienceSampling(dataObject) {
 function extractEmotionsFromText(text) {
     return new Promise(async (resolve, reject) => {
         try {
-            const params = { LanguageCode: 'en',  Text: text };
+            const params = {
+                LanguageCode: 'en',
+                Text: text
+            };
             const result = await comprehend.detectSentiment(params).promise();
 
             resolve(result);
