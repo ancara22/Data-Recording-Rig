@@ -45,7 +45,7 @@ async function emptyFiles() {
       await writeFile(filename, JSON.stringify([{}]));
     }));
 
-    resetCSVFile(FILE_PATHS.IMAGE_TEXT_FILE_PATH)
+    resetCSVFile(FILE_PATHS.IMAGE_TEXT_FILE_PATH, 'image,text');
 
   } catch(err) {
     console.log('Error cleaning files: ', err);
@@ -53,13 +53,10 @@ async function emptyFiles() {
 }
 
 //Empty the Image csv file
-function resetCSVFile(filePath) {
+function resetCSVFile(filePath, content) {
     try {
-      //Create the new content with the column names
-      const newContent = 'image,text';
-  
       //Write the new content to the CSV file
-      fs.writeFile(filePath, newContent, ()=> {});
+      fs.writeFile(filePath, content, ()=> {});
     } catch (err) {
       console.error('Error resetting CSV file:', err);
     }
@@ -70,5 +67,6 @@ function resetCSVFile(filePath) {
 export {
     removeStreamFiles,
     cleanOldRowData,
-    emptyFiles
+    emptyFiles,
+    resetCSVFile
 }

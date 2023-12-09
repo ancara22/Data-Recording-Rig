@@ -33,7 +33,7 @@ app.listen(port, () => {
     rigControl('config');     //Configure the rig
     //updateTheFinalFile();     //Update the final file / interval
     
-    concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav"); //TEST
+    //concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav"); //TEST
 });
 
 
