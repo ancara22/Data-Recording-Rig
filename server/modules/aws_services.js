@@ -1,7 +1,8 @@
 import AWS from 'aws-sdk';
 import fs from 'fs';
 import https from 'https';
-import { readJSONFile, concatinateWavFiles } from "./utility.js";
+import { readJSONFile, extractTimestamp } from "./utility.js";
+import { exec } from 'child_process';
 import { FILE_PATHS,  EXPERIENCE_START_KEYWORDS, EXPERIENCE_END_KEYWORDS, EXPERIENCE_AUTO_LENGTH } from "./server_settings.js";
 
 AWS.config.update({ region: 'eu-west-2' });
@@ -13,26 +14,27 @@ const comprehend = new AWS.Comprehend(); //Init AWS Comprehend
 
 //Insert audio file to the AWS S3 Bucket 
 function sendAudioToAWSS3(audioFile) {
-    let filePath = FILE_PATHS.ROW_AUDIO_FOLDER_PATH + audioFile;
+    let filePath = FILE_PATHS.ROW_AUDIO_FOLDER_PATH + audioFile,
+        convertedFilePath = FILE_PATHS.CONVERTED_AUDIO + audioFile;
 
-    concatinateWavFiles(filePath);
+    concatinateWavFiles(filePath, () => {
+        //Configure the AWS bucket
+        const bucketName = 'audiobucketfortranscirber';
 
-    //Configure the AWS bucket
-    const bucketName = 'audiobucketfortranscirber';
+        fs.readFile(convertedFilePath, (err, data) => {
+            if (err) console.log('File reading error: ', err)
 
-    fs.readFile(filePath, (err, data) => {
-        if (err) console.log('File reading error: ', err)
-
-        //Upload the audio file to the AWS S3 bucket
-        S3.upload({
-            Bucket: bucketName,
-            Key: audioFile,
-            Body: data
-        }, (error, result) => {
-            if (error) console.log('Error uploading the audio file to the bucket:', error);
-            else transcribeTheAudioFile(audioFile); //Run the Transcriber job
-        })
-    });
+            //Upload the audio file to the AWS S3 bucket
+            S3.upload({
+                Bucket: bucketName,
+                Key: audioFile,
+                Body: data
+            }, (error, result) => {
+                if (error) console.log('Error uploading the audio file to the bucket:', error);
+                else transcribeTheAudioFile(audioFile); //Run the Transcriber job
+            })
+        });
+    });  
 }
 
 //Create and run the Transcriber job on the AWS Transcriber service
@@ -302,10 +304,49 @@ function extractEmotionsFromText(text) {
     });
 }
 
+//Concatinate audio file to user intro
+function concatinateWavFiles(wavFile, callback) {
+    let fileEndTimestamp = extractTimestamp(wavFile),
+        filePath = FILE_PATHS.CONVERTED_AUDIO + "audio_" + fileEndTimestamp + ".wav";
+
+    let userIntro = FILE_PATHS.USER_INTRO_AUDIO_PATH;
+    let userIntroConverted = './data/user/userIntroConverted.wav';   
+    
+    //Convert the User audio intro and concatinate the files
+    exec(`sox ${userIntro} -r 44100 -c 1 ${userIntroConverted}`, (conversionError) => {
+        if (conversionError) {
+            console.error('Error during file conversion:', conversionError);
+        } else {
+            console.log('first', wavFile)
+            const command = `sox ${userIntroConverted} ${wavFile} ${filePath}`;
+            
+            exec(command, (concatenationError) => {
+                if (concatenationError) {
+                    console.error('Error during concatenation:', concatenationError);
+                } else {
+                    console.log('Concatenation successful');
+
+                    fs.unlink(wavFile, (unlinkError) => {
+                        if (unlinkError) {
+                            console.error('Error removing original audio file:', unlinkError);
+                        } else {
+                            console.log('Original audio file removed');
+                        }
+        
+                        callback();
+                    });
+                }
+            });
+
+            
+        }
+    })
+}
 
 
 export {
     sendAudioToAWSS3,
     insertToJSON,
-    detectExterienceSampling
+    detectExterienceSampling,
+    concatinateWavFiles
 }

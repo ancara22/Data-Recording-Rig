@@ -1,7 +1,6 @@
 import multer, { diskStorage } from 'multer';
 import fs from 'fs';
 import { exec } from 'child_process';
-import wav from 'wav';
 import Papa from 'papaparse';
 import { FILE_PATHS, SERVER_CONFIG } from "./server_settings.js";
 
@@ -22,33 +21,6 @@ function saveData(folder, fileType) {
         storage: storage
     });
     return upload.single(fileType);
-}
-
-//Concatinate more audio files
-function concatinateWavFiles(wavFile) {
-    let fileEndTimestamp = extractTimestamp(wavFile),
-        filePath = FILE_PATHS.ROW_AUDIO_FOLDER_PATH + "audio_" + fileEndTimestamp + ".wav";
-
-    //Define the writer
-    const writer = new wav.FileWriter(filePath, {
-        channels: 1,
-        sampleRate: 44100,
-        bitDepth: 16
-    });
-
-    //Define the reader and handle the excetions
-    const reader = new wav.Reader();
-
-    reader.on('format', (format) => {
-        if (!writer._writeState)
-            writer.pipe(fs.createWriteStream(FILE_PATHS.USER_INTRO_AUDIO_PATH, { flags: 'a' }));
-    });
-
-    reader.on('error', (er) => console.log('first', er))
-
-    fs.createReadStream(wavFile).pipe(reader).pipe(writer, { end: false }); //Concatinate the files
-
-    writer.end(); //End the writing
 }
 
 //Run image processor python script, image_processor
@@ -241,8 +213,8 @@ function getImages() {
 export {
     runImageProcessor,
     saveData,
-    concatinateWavFiles,
     updateTheFinalFile,
     insertDataToFinalFile,
     readJSONFile,
+    extractTimestamp
 }

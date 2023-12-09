@@ -1,5 +1,6 @@
 import { Client } from 'ssh2';
-import { FILE_PATHS, RIG_CONFIG } from "./server_settings.js";
+import { FILE_PATHS, RIG_CONFIG, SERVER_CONFIG } from "./server_settings.js";
+import { runImageProcessor } from './utility.js';
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -18,7 +19,7 @@ function rigControl(startRig) {
             if(er) console.log("SSH connection is imposible!");
 
             //Copy file to the raspberry pi directory
-            sftp.fastPut(FILE_PATHS.CONFIG_FILE_PATH, RIG_CONFIG.PATH, (err) => {
+            sftp.fastPut(FILE_PATHS.CONFIG_FILE_PATH, SERVER_CONFIG.PATH, (err) => {
                 if (err) {
                     console.error('Error transferring the file:', err);
                     sftp.end(); 
@@ -40,7 +41,7 @@ function rigControl(startRig) {
 
 //Execute the RIG terminal command
 function executeCommand(ssh) {
-    ssh.exec(RIG_CONFIG.APP_RUNNING_COMMAND, (err, stream) => {
+    ssh.exec(SERVER_CONFIG.APP_RUNNING_COMMAND, (err, stream) => {
         if (err) {
             console.error("Error running the app:", err);
             ssh.end();
@@ -59,7 +60,7 @@ function executeCommand(ssh) {
 //Run the recording app
 function runTheRecordingApp(ssh, startRig) {
     //Stop all the previews processes
-    ssh.exec(RIG_CONFIG.KILL_PYTHON_APPS_COMMAND, (err, stream) => {
+    ssh.exec(SERVER_CONFIG.KILL_PYTHON_APPS_COMMAND, (err, stream) => {
         const sleep = (milliseconds) => {
             return new Promise(resolve => setTimeout(resolve, milliseconds));
         };

@@ -3,6 +3,7 @@ import bodyParser                       from 'body-parser';
 import path                             from 'path';
 import { fileURLToPath }                from 'url';
 import { updateTheFinalFile }           from './modules/utility.js';
+import { concatinateWavFiles  }         from './modules/aws_services.js'
 import { rigControl }                   from './modules/rig_controller.js';
 import { cleanOldRowData, removeStreamFiles } from './modules/file_cleaners.js';
 import { serverRoutes }                 from './modules/routes.js';
@@ -28,11 +29,11 @@ app.use('/', serverRoutes);    //Server client routes
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
-    cleanOldRowData();        //Clean old row data
+    //cleanOldRowData();        //Clean old row data
     rigControl('config');     //Configure the rig
-    updateTheFinalFile();     //Update the final file / interval
+    //updateTheFinalFile();     //Update the final file / interval
     
-    //concatinateWavFiles("audio_1700586321.wav"); //TEST
+    concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav"); //TEST
 });
 
 

@@ -37,7 +37,7 @@ serverRoutes.post('/image', saveData('images', 'image'), (req, res) => {
 
     //Image is saved in the temporary direcotry
     let imageFile = req.file,           //Image file
-        imageName = imageFile.filename; //Image name
+        imageName = imageFile.filename, //Image name
         tempPath = FILE_PATHS.IMAGE_FOLDER + imageName, //Temp saving directory
         destinationPath = FILE_PATHS.IMAGE_FOLDER + 'row_images/' + imageName; //Final directory, row_images
 
@@ -67,7 +67,7 @@ serverRoutes.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => 
     //Procces the audio file
     fs.promises.readFile(filePath)
         .then(() => {
-            sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
+            //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
             res.sendStatus(200);
         })
 });

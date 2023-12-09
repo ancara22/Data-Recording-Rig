@@ -4,12 +4,14 @@ const AUDIO_FOLDER  = './data/audio/',
     GSR_FOLDER      = './data/gsr/',
     USER_FOLDER     = './data/user/',
     IMAGE_FOLDER    = './data/images/',
-    SESSION_FOLDER  = './data/session_files/';
+    SESSION_FOLDER  = './data/session_files/',
+    CONVERTED_AUDIO = './data/audio/row_audio/converted_audio/';
 
 
 const FILE_PATHS = {
     CONFIG_FILE_PATH            : '../config.ini',
     AUDIO_FOLDER                : AUDIO_FOLDER,
+    CONVERTED_AUDIO             : CONVERTED_AUDIO,
     GSR_FOLDER                  : GSR_FOLDER,
     USER_FOLDER                 : USER_FOLDER,
     IMAGE_FOLDER                : IMAGE_FOLDER,
@@ -32,8 +34,7 @@ const RIG_CONFIG = {
     host: "raspberry.local",
     port: 22,
     username: "rig",
-    password: "raspberry",
-    PATH: `/home/rig/Documents/App/main/config.ini`
+    password: "raspberry"
 }
 
 //Server configurations
@@ -46,7 +47,8 @@ let SERVER_CONFIG = {
     rigActive                   : false,
     imagesNumber                : 0,
     audioNumber                 : 0,
-    gsrNumber                   : 0
+    gsrNumber                   : 0,
+    PATH: `/home/rig/Documents/App/main/config.ini`
 }
 
 const EXPERIENCE_START_KEYWORDS = "Start Recording";     //Experience start words
