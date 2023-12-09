@@ -343,7 +343,6 @@ function concatinateWavFiles(wavFile, callback) {
     })
 }
 
-
 export {
     sendAudioToAWSS3,
     insertToJSON,
