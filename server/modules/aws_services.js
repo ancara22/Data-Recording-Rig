@@ -3,7 +3,7 @@ import fs from 'fs';
 import https from 'https';
 import { readJSONFile, extractTimestamp } from "./utility.js";
 import { exec } from 'child_process';
-import { FILE_PATHS,  EXPERIENCE_START_KEYWORDS, EXPERIENCE_END_KEYWORDS, EXPERIENCE_AUTO_LENGTH } from "./server_settings.js";
+import { FILE_PATHS, EXPERIENCE_CONFIG } from "./server_settings.js";
 
 AWS.config.update({ region: 'eu-west-2' });
 
@@ -266,8 +266,8 @@ function detectExterienceSampling(dataObject) {
         str += data[i].text + " ";
 
     //Define the patterns
-    const pattern1 = new RegExp(`${EXPERIENCE_START_KEYWORDS}(.*?)(?:${EXPERIENCE_END_KEYWORDS})`, 'i'); //Patttern, start and end phrases
-    const pattern2 = new RegExp(`${EXPERIENCE_START_KEYWORDS}(.*?)(?:${EXPERIENCE_END_KEYWORDS}|\\b.{0,${EXPERIENCE_AUTO_LENGTH}}\\b)`, 'i'); //Pattern, start - no end
+    const pattern1 = new RegExp(`${EXPERIENCE_CONFIG.EXPERIENCE_START_KEYWORDS}(.*?)(?:${EXPERIENCE_CONFIG.EXPERIENCE_END_KEYWORDS})`, 'i'); //Patttern, start and end phrases
+    const pattern2 = new RegExp(`${EXPERIENCE_CONFIG.EXPERIENCE_START_KEYWORDS}(.*?)(?:${EXPERIENCE_CONFIG.EXPERIENCE_END_KEYWORDS}|\\b.{0,${EXPERIENCE_CONFIG.EXPERIENCE_AUTO_LENGTH}}\\b)`, 'i'); //Pattern, start - no end
 
     //Find matches
     const match1 = pattern1.exec(str);

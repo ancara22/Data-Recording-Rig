@@ -167,8 +167,9 @@ const vueApp = new Vue({
                     this.rigActive = data.rigActive;   //Update the local rig status 
                     this.imagesNumber = data.imagesNumber;
                     this.audioNumber = data.audioNumber;
-                    let {hours, minutes} = secondsToHoursMinutes(seconds)
-                    this.gsrTime = hours + "hh " + minutes + "mm";
+                    let { hours, minutes, sec } = secondsToHoursMinutes(seconds)
+                    this.gsrTime = hours + "hh " + minutes + "mm " + sec + "s";
+                    console.log('first', this.gsrTime)
                 }).catch(error => console.error('Error:', error));
         },
 
@@ -354,8 +355,9 @@ const vueApp = new Vue({
         
             //Calculate minutes
             const minutes = Math.floor(remainingSeconds / 60);
+            const sec = Math.floor(remainingSeconds % 60);
         
-            return { hours, minutes };
+            return { hours, minutes, sec };
         }
         
     }

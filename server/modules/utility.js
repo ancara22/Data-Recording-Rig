@@ -2,7 +2,7 @@ import multer, { diskStorage } from 'multer';
 import fs from 'fs';
 import { exec } from 'child_process';
 import Papa from 'papaparse';
-import { FILE_PATHS, SERVER_CONFIG } from "./server_settings.js";
+import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
 
 
 //Save data to a file
@@ -25,7 +25,7 @@ function saveData(folder, fileType) {
 
 //Run image processor python script, image_processor
 function runImageProcessor() {
-    exec(SERVER_CONFIG.IMAGE_PROCESSOR_COMMAND, (error, stdout, stderr) => {
+    exec(APP_CONFIG.IMAGE_PROCESSOR_COMMAND, (error, stdout, stderr) => {
         if (error) {
             console.error(`Error: ${error.message}`);
             return;

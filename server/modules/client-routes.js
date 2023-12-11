@@ -75,7 +75,7 @@ webClientRoutes.post("/saveConfig", (req, res) => {
 
 //Save new configs to the file
 webClientRoutes.get("/getEmotions", (req, res) => {
-    readFileAndHandleErrors(FILE_PATHS.CLIENT_EMOTIONS_FILE_PATH, res, (data) => {
+    readFileAndHandleErrors(FILE_PATHS.CLIENT_EMOTIONS_PATH, res, (data) => {
         let rows = data.trim().split('\n'),
             header = rows[0].split(','),
             emotions = rows.slice(1).map(row => row.split(','));
