@@ -2,7 +2,7 @@ import express                          from 'express';
 import bodyParser                       from 'body-parser';
 import path                             from 'path';
 import { fileURLToPath }                from 'url';
-import { updateTheFinalFile }           from './modules/utility.js';
+import { updateTheFinalFile, getTheHash }           from './modules/utility.js';
 import { concatinateWavFiles  }         from './modules/aws_services.js'
 import { rigControl }                   from './modules/rig_controller.js';
 import { cleanOldRowData, removeStreamFiles } from './modules/file_cleaners.js';
@@ -34,6 +34,9 @@ app.listen(port, () => {
     //updateTheFinalFile();     //Update the final file / interval
     
     //concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav"); //TEST
+    //getTheHash((hash) => console.log('hash: ', hash))     //TEST
+
+    
 });
 
 

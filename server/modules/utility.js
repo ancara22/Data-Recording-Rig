@@ -2,6 +2,7 @@ import multer, { diskStorage } from 'multer';
 import fs from 'fs';
 import { exec } from 'child_process';
 import Papa from 'papaparse';
+import crypto from 'crypto';
 import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
 
 
@@ -177,20 +178,27 @@ function updateTheSessionFIle() {
 
             //Check if the difference is more than 30 minutes (30 * 60 * 1000 milliseconds)
             if (sessionStart == '' || sessionFile == '' || timeDifference > SERVER_CONFIG.OUTPUT_LENGTH * 60 * 1000) {
-                //Create a new JSON file with the name "session" + current timestamp
-                const newFileName = `session_${currentTime}.json`;
-                const newSessionFilename = FILE_PATHS.SESSION_FOLDER + newFileName;
-                writeJSONFile(newSessionFilename, JSON.stringify([]));
+                getTheHash((hash) => {
+                    //Create a new JSON file with the name "session" + current timestamp
+                    const newFileName = `session_${currentTime}.json`;
+                    const newSessionFilename = FILE_PATHS.SESSION_FOLDER + newFileName;
+                    writeJSONFile(newSessionFilename, JSON.stringify([]));
 
-                //Assign the created filename to current_session file
-                SERVER_CONFIG.current_session_file = newSessionFilename;
-                console.log(`New session file created: ${SERVER_CONFIG.current_session_file}`);
+                    //Assign the created filename to current_session file
+                    SERVER_CONFIG.current_session_file = newSessionFilename;
+                    console.log(`New session file created: ${SERVER_CONFIG.current_session_file}`);
 
-                sessionStart = currentTime;
-                sessionFile = newFileName;
+                    sessionStart = currentTime;
+                    sessionFile = newFileName;
 
-                writeJSONFile(FILE_PATHS.USER_FILE_PATH, { ...userObject, sessionStart, sessionFile });
-                emptyFiles();
+                    let blockchain = {
+                        authority: "Evolwe",
+                        hash
+                    }
+
+                    writeJSONFile(FILE_PATHS.USER_FILE_PATH, { ...userObject, sessionStart, sessionFile, blockchain });
+                    emptyFiles();
+                });
             } else {
                 SERVER_CONFIG.current_session_file = FILE_PATHS.SESSION_FOLDER + sessionFile; //Difference is less than 30 minutes
             }
@@ -208,7 +216,36 @@ function getImages() {
     return parsedData.data;
 }
 
+//Hash the data
+function hashTheData(data) {
+    let jsonData = JSON.stringify(data);
+    const hash = crypto.createHash('sha256').update(jsonData).digest('hex'); 
 
+    return hash;
+}
+
+//Get the Hash from the cloud
+function getTheHash(callback) {
+    readJSONFile(FILE_PATHS.USER_FILE_PATH, (userObject) => {
+        let { sessionFile, currentUser } = userObject;
+
+        readJSONFile(`./data/session_files/${sessionFile}`, (session) => {
+            let hash = hashTheData(session);
+
+            fetch("https://olkjccryjj.execute-api.eu-west-2.amazonaws.com/prod/rehash", {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    hash: hash,
+                    user: currentUser
+                })
+            }).then(res => res.json()
+            ).then(data => {
+                callback(data.rehashedValue);
+            })
+        })
+    })
+}
 
 export {
     runImageProcessor,
@@ -216,5 +253,6 @@ export {
     updateTheFinalFile,
     insertDataToFinalFile,
     readJSONFile,
-    extractTimestamp
+    extractTimestamp,
+    getTheHash
 }
