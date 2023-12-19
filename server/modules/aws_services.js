@@ -203,7 +203,9 @@ function formatTheAudioJson(filePath, respons) {
                                     if (speakerData.speaker == "spk_0")
                                         speakerData.speaker = user.currentUser;
 
-                                    respons.text.push(speakerData); //Add the speakers data
+                                    if(s != 0) {
+                                        respons.text.push(speakerData); //Add the speakers data
+                                    }
                                 } else if (speakerData.speaker != speaker_label) {
                                     newSpeaker = true;
                                     speakerData = {

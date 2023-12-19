@@ -1,0 +1,35 @@
+{
+  "head": {
+    "1703008636054": "session_1703008636054.json",
+    "user": "Deniss",
+    "version": 0.3,
+    "duration": 3000,
+    "blockchain": {
+      "authority": "Evolwe",
+      "hash": "65d786bc42b86dc4e547b2ef513c36a210fceb24c87cd838d3b252c4be10c757"
+    }
+  },
+  "data": {
+    "gsr": [
+      {}
+    ],
+    "eeg": [],
+    "audio": [
+      {}
+    ],
+    "image": [
+      {
+        "1703008636": "1703008636-stream.jpg"
+      },
+      {
+        "1703008636": "1703008636-stream.jpg"
+      },
+      {
+        "1703008636": "1703008636-stream.jpg"
+      },
+      {
+        "1703008636": "1703008636-stream.jpg"
+      }
+    ]
+  }
+}

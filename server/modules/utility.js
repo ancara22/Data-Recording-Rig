@@ -4,6 +4,7 @@ import { exec } from 'child_process';
 import Papa from 'papaparse';
 import crypto from 'crypto';
 import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
+import { emptyFiles } from "./file_cleaners.js";
 
 
 //Save data to a file
@@ -79,78 +80,102 @@ function writeJSONFile(filePath, data) {
 
 //Create finnal output file
 function insertDataToFinalFile() {
-    updateTheSessionFIle();
+   
 
-    //Read Audio text data
-    readJSONFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, (audioData) => {
-        let audioObject = [],
-            imageObject = [],
-            imagesData = getImages();
+    updateTheSessionFIle(() => {
+        //Read Audio text data
+        readJSONFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, (audioData) => {
+            let audioObject = [],
+                imageObject = [],
+                experienceObject = [],
+                imagesData = getImages(),
+                sentiments = {};
 
-        //Format images data
-        imagesData.forEach(row => {
-            let imageName = row.image,
-                timestamp = extractTimestamp(imageName);
+            //Format images data
+            imagesData.forEach(row => {
+                let imageName = row.image,
+                    timestamp = extractTimestamp(imageName);
 
-            let data = { 
-                [timestamp]: imageName, 
-                text: row.text 
-            }
+                let data = { 
+                    [timestamp]: imageName, 
+                    text: row.text 
+                }
 
-            if (timestamp != null) imageObject.push(data);
-        })
+                let exist = imageObject.find(img => img.text === data.text);
 
-        //Format the audio data
-        audioData.forEach(audioSection => {
-            let data = {
-                [audioSection.timestamp]: audioSection.audio_file,
-                text: audioSection.text,
-                experience: audioSection.experienceDetected,
-                sentiment: audioSection.sentiment
-            }
+                if (timestamp != null && !exist) imageObject.push(data);
+            })
 
-            audioObject.push(data);
-        });
-
-        //Read GSR data
-        readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (gsrData) => {
-            let gsrObject = [], eegObject = [];
-
-            //Format the GSR datax
-            gsrData.forEach(gsrSection => {
+            //Format the audio data
+            audioData.forEach(audioSection => {
                 let data = {
-                    start: gsrSection.startTime,
-                    end: gsrSection.endTime,
-                    section: gsrSection.gsr_section,
-                    sentiment: gsrSection.emotion_state
+                    [audioSection.timestamp]: audioSection.audio_file,
+                    text: audioSection.text,
+                    sentiment: audioSection.sentiment
                 }
-                gsrObject.push(data);
-            })
 
-            //Read user data file
-            readJSONFile(FILE_PATHS.USER_FILE_PATH, (user) => {
-                //Create the final data format
-                const merged = {
-                    head: {
-                        [user.sessionStart]: user.sessionFile,
-                        user: user.currentUser,
-                        version: user.version,
-                        duration: user.duration,
-                        blockchain: user.blockchain
-                    },
-                    data: {
-                        gsr: gsrObject,
-                        eeg: eegObject,
-                        audio: audioObject,
-                        image: imageObject
+                let des = {
+                    [audioSection.timestamp]: audioSection.audio_file,
+                    text: audioSection.experienceDetected,
+                }
+
+                sentiments.push({
+                    [audioSection.timestamp]: audioSection.audio_file,
+                    sentiment: audioSection.sentiment
+                })
+
+                experienceObject.push(des)
+                audioObject.push(data);
+            });
+
+            //Read GSR data
+            readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (gsrData) => {
+                let gsrObject = [], eegObject = [];
+
+                //Format the GSR datax
+                gsrData.forEach(gsrSection => {
+                    let data = {
+                        start: gsrSection.startTime,
+                        end: gsrSection.endTime,
+                        section: gsrSection.gsr_section,
+                        sentiment: gsrSection.emotion_state
                     }
-                }
 
-                writeJSONFile(SERVER_CONFIG.current_session_file, merged); // Write the merged data to a new file
-                console.log(`Merged data written to ${SERVER_CONFIG.current_session_file}`);
+                    sentiments.push({
+                        [gsrSection.startTime]: gsrSection.endTime,
+                        sentiment: gsrSection.emotion_state
+                    })
+
+                    gsrObject.push(data);
+                })
+
+                //Read user data file
+                readJSONFile(FILE_PATHS.USER_FILE_PATH, (user) => {
+                    //Create the final data format
+                    const merged = {
+                        head: {
+                            [user.sessionStart]: user.sessionFile,
+                            user: user.currentUser,
+                            version: user.version,
+                            duration: user.duration,
+                            blockchain: user.blockchain
+                        },
+                        data: {
+                            gsr: gsrObject,
+                            eeg: eegObject,
+                            audio: audioObject,
+                            des: experienceObject,
+                            sentiment: sentiments,
+                            image: imageObject
+                        }
+                    }
+
+                    writeJSONFile(SERVER_CONFIG.current_session_file, merged); // Write the merged data to a new file
+                    console.log(`Merged data written to ${SERVER_CONFIG.current_session_file}`);
+                })
             })
-        });
-    });
+        })
+    })
 }
 
 //Extract timestamp from the string
@@ -162,11 +187,11 @@ function extractTimestamp(fromString) {
 
 //Run the final file content update by interval
 function updateTheFinalFile() {
-    setInterval(() => insertDataToFinalFile(), 3 * 60 * 1000);
+    setInterval(() => insertDataToFinalFile(), 3 * 60 * 100);
 }
 
 //Update the session file when the time is more than 30 min
-function updateTheSessionFIle() {
+function updateTheSessionFIle(callback) {
     try {
         //Read user.json file
         readJSONFile(FILE_PATHS.USER_FILE_PATH, (userObject) => {
@@ -176,13 +201,13 @@ function updateTheSessionFIle() {
             const currentTime = new Date().getTime();
             const timeDifference = currentTime - sessionStart;
 
-            //Check if the difference is more than 30 minutes (30 * 60 * 1000 milliseconds)
+            //Check if the difference is more than minutes (minutes * 60 * 1000 milliseconds)
             if (sessionStart == '' || sessionFile == '' || timeDifference > SERVER_CONFIG.OUTPUT_LENGTH * 60 * 1000) {
                 getTheHash((hash) => {
                     //Create a new JSON file with the name "session" + current timestamp
                     const newFileName = `session_${currentTime}.json`;
                     const newSessionFilename = FILE_PATHS.SESSION_FOLDER + newFileName;
-                    writeJSONFile(newSessionFilename, JSON.stringify([]));
+                    writeJSONFile(newSessionFilename, {});
 
                     //Assign the created filename to current_session file
                     SERVER_CONFIG.current_session_file = newSessionFilename;
@@ -198,9 +223,14 @@ function updateTheSessionFIle() {
 
                     writeJSONFile(FILE_PATHS.USER_FILE_PATH, { ...userObject, sessionStart, sessionFile, blockchain });
                     emptyFiles();
+
+                    callback();
                 });
             } else {
                 SERVER_CONFIG.current_session_file = FILE_PATHS.SESSION_FOLDER + sessionFile; //Difference is less than 30 minutes
+                callback();
+
+                console.log("Session Updated!")
             }
         });
     } catch (error) {
@@ -254,5 +284,6 @@ export {
     insertDataToFinalFile,
     readJSONFile,
     extractTimestamp,
-    getTheHash
+    getTheHash,
+    writeJSONFile
 }

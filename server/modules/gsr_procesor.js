@@ -1,5 +1,8 @@
 import util from "util";
 import fs from 'fs';
+import { exec } from 'child_process';
+import { FILE_PATHS } from "./server_settings.js";
+import { readJSONFile, writeJSONFile } from "./utility.js";
 
 ////////////////////////////////////////////////////////////////////////////
 //GSR processing
@@ -45,17 +48,40 @@ function processGSRoutput(data, nr) {
     }
 }
 
+
+function predictSwetingLevel(value) {
+    if(value > 400) {
+        return "High";
+    } else if(value > 350) {
+        return "Medium";
+    } else if(value > 300) {
+        return "Normal";
+    } else if(value > 250) {
+        return "Low";
+    } else {
+        return "Minimal";
+    }
+}
+
 //Insert data into 3 minuts sections All files
 function insertGSRData(data, dataValue, data2) {
     let value = parseInt(dataValue),
         notConnectedvalue = 600;
+
+    let timestamp =  Math.floor(Date.now() / 1000); 
+    let swetingLevel = predictSwetingLevel(value);
+
+    let formatedData = {
+        [timestamp]: value,
+        level: swetingLevel
+    }
 
     if(value < notConnectedvalue) {
         if(data.startTime == null) {
             data.startTime = Math.floor(Date.now() / 1000);
             isDataUpdated = true;
         }
-        data.gsrData.push(value);
+        data.gsrData.push(formatedData);
     } else {
         data.artefacts ++;
     }
@@ -65,10 +91,10 @@ function insertGSRData(data, dataValue, data2) {
         data.artefacts = 0;
     }
 
-    processGSRoutput(dataValue, data2.fileNumb); //Creates separate files of each section/for manual lm training
+    //processGSRoutput(dataValue, data2.fileNumb); //Creates separate files of each section/for manual lm training
     
-    if(Math.floor(Date.now() / 1000) - data.startTime >= 3 * 60 && data.startTime != null && (data.gsrData).length >= 85 && isDataUpdated) {
-            console.log('yess')
+    if(Math.floor(Date.now() / 1000) - data.startTime >= 3 * 60 && data.startTime != null && (data.gsrData).length >= 60 && isDataUpdated) {
+            console.log('Insert GSR section')
             data.finishTime = Math.floor(Date.now() / 1000); 
             isDataUpdated = false;
 
@@ -108,6 +134,7 @@ async function writeSectionToCSV(data, callback) {
             if (err) console.error('Error writing to CSV file:', err)
         });
 
+        
         let newData = {
             startTime: data.startTime,
             endTime: data.finishTime,

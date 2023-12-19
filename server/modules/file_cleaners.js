@@ -1,6 +1,7 @@
 import { promisify } from "util";
 import { join } from 'path';
 import fs, { readdir, unlink } from 'fs';
+import { FILE_PATHS } from "./server_settings.js"; 
 
 ////////////////////////////////////////////////////////////////////////////
 //REMOVE FILES/ file cleaners
@@ -45,7 +46,7 @@ async function emptyFiles() {
       await writeFile(filename, JSON.stringify([{}]));
     }));
 
-    resetCSVFile(FILE_PATHS.IMAGE_TEXT_FILE_PATH, 'image,text');
+    resetCSVFile(FILE_PATHS.IMAGE_TEXT_FILE_PATH, 'image,text\n');
 
   } catch(err) {
     console.log('Error cleaning files: ', err);

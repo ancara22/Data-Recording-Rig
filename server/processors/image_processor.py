@@ -32,7 +32,7 @@ def processImage(imagePath):
             cv2.rectangle(image, (x, y), (x + w, y + h), (180, 180, 180), 2) 
             roi = image[y:y+h, x:x+w] 
         
-            roi = cv2.GaussianBlur(roi, (23, 23), 30) 
+            roi = cv2.GaussianBlur(roi, (99, 99), 100) 
             image[y:y+roi.shape[0], x:x+roi.shape[1]] = roi 
 
         #Processing for text detection

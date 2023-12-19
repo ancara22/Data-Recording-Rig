@@ -29,7 +29,7 @@ webClientRoutes.get('/rigStatus', (req, res) => res.json({
 //Save new configs to the file
 webClientRoutes.get("/rigStart", (req, res) => {
     resetCSVFile(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, 'Timestamp,GSR');
-    resetCSVFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, 'startTime,endTime,Emotion');
+    resetCSVFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, 'startTime,endTime,Emotion\n');
     handleRigControl(req, res, "start")
 });
 

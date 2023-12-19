@@ -169,6 +169,7 @@ const vueApp = new Vue({
                     this.audioNumber = data.audioNumber;
                     let { hours, minutes, sec } = secondsToHoursMinutes(seconds)
                     this.gsrTime = hours + "hh " + minutes + "mm " + sec + "s";
+                    
                     console.log('first', this.gsrTime)
                 }).catch(error => console.error('Error:', error));
         },
