@@ -2,11 +2,13 @@ import express from 'express';
 import ini from 'ini';
 import fs from 'fs';
 import csv from 'csv-parser';
+import path from "path";
 import { saveData } from './utility.js';
 import { FILE_PATHS } from './server_settings.js';
 import { SERVER_CONFIG } from './server_settings.js';
 import { rigControl } from './rig_controller.js';
 import { resetCSVFile } from './file_cleaners.js';
+
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +136,14 @@ webClientRoutes.post("/saveAudioIntro", saveData('user', 'audio'), (req, res) =>
     });
 });
 
+webClientRoutes.get("/getAllSessions", (req, res) => {
+    let sessionsFiles = findTheSessionsJsonFiles(FILE_PATHS.SESSION_FOLDER);
+
+    res.json(sessionsFiles);
+});
+
+
+
 //Read a JSON file function with callback
 function readFileAndHandleErrors(filePath, res, callback) {
     fs.readFile(filePath, 'utf8', (err, data) => {
@@ -165,7 +175,7 @@ function readCsvAndHandleErrors(filePath, res, callback) {
             .on('end', () => {
                 // Transform data and extract information
                 const transformedData = data.map((item) => {
-                    const imageNameMatch = item.image.match(/img_(\d+)\.jpg/),
+                    const imageNameMatch = item.image.match(/(\d+)-stream\.jpg/),
                         imageId = imageNameMatch ? imageNameMatch[1] : null;
 
                     return {
@@ -184,6 +194,30 @@ function readCsvAndHandleErrors(filePath, res, callback) {
         console.log('Error reading CSV file: ', err);
     }
 }
+
+
+//Scan the sessions filder and return all the session json files
+function findTheSessionsJsonFiles(folderPath) {
+    fs.readdir(folderPath, (err, files) => {
+        if (err) {
+            console.error('Error reading folder:', err);
+            return;
+        }
+
+        //Filter files with the extension '.json'
+        const matchingFiles = files.map(file => {
+            const extension = path.extname(file),
+                fileName = path.basename(file, extension);
+
+            if(extension === '.json') return fileName;
+        })
+
+        return matchingFiles
+    });
+}
+
+
+
 
 
 export {

@@ -1,18 +1,21 @@
-import express                          from 'express';
-import bodyParser                       from 'body-parser';
-import path                             from 'path';
-import { fileURLToPath }                from 'url';
-import { updateTheFinalFile, getTheHash, runImageProcessor }           from './modules/utility.js';
-import { concatinateWavFiles  }         from './modules/aws_services.js'
-import { rigControl }                   from './modules/rig_controller.js';
-import { cleanOldRowData, removeStreamFiles } from './modules/file_cleaners.js';
-import { serverRoutes }                 from './modules/routes.js';
-import { webClientRoutes }              from './modules/client-routes.js';
+import express                 from 'express';
+import bodyParser              from 'body-parser';
+import path                    from 'path';
+import { fileURLToPath }       from 'url';
+import { updateTheFinalFile }  from './modules/utility.js';
+import { rigControl }          from './modules/rig_controller.js';
+import { removeStreamFiles }   from './modules/file_cleaners.js';
+import { serverRoutes }        from './modules/routes.js';
+import { webClientRoutes }     from './modules/client-routes.js';
+import { FILE_PATHS }          from './modules/server_settings.js';
+import cors from "cors";
 
 
 // Set the port for the server
 const port = 8080;
 const app = express();
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -30,12 +33,12 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
     //cleanOldRowData();        //Clean old row data
-    rigControl('config');     //Configure the rig
-    updateTheFinalFile();     //Update the final file / interval
+    //rigControl('config');     //Configure the rig
+    //updateTheFinalFile();     //Update the final file / interval
     
     //concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav"); //TEST
     //getTheHash((hash) => console.log('hash: ', hash))     //TEST
-    
+
 });
 
 

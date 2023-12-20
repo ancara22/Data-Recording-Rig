@@ -21,6 +21,7 @@ const vueApp = new Vue({
         imagesNumber           : 0,            //Images counter
         audioNumber            : 0,            //Audio counter
         gsrTime                : '00hh 00mm',            //Gsr counter
+        sessionsList           : [],
 
         //Rig image configurations
         imageSettings: {
@@ -167,8 +168,8 @@ const vueApp = new Vue({
                     this.rigActive = data.rigActive;   //Update the local rig status 
                     this.imagesNumber = data.imagesNumber;
                     this.audioNumber = data.audioNumber;
-                    let { hours, minutes, sec } = secondsToHoursMinutes(seconds)
-                    this.gsrTime = hours + "hh " + minutes + "mm " + sec + "s";
+                    let { hours, minutes, sec } = this.secondsToHoursMinutes(data.gsrNumber)
+                    this.gsrTime = hours + "h " + minutes + "m " + sec + "s";
                     
                     console.log('first', this.gsrTime)
                 }).catch(error => console.error('Error:', error));
@@ -359,6 +360,13 @@ const vueApp = new Vue({
             const sec = Math.floor(remainingSeconds % 60);
         
             return { hours, minutes, sec };
+        },
+
+        getAllSessionsNames() {
+            fetch("/getAllSessions")
+                .then(response => response.json())
+                .then(data => this.sessionsList = data) 
+                .catch(error => console.error('Error:', error));
         }
         
     }
