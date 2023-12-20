@@ -149,7 +149,8 @@ function insertToJSON(outputPath, audioFile) {
                             let dataObject = JSON.parse(data); //Parse the json data to object
                             dataObject.push(newData); //Add the new data to the file object
 
-                            let dataJson = JSON.stringify(dataObject); //Convert the object to json
+                            let dataJson = JSON.stringify(dataObject, null, 4); //Convert the object to json
+
 
                             //Write the json file
                             fs.writeFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, dataJson, 'utf8', (err) => {
@@ -163,13 +164,15 @@ function insertToJSON(outputPath, audioFile) {
             }
 
             removeAJsonFile(outputPath); //Remove the json file(the transcribed file from one audio data)
+        }).catch(err => {
+            console.log('Error formating: ', err);
         })
 }
 
 //Format the conversation to json format
 function formatTheAudioJson(filePath, respons) {
     return new Promise(async (resolve, reject) => {
-        readJSONFile(FILE_PATHS.USER_INTRO_AUDIO_PATH, (user) => {
+        readJSONFile(FILE_PATHS.USER_FILE_PATH, (user) => {
             try {
                 let words, content = '',
                     newSpeaker = false;
@@ -182,14 +185,13 @@ function formatTheAudioJson(filePath, respons) {
                         text: ''
                     }
 
-                    extractEmotionsFromText(data.text)
+                    extractEmotionsFromText(data.results.transcripts[0].transcript)
                         .then(emotion => {
-                            console.log('resp', emotion)
                             respons.text_emotion = emotion;
 
                             return true;
                         }).then(() => {
-                            words = JSON.parse(data)["results"]["items"]; //Get the extracted words
+                            words = data["results"]["items"]; //Get the extracted words
 
                             let s = 0; //Speakers count
 
@@ -200,12 +202,8 @@ function formatTheAudioJson(filePath, respons) {
                                 if (!speakerData.speaker) {
                                     speakerData.speaker = speaker_label; //Set the first speaker
 
-                                    if (speakerData.speaker == "spk_0")
-                                        speakerData.speaker = user.currentUser;
-
-                                    if(s != 0) {
-                                        respons.text.push(speakerData); //Add the speakers data
-                                    }
+                                    respons.text.push(speakerData); //Add the speakers data
+                                    
                                 } else if (speakerData.speaker != speaker_label) {
                                     newSpeaker = true;
                                     speakerData = {
@@ -220,6 +218,7 @@ function formatTheAudioJson(filePath, respons) {
                                 if (newSpeaker) {
                                     s++; //Next speaker
                                     speakerData.speaker = speaker_label; //Speaker data frame
+                                    
                                     speakerData.text = '';
                                     content = '';
 
@@ -235,7 +234,11 @@ function formatTheAudioJson(filePath, respons) {
                                 respons.text[s].text = content.replace(/\s([.,?!])/g, '$1');
                             }
 
+                            processTextObject(respons, user.currentUser);
+
                             resolve();
+                        }).catch(err => {
+                            console.log('Error extracting emotions: ', err)
                         })
                 });
 
@@ -244,11 +247,6 @@ function formatTheAudioJson(filePath, respons) {
             }
         })
     })
-
-
-
-
-
 }
 
 //Remove the a file
@@ -343,6 +341,20 @@ function concatinateWavFiles(wavFile, callback) {
             
         }
     })
+}
+
+
+function processTextObject(inputObject, username) {
+    if (inputObject && inputObject.text && Array.isArray(inputObject.text)) {
+        inputObject.text.shift();   //Remove the first element from the 'text' array
+
+        //Rename 'speaker' to 'username' if it is equal to 'spk_0'
+        inputObject.text.forEach((item) => {
+            if (item.speaker === 'spk_0') {
+                item.speaker = username;
+            }
+        });
+    }
 }
 
 export {

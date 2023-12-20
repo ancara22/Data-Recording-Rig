@@ -1,11 +1,11 @@
 {
-  "sessionStart": 1703008636054,
-  "currentUser": "Deniss",
-  "sessionFile": "session_1703008636054.json",
-  "version": 0.3,
-  "duration": 3000,
-  "blockchain": {
-    "authority": "Evolwe",
-    "hash": "65d786bc42b86dc4e547b2ef513c36a210fceb24c87cd838d3b252c4be10c757"
-  }
+    "sessionStart": 1703097914745,
+    "currentUser": "Denis",
+    "sessionFile": "session_1703097914745.json",
+    "version": 0.3,
+    "duration": 3000,
+    "blockchain": {
+        "authority": "Evolwe",
+        "hash": "4c1932a5591baa1ce2009aa87d945797f39600654fec7ad31d7fc615dd59c94a"
+    }
 }

@@ -67,7 +67,7 @@ serverRoutes.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => 
     //Procces the audio file
     fs.promises.readFile(filePath)
         .then(() => {
-            //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
+            sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
             res.sendStatus(200);
         })
 });

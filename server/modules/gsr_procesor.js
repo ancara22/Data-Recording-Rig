@@ -127,7 +127,9 @@ function writeClientGSREmotionsToCSV(data) {
 //Insert the section to csv file
 async function writeSectionToCSV(data, callback) {
     try {
-        const emotion = await predictGSREmotion(data.gsrData);
+        const gsrValues = data.gsrData.map(item => Object.values(item)[0]);
+
+        const emotion = await predictGSREmotion(gsrValues);
         const csvRow = `${data.startTime},${data.finishTime},"[${data.gsrData.join(', ')}]",${emotion}\n`;
 
         fs.appendFile(FILE_PATHS.GSR_TRAINING_FILE_PATH,  csvRow, (err) => {

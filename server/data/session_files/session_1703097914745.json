@@ -1,0 +1,372 @@
+{
+    "head": {
+        "1703097914745": "session_1703097914745.json",
+        "user": "Denis",
+        "version": 0.3,
+        "duration": 3000,
+        "blockchain": {
+            "authority": "Evolwe",
+            "hash": "4c1932a5591baa1ce2009aa87d945797f39600654fec7ad31d7fc615dd59c94a"
+        }
+    },
+    "data": {
+        "gsr": [
+            {
+                "start": 1703097902,
+                "end": 1703098082,
+                "section": [
+                    {"1703097902": 506,"level": "High"},
+                    {"1703097904": 490,"level": "High"},
+                    {"1703097905": 510,"level": "High"},
+                    {"1703097907": 501,"level": "High"},
+                    {"1703097909": 509,"level": "High"},
+                    {"1703097912": 502,"level": "High"},
+                    {"1703097913": 500,"level": "High"},
+                    {"1703097915": 500,"level": "High"},
+                    {"1703097917": 499,"level": "High"},
+                    {"1703097919": 506,"level": "High"},
+                    {"1703097921": 492,"level": "High"},
+                    {"1703097923": 491,"level": "High"},
+                    {"1703097925": 502,"level": "High"},
+                    {"1703097927": 488,"level": "High"},
+                    {"1703097930": 493,"level": "High"},
+                    {"1703097932": 496,"level": "High"},
+                    {"1703097934": 496,"level": "High"},
+                    {"1703097936": 486,"level": "High"},
+                    {"1703097938": 488,"level": "High"},
+                    {"1703097940": 496,"level": "High"},
+                    {"1703097941": 498,"level": "High"},
+                    {"1703097943": 493,"level": "High"},
+                    {"1703097946": 488,"level": "High"},
+                    {"1703097948": 487,"level": "High"},
+                    {"1703097950": 477,"level": "High"},
+                    {"1703097952": 477,"level": "High"},
+                    {"1703097954": 486,"level": "High"},
+                    {"1703097956": 492,"level": "High"},
+                    {"1703097958": 486,"level": "High"},
+                    {"1703097959": 490,"level": "High"},
+                    {"1703097961": 479,"level": "High"},
+                    {"1703097964": 484,"level": "High"},
+                    {"1703097967": 478,"level": "High"},
+                    {"1703097968": 475,"level": "High"},
+                    {"1703097970": 481,"level": "High"},
+                    {"1703097972": 482,"level": "High"},
+                    {"1703097974": 480,"level": "High"},
+                    {"1703097976": 476,"level": "High"},
+                    {"1703097977": 479,"level": "High"},
+                    {"1703097979": 479,"level": "High"},
+                    {"1703097981": 467,"level": "High"},
+                    {"1703097982": 468,"level": "High"},
+                    {"1703097985": 468,"level": "High"},
+                    {"1703097986": 471,"level": "High"},
+                    {"1703097988": 470,"level": "High"},
+                    {"1703097990": 476,"level": "High"},
+                    {"1703097992": 465,"level": "High"},
+                    {"1703097994": 475,"level": "High"},
+                    {"1703097996": 470,"level": "High"},
+                    {"1703097997": 475,"level": "High"},
+                    {"1703097999": 464,"level": "High"},
+                    {"1703098001": 463,"level": "High"},
+                    {"1703098003": 466,"level": "High"},
+                    {"1703098004": 465,"level": "High"},
+                    {"1703098006": 469,"level": "High"},
+                    {"1703098008": 460,"level": "High"},
+                    {"1703098009": 466,"level": "High"},
+                    {"1703098011": 465,"level": "High"},
+                    {"1703098013": 464,"level": "High"},
+                    {"1703098015": 463,"level": "High"},
+                    {"1703098016": 455,"level": "High"},
+                    {"1703098018": 458,"level": "High"},
+                    {"1703098020": 465,"level": "High"},
+                    {"1703098022": 466,"level": "High"},
+                    {"1703098024": 467,"level": "High"},
+                    {"1703098026": 454,"level": "High"},
+                    {"1703098028": 452,"level": "High"},
+                    {"1703098032": 452,"level": "High"}
+                ],
+                "sentiment": "High Stress State"
+            },
+            {
+                "start": 1703098083,
+                "end": 1703098263,
+                "section": [
+                    {"1703098083": 440,"level": "High"},
+                    {"1703098086": 436,"level": "High"},
+                    {"1703098090": 449,"level": "High"},
+                    {"1703098092": 443,"level": "High"},
+                    {"1703098095": 444,"level": "High"},
+                    {"1703098097": 442,"level": "High"},
+                    {"1703098100": 433,"level": "High"},
+                    {"1703098102": 442,"level": "High"},
+                    {"1703098105": 433,"level": "High"},
+                    {"1703098109": 426,"level": "High"},
+                    {"1703098111": 436,"level": "High"},
+                    {"1703098113": 440,"level": "High"},
+                    {"1703098115": 429,"level": "High"},
+                    {"1703098117": 440,"level": "High"},
+                    {"1703098119": 436,"level": "High"},
+                    {"1703098120": 430,"level": "High"},
+                    {"1703098122": 441,"level": "High"},
+                    {"1703098123": 431,"level": "High"},
+                    {"1703098125": 436,"level": "High"},
+                    {"1703098127": 437,"level": "High"},
+                    {"1703098129": 425,"level": "High"},
+                    {"1703098131": 435,"level": "High"},
+                    {"1703098133": 434,"level": "High"},
+                    {"1703098134": 431,"level": "High"},
+                    {"1703098136": 436,"level": "High"},
+                    {"1703098138": 423,"level": "High"},
+                    {"1703098141": 433,"level": "High"},
+                    {"1703098143": 426,"level": "High"},
+                    {"1703098145": 430,"level": "High"},
+                    {"1703098149": 435,"level": "High"},
+                    {"1703098151": 435,"level": "High"},
+                    {"1703098153": 426,"level": "High"},
+                    {"1703098155": 427,"level": "High"},
+                    {"1703098157": 435,"level": "High"},
+                    {"1703098159": 436,"level": "High"},
+                    {"1703098161": 438,"level": "High"},
+                    {"1703098163": 425,"level": "High"},
+                    {"1703098165": 437,"level": "High"},
+                    {"1703098166": 426,"level": "High"},
+                    {"1703098169": 426,"level": "High"},
+                    {"1703098171": 430,"level": "High"},
+                    {"1703098173": 430,"level": "High"},
+                    {"1703098175": 440,"level": "High"},
+                    {"1703098177": 428,"level": "High"},
+                    {"1703098180": 441,"level": "High"},
+                    {"1703098183": 429,"level": "High"},
+                    {"1703098185": 441,"level": "High"},
+                    {"1703098187": 433,"level": "High"},
+                    {"1703098189": 436,"level": "High"},
+                    {"1703098191": 441,"level": "High"},
+                    {"1703098193": 445,"level": "High"},
+                    {"1703098196": 430,"level": "High"},
+                    {"1703098198": 425,"level": "High"},
+                    {"1703098200": 437,"level": "High"},
+                    {"1703098202": 440,"level": "High"},
+                    {"1703098204": 429,"level": "High"},
+                    {"1703098208": 414,"level": "High"},
+                    {"1703098210": 421,"level": "High"},
+                    {"1703098214": 423,"level": "High"},
+                    {"1703098216": 411,"level": "High"},
+                    {"1703098218": 419,"level": "High"},
+                    {"1703098221": 414,"level": "High"},
+                    {"1703098224": 413,"level": "High"},
+                    {"1703098229": 414,"level": "High"},
+                    {"1703098231": 428,"level": "High"},
+                    {"1703098235": 425,"level": "High"},
+                    {"1703098237": 427,"level": "High"},
+                    {"1703098239": 426,"level": "High"},
+                    {"1703098246": 416,"level": "High"},
+                    {"1703098250": 423,"level": "High"},
+                    {"1703098253": 428,"level": "High"},
+                    {"1703098256": 420,"level": "High"},
+                    {"1703098259": 421,"level": "High"},
+                    {"1703098263": 429,"level": "High"}
+                ],
+                "sentiment": "Stress State"
+            }
+        ],
+        "eeg": [],
+        "audio": [
+            {
+                "1703097902": "audio_1703097902.wav",
+                "text": [
+                    {
+                        "speaker": "spk_1",
+                        "text": "I said, well, how many kids can't adjust to the more rigorous pace? And she said, well, they, they can all adjust. And that's what I saw. I mean, I never saw, I never saw a bunch of Children, a group of Children that were more focused and alert than I saw at that school. And it was really heart rending in some sense. Yeah, by you going there, they, people actually reported her to the police for a hate crime just by your presence in that school. That's the problem with hate crime legislation. Like who defines hate? And I know the answer to that, who defines hate? The people? You least want to. So, you know, you want hate crime legislation, you just better keep in mind who's gonna define what constitutes hate. And then you think about the people, you're enabling these rat fins, these people who didn't learn not to uh tattle tail on their peers when they were Children who run to totalitarian authority to wield their resentful power. Now, that's all part of the legal code. It's like, well, we'll see where that goes. Well, we know where it goes, it goes."
+                    }
+                ],
+                "sentiment": {
+                    "Sentiment": "POSITIVE",
+                    "SentimentScore": {
+                        "Positive": 0.5669836401939392,
+                        "Negative": 0.11340390145778656,
+                        "Neutral": 0.15893957018852234,
+                        "Mixed": 0.1606728881597519
+                    }
+                }
+            },
+            {
+                "1703097970": "audio_1703097970.wav",
+                "text": [
+                    {
+                        "speaker": "spk_1",
+                        "text": "The police. Yeah. Well, that's not good. Not at all. And who knows where it'll end up. It's, it's terrifying actually that that should happen in a democratic society. Let me ask you about uh kids, what you done by kids? I mean, young adults really and then into their, their twenties trying to form their way through life. One of my favorite movie clips is Rocky Balboa. It's probably the non intellectual version of Jordan Peterson in many ways because he said this to his son. He was getting a bit spoiled and entitled and moaning about being Rocky so as well. And he says this to him. I love those people. It's good. What do you think of it? Well, that ethos was what lifted up Sylvester Stallone to stardom very rapidly in his first movie. And what do I think about that? I think that young people are literally dying for that message. I really, and I mean, literally, they're so demoralized, it's just beyond belief. And so one of the things that's been painful"
+                    }
+                ],
+                "sentiment": {
+                    "Sentiment": "MIXED",
+                    "SentimentScore": {
+                        "Positive": 0.25107890367507935,
+                        "Negative": 0.24816599488258362,
+                        "Neutral": 0.05011509731411934,
+                        "Mixed": 0.45063990354537964
+                    }
+                }
+            },
+            {
+                "1703098042": "audio_1703098042.wav",
+                "text": [
+                    {
+                        "speaker": "spk_1",
+                        "text": "Let's take a break and find out what that encouraging word should be. I wanna know why a lot of young people are very anxious about life. Why is that? And what's the best way for them to come to? Yeah. Well, welcome back to this special edition of Piers Morgan Sense. One on one with Doctor Jordan Peterson. We left them on the cliffhanger with Rocky Balboa and his address to his son about how to grow a pair for want of a better phrase. Um This idea that actually your life is defined not so much by success because you're everyone's friend and you're successful. But by the knocks you inevitably are gonna get, whether it's through losing love, one is losing a job, you know, losing a car, whatever it may be, you're gonna get hit by start recording. I'm feeling very good, stop recording, losing your life with differing magnitude. And I've always believed that how you deal with the, the downside of life really defines how you lead the rest of your life. Well, the, the clip is very interesting because"
+                    }
+                ],
+                "sentiment": {
+                    "Sentiment": "POSITIVE",
+                    "SentimentScore": {
+                        "Positive": 0.9218562841415405,
+                        "Negative": 0.0006273325416259468,
+                        "Neutral": 0.07736194878816605,
+                        "Mixed": 0.0001543883263366297
+                    }
+                }
+            },
+            {
+                "1703098113": "audio_1703098113.wav",
+                "text": [
+                    {
+                        "speaker": "spk_1",
+                        "text": "That notion. It's, it's, it's warped into this sense of victimization, but it does, does reflect some understanding of the underlying tragic reality of life. And so it's good to get that right on the table to begin with. Say, well, you're miserable, you have your reasons and they might be deep reasons. But if you let the misery demoralize you and make you bitter and cynical and cowardly and make you withdraw, then first of all, that's a failure in the highest sense on your part and all it's gonna do is make everything worse. And then you might think, well, what do you have to, to, to respond to that? How do you respond to that catastrophe and challenge? And the answer is, and this is what Rocky is telling his son in no uncertain terms is like terrible as things are. There's a lot more to you than you can possibly imagine and that if you face those things forthrightly and with some faith and courage, then you can, you can, you can have the adventure of your life and prevent"
+                    }
+                ],
+                "sentiment": {
+                    "Sentiment": "MIXED",
+                    "SentimentScore": {
+                        "Positive": 0.23333744704723358,
+                        "Negative": 0.019846312701702118,
+                        "Neutral": 0.03666745498776436,
+                        "Mixed": 0.7101487517356873
+                    }
+                }
+            },
+            {
+                "1703098184": "audio_1703098184.wav",
+                "text": [
+                    {
+                        "speaker": "spk_1",
+                        "text": "So that wasn't really a big thing amongst my friendship group, certainly. But I, I reckon it's two things, one social media, uh the constant bombardment of other people having a great time or looking great often, of course, imagery and having to live up to false ideals. But also a conversation I had with Doctor Phil in America where his explanation for it was that he said, you've got to understand that social media means that young people now are being bombarded all day long and all night long with quite shocking imagery. And he gave an example. He said when I was young, he said, if a crocodile ate somebody on a golf course in Florida, the chances are I would never have heard about it. It probably wouldn't have made the national news, probably wouldn't have even made the state news and I wouldn't have heard about this incident. Now it's quite likely that a video of the crocodile eating this person would be whipping its way around social media within half an hour and"
+                    }
+                ],
+                "sentiment": {
+                    "Sentiment": "POSITIVE",
+                    "SentimentScore": {
+                        "Positive": 0.6468366980552673,
+                        "Negative": 0.03668752685189247,
+                        "Neutral": 0.25867760181427,
+                        "Mixed": 0.057798195630311966
+                    }
+                }
+            },
+            {
+                "1703098269": "audio_1703098269.wav",
+                "text": [
+                    {
+                        "speaker": "spk_1",
+                        "text": "Fingertips. And the disadvantage is that everything's in your face and by everything, it might be 40 million pornographic images. That's a lot or an endless array of tragic scenarios and really endless. And so that's a problem. And the problem, the fundamental problem is how do you handle the fire hose of information? And no one really knows the answer to that. But we should also point out that it's no wonder that young people are demoralized and anxious because we're doing everything we can to demoralize them and make anxious. So on the masculine front, we tell young boys that well, the world's a terrible patriarchal tyranny and all of that patriarchal tyranny, which is the whole explanation for history has done nothing but oppress and exploit people and destroy the planet. And so that any manifestation of that masculine impulse on your part is equivalent to the world destroying force. All masculinity now is branded toxic. And I remember, I think the key moment for me came when Gillette, it always had these"
+                    }
+                ],
+                "sentiment": {
+                    "Sentiment": "MIXED",
+                    "SentimentScore": {
+                        "Positive": 0.10844138264656067,
+                        "Negative": 0.37104448676109314,
+                        "Neutral": 0.11672331392765045,
+                        "Mixed": 0.4037908613681793
+                    }
+                }
+            }
+        ],
+        "des": [
+            {
+                "1703098042": "audio_1703098042.wav",
+                "text": ". I'm feeling very good,"
+            }
+        ],
+        "sentiment": [
+            {
+                "1703097902": "audio_1703097902.wav",
+                "sentiment": {
+                    "Sentiment": "POSITIVE",
+                    "SentimentScore": {
+                        "Positive": 0.5669836401939392,
+                        "Negative": 0.11340390145778656,
+                        "Neutral": 0.15893957018852234,
+                        "Mixed": 0.1606728881597519
+                    }
+                }
+            },
+            {
+                "1703097970": "audio_1703097970.wav",
+                "sentiment": {
+                    "Sentiment": "MIXED",
+                    "SentimentScore": {
+                        "Positive": 0.25107890367507935,
+                        "Negative": 0.24816599488258362,
+                        "Neutral": 0.05011509731411934,
+                        "Mixed": 0.45063990354537964
+                    }
+                }
+            },
+            {
+                "1703098042": "audio_1703098042.wav",
+                "sentiment": {
+                    "Sentiment": "POSITIVE",
+                    "SentimentScore": {
+                        "Positive": 0.9218562841415405,
+                        "Negative": 0.0006273325416259468,
+                        "Neutral": 0.07736194878816605,
+                        "Mixed": 0.0001543883263366297
+                    }
+                }
+            },
+            {
+                "1703098113": "audio_1703098113.wav",
+                "sentiment": {
+                    "Sentiment": "MIXED",
+                    "SentimentScore": {
+                        "Positive": 0.23333744704723358,
+                        "Negative": 0.019846312701702118,
+                        "Neutral": 0.03666745498776436,
+                        "Mixed": 0.7101487517356873
+                    }
+                }
+            },
+            {
+                "1703098184": "audio_1703098184.wav",
+                "sentiment": {
+                    "Sentiment": "POSITIVE",
+                    "SentimentScore": {
+                        "Positive": 0.6468366980552673,
+                        "Negative": 0.03668752685189247,
+                        "Neutral": 0.25867760181427,
+                        "Mixed": 0.057798195630311966
+                    }
+                }
+            },
+            {
+                "1703098269": "audio_1703098269.wav",
+                "sentiment": {
+                    "Sentiment": "MIXED",
+                    "SentimentScore": {
+                        "Positive": 0.10844138264656067,
+                        "Negative": 0.37104448676109314,
+                        "Neutral": 0.11672331392765045,
+                        "Mixed": 0.4037908613681793
+                    }
+                }
+            },
+            {
+                "1703097902": 1703098082,
+                "sentiment": "High Stress State"
+            },
+            {
+                "1703098083": 1703098263,
+                "sentiment": "Stress State"
+            }
+        ],
+        "image": []
+    }
+}

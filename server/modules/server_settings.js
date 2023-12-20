@@ -5,7 +5,7 @@ const AUDIO_FOLDER  = './data/audio/',
     USER_FOLDER     = './data/user/',
     IMAGE_FOLDER    = './data/images/',
     SESSION_FOLDER  = './data/session_files/',
-    CONVERTED_AUDIO = './data/audio/row_audio/converted_audio/';
+    CONVERTED_AUDIO = './data/audio/processed_audio/';
 
 
 const AUDIO_OUTPUT_JSON     = 'audio_text.json',
@@ -56,7 +56,7 @@ const APP_CONFIG = {
 
 //Server configurations
 let SERVER_CONFIG = {
-    OUTPUT_LENGTH               : 5,       //Length of the output json file (in minutes)
+    OUTPUT_LENGTH               : 15,       //Length of the output json file (in minutes)
     current_session_file        : '',      //Current session file name
     rigActive                   : false,
     imagesNumber                : 0,

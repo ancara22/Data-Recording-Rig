@@ -1,6 +1,6 @@
 import { Client } from 'ssh2';
 import { FILE_PATHS, RIG_CONFIG, APP_CONFIG } from "./server_settings.js";
-import { runImageProcessor } from './utility.js';
+import { runImageProcessor, updateTheFinalFile } from './utility.js';
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -47,12 +47,15 @@ function executeCommand(ssh) {
             ssh.end();
             return;
         }
+
+        updateTheFinalFile();     //Update the final file / interval
         
         stream.stderr.on('data', (data) => console.error('Python Script Error:', data.toString()));
     
         stream.on("close", (code, signal) => { 
             console.log("Recording process closed. Exit code:", code, "Signal:", signal);
             ssh.end();
+           
         });
     });
 }

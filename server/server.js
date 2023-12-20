@@ -4,12 +4,12 @@ import path                    from 'path';
 import { fileURLToPath }       from 'url';
 import { updateTheFinalFile }  from './modules/utility.js';
 import { rigControl }          from './modules/rig_controller.js';
-import { removeStreamFiles }   from './modules/file_cleaners.js';
+import { removeStreamFiles, cleanOldRowData }   from './modules/file_cleaners.js';
 import { serverRoutes }        from './modules/routes.js';
 import { webClientRoutes }     from './modules/client-routes.js';
 import { FILE_PATHS }          from './modules/server_settings.js';
 import cors from "cors";
-
+import {insertToJSON } from "./modules/aws_services.js";
 
 // Set the port for the server
 const port = 8080;
@@ -32,13 +32,13 @@ app.use('/', serverRoutes);    //Server client routes
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
-    //cleanOldRowData();        //Clean old row data
-    //rigControl('config');     //Configure the rig
-    //updateTheFinalFile();     //Update the final file / interval
-    
+    cleanOldRowData();        //Clean old row data
+    rigControl('config');     //Configure the rig
+
+    //updateTheFinalFile();     //Update the final file / interval  //TEST
     //concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav"); //TEST
     //getTheHash((hash) => console.log('hash: ', hash))     //TEST
-
+    //insertToJSON("./data/audio/audio_1703090328.json", "audio_1703090328.wav");  //TEST
 });
 
 

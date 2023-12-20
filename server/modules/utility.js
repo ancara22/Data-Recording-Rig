@@ -7,6 +7,7 @@ import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
 import { emptyFiles } from "./file_cleaners.js";
 
 
+
 //Save data to a file
 function saveData(folder, fileType) {
     const storage = diskStorage({
@@ -55,7 +56,8 @@ function readJSONFile(filePath, callback = () => {}) {
                 return;
             }
 
-            const dataObject = JSON.parse(data);
+            const dataObject = JSON.parse(data || '[]');
+
             callback(dataObject);
         });
     } catch (err) {
@@ -67,7 +69,7 @@ function readJSONFile(filePath, callback = () => {}) {
 //Write json file
 function writeJSONFile(filePath, data) {
     try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 4), 'utf8');
     } catch (error) {
         console.error(`Error writing JSON file (${filePath}):`, error);
     }
@@ -80,8 +82,6 @@ function writeJSONFile(filePath, data) {
 
 //Create finnal output file
 function insertDataToFinalFile() {
-   
-
     updateTheSessionFIle(() => {
         //Read Audio text data
         readJSONFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, (audioData) => {
@@ -89,7 +89,7 @@ function insertDataToFinalFile() {
                 imageObject = [],
                 experienceObject = [],
                 imagesData = getImages(),
-                sentiments = {};
+                sentiments = [];
 
             //Format images data
             imagesData.forEach(row => {
@@ -111,7 +111,7 @@ function insertDataToFinalFile() {
                 let data = {
                     [audioSection.timestamp]: audioSection.audio_file,
                     text: audioSection.text,
-                    sentiment: audioSection.sentiment
+                    sentiment: audioSection.text_emotion
                 }
 
                 let des = {
@@ -121,16 +121,18 @@ function insertDataToFinalFile() {
 
                 sentiments.push({
                     [audioSection.timestamp]: audioSection.audio_file,
-                    sentiment: audioSection.sentiment
+                    sentiment: audioSection.text_emotion
                 })
 
-                experienceObject.push(des)
+                experienceObject.push(des);
                 audioObject.push(data);
             });
 
             //Read GSR data
             readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (gsrData) => {
                 let gsrObject = [], eegObject = [];
+
+                experienceObject = experienceObject.filter(el => el.text !=null);
 
                 //Format the GSR datax
                 gsrData.forEach(gsrSection => {
@@ -187,7 +189,7 @@ function extractTimestamp(fromString) {
 
 //Run the final file content update by interval
 function updateTheFinalFile() {
-    setInterval(() => insertDataToFinalFile(), 3 * 60 * 100);
+    setInterval(() => insertDataToFinalFile(), 1 * 60 * 100);
 }
 
 //Update the session file when the time is more than 30 min

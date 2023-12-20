@@ -43,7 +43,7 @@ async function emptyFiles() {
 
     //Empty the content of each file
     await Promise.all(filesToEmpty.map(async (filename) => {
-      await writeFile(filename, JSON.stringify([{}]));
+      await writeFile(filename, JSON.stringify([]));
     }));
 
     resetCSVFile(FILE_PATHS.IMAGE_TEXT_FILE_PATH, 'image,text\n');
