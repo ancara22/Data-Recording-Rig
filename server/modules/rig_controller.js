@@ -27,7 +27,10 @@ function rigControl(startRig) {
                     return 0;
                 }
 
-                if(startRig != 'config')  runTheRecordingApp(ssh, startRig);
+                if(startRig != 'config')  {
+                    runTheRecordingApp(ssh, startRig);
+                    //startEEGRecording()   //EEG recording app
+                }
             })
         
             sftp.on('close', () => ssh.end());       //Close the ssh connection
@@ -85,6 +88,23 @@ function handleSSHError(ssh) {
             console.log('SSH connection error: ', err)
         }
     })
+}
+
+function startEEGRecording() {
+    //EEG
+    let socketUrl = 'wss://localhost:6868';
+
+    let user = {
+        "license": process.env.HEADSET_LICENSE,
+        "clientId": process.env.HEADSET_CLIENT_ID,
+        "clientSecret": process.env.HEADSET_CLIENT_SECRET,
+        "debit": 1
+    }
+
+
+    let cortex = new Cortex(user, socketUrl)
+    cortex.run();
+
 }
 
 //Export

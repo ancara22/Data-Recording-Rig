@@ -367,6 +367,25 @@ export class Cortex {
             insertDataToJsonl("performance_metrics.jsonl", receivedData);
         }
     }
+
+    run() {
+        this.listenForWarnings();
+
+        /*
+            Have six kind of stream data ['fac', 'pow', 'eeg', 'mot', 'met', 'com']
+
+            eeg - The raw EEG data from the headset
+            fac - The results of the facial expressions detection
+            met - The results of the performance metrics detection (Attention level, Stress level, etc)
+
+            mot - The motion data from the headset
+            pow - The band power of each EEG sensor. It includes the alpha, low beta, high beta, gamma, and theta bands
+            com - The results of the mental commands detection. 
+        */
+        let streams = ['eeg', 'fac', 'met']
+
+        this.sub(streams);
+    }
     
 }
 

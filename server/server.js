@@ -2,23 +2,27 @@ import express                 from 'express';
 import bodyParser              from 'body-parser';
 import path                    from 'path';
 import { fileURLToPath }       from 'url';
-import { updateTheFinalFile, getTheHash }  from './modules/utility.js';
 import { rigControl }          from './modules/rig_controller.js';
-import { removeStreamFiles, cleanOldRowData }   from './modules/file_cleaners.js';
 import { serverRoutes }        from './modules/routes.js';
 import { webClientRoutes }     from './modules/client-routes.js';
-import { FILE_PATHS }          from './modules/server_settings.js';
+import { Cortex }              from './modules/cortex.js';
+import dotenv from "dotenv";
 import cors from "cors";
-import {insertToJSON } from "./modules/aws_services.js";
-import { Cortex } from './modules/cortex.js';
 
+ //For Testing ######################################################################
+import { updateTheFinalFile }  from './modules/utility.js';
+import {insertToJSON } from "./modules/aws_services.js";
+import { FILE_PATHS }          from './modules/server_settings.js';
+import { removeStreamFiles, cleanOldRowData }   from './modules/file_cleaners.js';
+ //###################################################################################
+
+dotenv.config(); //Local  headset variables
 
 // Set the port for the server
 const port = 8080;
 const app = express();
 
 app.use(cors());
-
 app.use(bodyParser.json());
 
 //Set the public folder
@@ -37,11 +41,37 @@ app.listen(port, () => {
     //cleanOldRowData();        //Clean old row data
     //rigControl('config');     //Configure the rig
 
-    //updateTheFinalFile();     //Update the final file / interval  //TEST
-    //concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav"); //TEST
-    //getTheHash((hash) => console.log('hash: ', hash))     //TEST
-    //insertToJSON("./data/audio/audio_1703090328.json", "audio_1703090328.wav");  //TEST
+
+    //For Testing ######################################################################
+    //updateTheFinalFile();         //Update the final file / interval            //TEST
+    //concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav");         //TEST
+    //getTheHash((hash) => console.log('hash: ', hash))                           //TEST
+    //insertToJSON("./data/audio/audio_1703090328.json", "audio_1703090328.wav"); //TEST
+    //###################################################################################
 });
+
+
+
+
+//EEG
+let socketUrl = 'wss://localhost:6868';
+
+let user = {
+    "license": process.env.HEADSET_LICENSE,
+    "clientId": process.env.HEADSET_CLIENT_ID,
+    "clientSecret": process.env.HEADSET_CLIENT_SECRET,
+    "debit": 1
+}
+
+
+let cortex = new Cortex(user, socketUrl)
+cortex.run();
+
+
+
+
+
+
 
 
 
@@ -59,36 +89,7 @@ setInterval(() => {
 }, 30000)
 
 
-//http://192.168.0.57:8080
+//http://192.168.0.57:8080 - wifi home
+//http://172.20.10.4:8080 - mobile hotspot
 
 
-
-
-
-//EEG
-let socketUrl = 'wss://localhost:6868';
-
-let user = {
-    "license": "",
-    "clientId": "",
-    "clientSecret": "",
-    "debit": 1
-}
-
-
-let cortex = new Cortex(user, socketUrl)
-cortex.listenForWarnings();
-
-/*
-    Have six kind of stream data ['fac', 'pow', 'eeg', 'mot', 'met', 'com']
-
-    eeg - The raw EEG data from the headset
-    fac - The results of the facial expressions detection
-    met - The results of the performance metrics detection (Attention level, Stress level, etc)
-
-    mot - The motion data from the headset
-    pow - The band power of each EEG sensor. It includes the alpha, low beta, high beta, gamma, and theta bands
-    com - The results of the mental commands detection. 
-*/
-let streams = ['eeg', 'fac', 'met']
-cortex.sub(streams);
