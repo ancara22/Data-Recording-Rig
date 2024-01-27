@@ -1,4 +1,5 @@
 import WebSocket from 'ws';
+import fs from "fs";
 
 //Headset responses code
 const WARNING_CODE_HEADSET_DISCOVERY_COMPLETE = 142;
@@ -22,12 +23,8 @@ export class Cortex {
             //Check the authentification 
             await this.checkGrantAccessAndQuerySessionInfo()
 
+            //Run the subbscription to the data
             this.subRequest(streams, this.authToken, this.sessionId)
-
-            this.socket.on('message', (data)=>{
-                //Log stream data to file or console here
-                console.log(data)
-            })
         })
     }
 
@@ -44,28 +41,30 @@ export class Cortex {
             }
         };
 
-        console.log('Refresh the headset list');
+        //Send the command to refresh the bluetooth scanner
         socket.send(JSON.stringify(refreshHeadsetListRequest));
     }
 
-    //Query headset
+    //Query headset id
     queryHeadsetId() {
         return new Promise((resolve, reject) => {
             const QUERY_HEADSET_ID = 2;
             let socket = this.socket;
+
             let queryHeadsetRequest = {
                 "jsonrpc": "2.0",
                 "id": QUERY_HEADSET_ID,
                 "method": "queryHeadsets",
                 "params": {}
             };
+
             const sendQueryRequest = () => {
-                console.log('queryHeadsetRequest');
                 socket.send(JSON.stringify(queryHeadsetRequest));
             };
             
             sendQueryRequest();
     
+            //Check headset availability/ manage response message
             socket.on('message', (data) => {
                 try {
                     if(JSON.parse(data)['id']==QUERY_HEADSET_ID){
@@ -95,8 +94,10 @@ export class Cortex {
     requestAccess(){
         let socket = this.socket
         let user = this.user
+
         return new Promise(function(resolve, reject){
             const REQUEST_ACCESS_ID = 1
+
             let requestAccessRequest = {
                 "jsonrpc": "2.0", 
                 "method": "requestAccess", 
@@ -107,14 +108,13 @@ export class Cortex {
                 "id": REQUEST_ACCESS_ID
             }
 
-            console.log('start send request: ',requestAccessRequest)
+            //Request acces
             socket.send(JSON.stringify(requestAccessRequest));
 
+            //Handle request acces response
             socket.on('message', (data)=>{
                 try {
-                    if(JSON.parse(data)['id']==REQUEST_ACCESS_ID){
-                        resolve(data)
-                    }
+                    if(JSON.parse(data)['id'] == REQUEST_ACCESS_ID) resolve(data);
                 } catch (error) {}
             })
         })
@@ -134,9 +134,10 @@ export class Cortex {
                 "headset": headsetId
             }
         }
+
         return new Promise(function(resolve, reject){
             socket.send(JSON.stringify(controlDeviceRequest));
-            console.log('control device request: ', controlDeviceRequest)
+
             socket.on('message', (data)=>{
                 try {
                     let response = JSON.parse(data);
@@ -181,6 +182,7 @@ export class Cortex {
                     if(JSON.parse(data)['id']==AUTHORIZE_ID){
                         let cortexToken = JSON.parse(data)['result']['cortexToken']
                         resolve(cortexToken)
+
                         //Call controlDevice("refresh") when authorization is successful
                         this.refreshHeadsetList();
                     }
@@ -189,7 +191,7 @@ export class Cortex {
         })
     }
 
-    //Create session
+    //Create session with the headset
     createSession(authToken, headsetId) {
         const CREATE_SESSION_ID = 5;
 
@@ -232,7 +234,7 @@ export class Cortex {
         });
     }
 
-    //Subrequest
+    //Subrequest, sned the subscription to the EEG data, and handle the result 
     subRequest(stream, authToken, sessionId){
         let socket = this.socket
         const SUB_REQUEST_ID = 6 
@@ -248,16 +250,15 @@ export class Cortex {
             "id": SUB_REQUEST_ID
         }
 
-       // console.log('sub eeg request: ', subRequest)
         socket.send(JSON.stringify(subRequest))
 
+        //Handle data receiving
         socket.on('message', (data)=>{
             try {
-                //if(JSON.parse(data)['id']==SUB_REQUEST_ID){
-                    console.log('SUB REQUEST RESULT --------------------------------')
-                    console.log(data.toString('utf8'))
-                    console.log('\r\n')
-                 //}
+                let parsedData = JSON.parse(data.toString('utf8')); //Received data from the headsetr
+                //console.log(parsedData + '\r\n'));
+
+                this.handleData(parsedData); //Format data and save
             } catch (error) {}
         })
     }
@@ -288,12 +289,6 @@ export class Cortex {
         //Create session
         await this.createSession(authToken, this.headsetId).then((result)=>{sessionId=result})
         this.sessionId = sessionId
-
-        //Print results
-        console.log('HEADSET ID -----------------------------------' + this.headsetId + '\r\n')
-        console.log('CONNECT STATUS -------------------------------' + this.ctResult + '\r\n')
-        console.log('AUTH TOKEN -----------------------------------' + this.authToken + '\r\n')
-        console.log('SESSION ID -----------------------------------' + this.sessionId + '\r\n')
     }
 
     /**
@@ -350,24 +345,38 @@ export class Cortex {
         });
     }
 
+    //Handle received data
     handleData(receivedData) {
         let type = Object.keys(receivedData)[0];
 
         if(type == "eeg") {
             //Row EEG data
-            insertDataToJsonl("row_eeg.jsonl", receivedData);
+            this.insertDataToJsonl("row_eeg.jsonl", receivedData);
         } else if(type == "fac") {
             //Facial Expresions
-            insertDataToJsonl("facial_expressions.jsonl", receivedData);
+            this.insertDataToJsonl("facial_expressions.jsonl", receivedData);
         } else if(type == "pow") {
             //Performance metrics
-            insertDataToJsonl("performance_metrics.jsonl", receivedData);
-        } else if(type == "pow") {
+            this.insertDataToJsonl("power_of_sensors.jsonl", receivedData);
+        } else if(type == "met") {
             //Performance metrics
-            insertDataToJsonl("performance_metrics.jsonl", receivedData);
+            this.insertDataToJsonl("performance_metrics.jsonl", receivedData);
         }
     }
 
+    //Append received data to file
+    insertDataToJsonl(fileName, data) {
+        let jsonData = JSON.stringify(data) + "\n"; //jsonl line
+
+        fs.appendFile("./data/eeg/" + fileName, jsonData, (error) => {
+            if(error) throw error;
+            
+            //console.log('Data appended to', fileName);
+        })
+
+    }
+
+    //Run the headset streaming
     run() {
         this.listenForWarnings();
 
@@ -382,7 +391,7 @@ export class Cortex {
             pow - The band power of each EEG sensor. It includes the alpha, low beta, high beta, gamma, and theta bands
             com - The results of the mental commands detection. 
         */
-        let streams = ['eeg', 'fac', 'met']
+        let streams = ['eeg', 'fac', 'met', 'pow']
 
         this.sub(streams);
     }

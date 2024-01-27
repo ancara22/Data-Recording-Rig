@@ -52,7 +52,7 @@ app.listen(port, () => {
 
 
 
-
+//FOr Testing. It will run together with the app
 //EEG
 let socketUrl = 'wss://localhost:6868';
 
