@@ -184,6 +184,17 @@
                         </div>
                         <div id="data_audio">
                             <h6>Audio Data</h6>
+                            <div id="audio_player">
+                                <span>Select an audio file: </span>
+                                <select id="select_audio_box" @change="handleSelectAudioOption" :key="selectedFile" v-model="selectedAudio">
+                                    <option disabled value="" selected>Select Audio</option>
+                                    <option v-for="audio of audioList" :value="audio" :key="audio" >{{ audio }}</option>
+                                </select>
+                                <audio controls :key="selectedAudio">
+                                    <source :src="currentAudioFile" type="audio/wav" :key="selectedAudio">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
                             <div class="scroll">
                                 <div class="recording" v-for="audio in outputSessionContent.data.audio">
                                     <div class="time">Start Time: {{ getTime(Object.entries(audio)[0][0]) + '' }}</div>
@@ -198,18 +209,35 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <div id="image_data">
+                        <h6>Image Data</h6>
+                            <span>Select an Image: </span>
+                            <select id="selectImageBox" @change="handleSelectImageOption" :key="selectedFile">
+                                <option disabled value="" selected>Select an image</option>
+                                <option v-for="image of imageList" :value="image" :key="image">{{ image }}</option>
+                            </select>
+                
+                            <div id="image_data_container">
+                                <img :src="currentImageURL" alt="image" :key="selectedFile">
+                                <div id="image_text_box">
+                                    <h5>Image Text</h5>
+                                    <div id="content">
+                                        <p id="li_default" v-if="outputSessionContent.data.image.length == 0">No Text</p>
+                                        <li v-for="image in outputSessionContent.data.image"><span>{{ convertTime(image.imageTime) }}:  </span>{{ image.text }}</li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="eeg_data">
+                            <h6>EEG Data</h6>
+                        </div>
                         <div id="experience_container">
                             <div class="experience" v-for="desc in outputSessionContent.data.des">
                                 <div class="time">Start Time: {{ getTime(Object.entries(desc)[0][0]) + '' }}</div>
                                 <div class="file_name">Audio file name: {{ Object.entries(desc)[0][1] }}</div>
                                 <div class="text"><span>Experience Detected: </span>{{ desc.text }}</div>
                             </div>
-                        </div>
-                        <div id="image_data">
-                            <h6>Image Data</h6>
-                        </div>
-                        <div id="eeg_data">
-                            <h6>EEG Data</h6>
                         </div>
                         <div id="sentiment_container">
                             <h6>Sentiments</h6>

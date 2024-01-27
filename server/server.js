@@ -25,10 +25,12 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+
 //Set the public folder
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, 'webclient')));
+
 
 //Routes
 app.use('/', webClientRoutes); //Web clien routes
@@ -65,7 +67,7 @@ let user = {
 
 
 let cortex = new Cortex(user, socketUrl)
-cortex.run();
+//cortex.run();
 
 
 

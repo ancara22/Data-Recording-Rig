@@ -24,6 +24,11 @@ const vueApp = new Vue({
         sessionsList           : [],
         outputSessionContent   : {},
         selectedFile           : null,
+        currentImageURL        :  './public/no-image.jpg',
+        selectedImageName      : undefined,
+        imageList              : [],
+        audioList              : [],
+        currentAudioFile       : '',
 
         //Rig image configurations
         imageSettings: {
@@ -73,6 +78,9 @@ const vueApp = new Vue({
 
         this.getAllSessionsNames(); //Get all the recorded session files
 
+        this.currentImageURL = this.currentImageURL ?   this.currentImageURL: './public/no-image.jpg';
+
+
         
 
     },
@@ -96,6 +104,9 @@ const vueApp = new Vue({
 
             if(this.pageContent == "history") {
                 this.renderGSRSEssionPlot();
+                this.getAllImagesNames();
+                this.getAllAudioFiles();
+               
             }
         },
 
@@ -394,6 +405,9 @@ const vueApp = new Vue({
 
         //Get the session file name content
         getFileContent(fileName) {
+            this.selectedAudio = ''
+            this.currentAudioFile = ''
+
             fetch("/getOutputFileContent", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
@@ -402,9 +416,12 @@ const vueApp = new Vue({
             ).then(data => {
                 this.outputSessionContent = data;
                 this.selectedFile = fileName;
+                
 
                 if(this.pageContent == "history") {
                     this.renderGSRSEssionPlot();
+                    this.getAllImagesNames();
+                    this.getAllAudioFiles();
                 }
             }).catch(error => console.error('Error:', error));
         },
@@ -470,6 +487,97 @@ const vueApp = new Vue({
                 Plotly.newPlot("gsr-plot", [trace], layout);
             }, 500)
            
+        },
+
+        //Get all sessions file names
+        getAllImagesNames() {
+            let selectedFilecopy = this.selectedFile;
+            let startTime = parseInt(selectedFilecopy.replace("session_", ""), 10);
+
+            fetch("/getAllImages", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify({ startTime: startTime })
+
+                }).then(response => response.json()
+                ).then(data => {
+                    this.imageList = data;
+                    this.currentImageURL =  './public/no-image.jpg';
+                    //this.fetchImage(this.imageList[0]);
+                }).catch(error => console.error('Error:', error));
+        },
+
+        handleSelectImageOption(event) {
+            this.selectedImageName = event.target.value;
+          
+            this.fetchImage(this.selectedImageName);
+        },
+
+        fetchImage(imageName) {
+            if(this.selectedImageName) {
+                fetch("/getImage", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify({ imageName: imageName })
+                }).then(response => response.blob()
+                ).then(blob => {
+                        this.currentImageURL = URL.createObjectURL(blob);
+                }).catch(error => console.error('Error:', error));
+                
+            } else {
+                this.currentImageURL =  './public/no-image.jpg';
+            }
+        },
+
+        convertTime(timestamp) {
+            const date = new Date(timestamp * 1000);
+                    
+            //Extract year, month, and day components
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+            const day = date.getDate().toString().padStart(2, '0');
+
+            //Extract hours, minutes, and seconds components
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            const seconds = date.getSeconds().toString().padStart(2, '0');
+
+            //Return formatted date and time string (YYYY-MM-DD HH:MM:SS)
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        },
+
+        getAllAudioFiles() {
+            let selectedFilecopy = this.selectedFile;
+            let startTime = parseInt(selectedFilecopy.replace("session_", ""), 10);
+        
+
+            fetch("/getAllAudioFiles", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify({ startTime: startTime })
+
+                }).then(response => response.json()
+                ).then(data => {
+                    this.audioList = data;
+                    console.log('data', data)
+                    this.currentAudioFile =  '';
+
+                    //fetch audio file
+                }).catch(error => console.error('Error:', error));
+        },
+
+        handleSelectAudioOption(event) {
+            let fileName = event.target.value;
+            console.log('e', fileName)
+
+            fetch("/getAudioFilePath", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({ audioFileName: fileName })
+            }).then(response => response.blob()
+            ).then(blob => {
+                    this.currentAudioFile = URL.createObjectURL(blob);
+            }).catch(error => console.error('Error:', error));
         }
     }
 })

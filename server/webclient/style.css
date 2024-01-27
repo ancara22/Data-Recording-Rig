@@ -2,7 +2,13 @@
    font-family: Helvetica, sans-serif;
    font-weight: 100;
    margin: 0;
+   font-size: 14px;
 }
+
+:root {
+   --shadow: 0px 0px 30px rgb(226, 226, 226);
+}
+
 
 body {
    min-width: 800px;
@@ -221,7 +227,7 @@ body {
 
 #audio_text div li,
 #image_text li {
-   font-size: 14px;
+   font-size: 12px;
    list-style: none;
    width: 95%;
    margin: 15px auto;
@@ -286,7 +292,7 @@ body {
    margin-top: 5px;
    padding: 5px;
    padding-left: 10px;
-   font-size: 14px;
+   font-size: 12px;
    color: rgb(137, 137, 137);
 }
 
@@ -364,7 +370,7 @@ body {
 #saveBtn button {
    padding: 15px 40px;
    border: none;
-   font-size: 14px;
+   font-size: 12px;
    background-color: rgb(250, 32, 32);
    transition: all 0.2s ease-in;
 }
@@ -570,6 +576,7 @@ body {
    color: white;
    padding: 20px;
    border-radius: 5px;
+   box-shadow: var(--shadow)
 }
 
 h4 {
@@ -634,7 +641,7 @@ h4 {
    width: 96%;
    margin-bottom: 100px;
    margin: 0 auto;
-   border: 1px solid rgb(213, 213, 213);
+   box-shadow: var(--shadow);
    padding: 20px;
 
 }
@@ -673,6 +680,8 @@ h6 {
 
 #audio_data {
    display: flex;
+
+   
 }
 
 .recording {
@@ -710,6 +719,7 @@ h6 {
 .recording .time, .recording .file_name {
    color: rgb(170, 170, 170);
    margin-top: 10px;
+   font-size: 12px;
 }
 
 #experience_container {
@@ -721,6 +731,7 @@ h6 {
    color: white;
    margin-bottom: 20px;
    margin-top: 20px;
+   box-shadow: var(--shadow);
 
 }
 
@@ -747,18 +758,19 @@ h6 {
 
 #image_data {
    width: auto;
-   height: 500px;
-   border: 1px solid rgb(227, 227, 227);
+   height: max-content;
    margin-bottom: 20px;
+   margin-top: 20px;
    padding: 15px;
+   box-shadow: var(--shadow)
 }
 
 #eeg_data {
    width: auto;
    height: 500px;
-   border: 1px solid rgb(227, 227, 227);
    margin-bottom: 20px;
    padding: 15px;
+   box-shadow: var(--shadow)
 }
 
 .scroll {
@@ -779,6 +791,7 @@ h6 {
    width: auto;
    border: 1px solid rgb(215, 215, 215);
    padding: 20px;
+   box-shadow: var(--shadow);
 }
 
 .sentiment_box {
@@ -810,9 +823,9 @@ h6 {
 }
 
 #data_audio {
-   border: 1px solid rgb(227, 227, 227);
    padding-top: 20px;
    margin-top: 20px;
+   box-shadow: var(--shadow);
 }
 
 #info {
@@ -824,5 +837,93 @@ h6 {
 }
 
 #info span {
+   font-weight: bold;
+}
+
+
+
+#image_data_container img {
+   width: 60%;
+   height: auto;
+   border: 1px solid rgb(203, 203, 203);
+   margin-top: 30px;
+   max-height: 420px;
+   overflow: hidden;
+   
+}
+
+#image_data select {
+   min-width: 200px;
+   padding: 10px;
+}
+
+#image_data span {
+   font-weight: bold;
+}
+
+
+#image_data_container {
+   display: flex;
+   width: 100%;
+}
+
+#image_text_box {
+   padding: 10px;
+   margin: 10px;
+   border: 1px solid rgb(233, 233, 233);
+   width: 40%;
+   height: 100%;
+   margin-top: 30px;
+   min-height: 400px;
+   height: 400px;
+}
+
+#image_text_box h5 {
+   margin-bottom: 10px;
+   color: black;
+   font-weight: 600;
+}
+
+#image_text_box li {
+   border: 1px solid rgb(227, 227, 227);
+   margin: 5px;
+   padding: 5px;
+   list-style: none;
+}
+
+#image_text_box #content {
+   padding: 10px;
+   overflow: scroll;
+   height: 85%;
+}
+
+
+#li_default {
+   border: 1px solid white;
+   text-align: center;
+   color: gray;
+}
+
+.conv_speach .text {
+   font-size: 14px;
+}
+
+#audio_player {
+   margin-bottom: 20px;
+   width: auto;
+   height: 30px;
+   border: 1px solid rgb(228, 228, 228);
+   margin: 20px;
+   padding: 20px;
+   display: flex;
+   align-items: center;
+}
+
+audio {
+   margin-left: 100px;
+}
+
+#audio_player span {
+   margin-right: 10px;
    font-weight: bold;
 }

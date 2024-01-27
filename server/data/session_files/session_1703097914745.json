@@ -287,11 +287,11 @@
         "des": [
             {
                 "1703098042": "audio_1703098042.wav",
-                "text": ". I'm feeling very good,"
+                "text": "I'm feeling very good"
             },
             {
                 "1703098042": "audio_1703098042.wav",
-                "text": ". I'm feeling very good,"
+                "text": "I'm feeling very good"
             }
         ],
         "sentiment": [
@@ -376,6 +376,51 @@
                 "sentiment": "Stress State"
             }
         ],
-        "image": []
+        "image": [
+            {
+                "imageTime": 1703098263,
+                "text": "voluptatum modi aliquam!"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "doloribus"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "atque doloremque"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "sint dolores quibusdam quos"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "velit eveniet "
+            },
+            {
+                "imageTime": 1703098263,
+                "text": " Blanditiis"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "consectetur"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "voluptatum modi aliquam!"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "doloribus"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "atque doloremque"
+            },
+            {
+                "imageTime": 1703098263,
+                "text": "sint dolores quibusdam quos"
+            }
+        ]
     }
 }

@@ -156,6 +156,58 @@ webClientRoutes.get("/getAllSessions", (req, res) => {
 });
 
 
+webClientRoutes.post("/getAllImages", (req, res) => {
+    let startTime = Math.floor(req.body.startTime / 1000);
+
+    fs.readdir(FILE_PATHS.PROCESSED_IMAGES, (err, files) => {
+        if (err) {
+            console.error('Error reading folder:', err);
+            return;
+        }
+
+        //Filter files with the extension '.json'
+        const matchingFiles = files.filter(file => {
+            const extension = path.extname(file),
+                fileName = path.basename(file, extension);
+
+            let time = parseInt(fileName.split("-")[0]);
+            let diferenceTime = time - startTime;
+            let frameTime = 60 * 60;
+
+            if(extension === '.jpg' && diferenceTime < frameTime) return fileName;
+        })
+
+        res.json(matchingFiles);
+    }) 
+});
+
+
+webClientRoutes.post("/getAllAudioFiles", (req, res) => {
+    let startTime = Math.floor(req.body.startTime / 1000);
+
+    fs.readdir(FILE_PATHS.CONVERTED_AUDIO, (err, files) => {
+        if (err) {
+            console.error('Error reading folder:', err);
+            return;
+        }
+
+        //Filter files with the extension '.json'
+        const matchingFiles = files.filter(file => {
+            const extension = path.extname(file),
+                fileName = path.basename(file, extension);
+
+            let time = parseInt((fileName.split("_")[1]).split(".")[0]);
+            let diferenceTime = time - startTime;
+            let frameTime = 60 * 60;
+
+            if(extension === '.wav' && diferenceTime < frameTime) return fileName;
+        })
+
+        res.json(matchingFiles);
+    }) 
+});
+
+
 //Read the file and return the file content
 webClientRoutes.post("/getOutputFileContent", (req, res) => {
     const requestBody = req.body;
@@ -187,6 +239,27 @@ webClientRoutes.post("/getOutputFileContent", (req, res) => {
 
 })
 
+//Read the file and return the file content
+webClientRoutes.post("/getAudioFilePath", (req, res) => {
+    const audioFileName = req.body.audioFileName;
+    const __dirname = path.resolve();
+
+    const audioFilePath = path.join(__dirname, 'data', 'audio', 'processed_audio', audioFileName);
+
+    res.sendFile(audioFilePath)
+
+})
+
+//Read the file and return the file content
+webClientRoutes.post("/getImage", (req, res) => {
+    const imageName = req.body.imageName;
+    const __dirname = path.resolve();
+
+    const imagePath = path.join(__dirname, 'data', 'images', 'processed_images', imageName);
+
+    res.sendFile(imagePath)
+
+})
 
 
 //################################################################################################################################################

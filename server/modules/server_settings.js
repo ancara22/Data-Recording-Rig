@@ -25,6 +25,7 @@ const FILE_PATHS = {
     GSR_FOLDER                  : GSR_FOLDER,
     USER_FOLDER                 : USER_FOLDER,
     IMAGE_FOLDER                : IMAGE_FOLDER,
+    PROCESSED_IMAGES            : IMAGE_FOLDER        + 'processed_images',
     SESSION_FOLDER              : SESSION_FOLDER,
     ROW_AUDIO_FOLDER_PATH       : AUDIO_FOLDER        + 'row_audio/',
     CLIENT_GSR_GRAPH_FILE_PATH  : GSR_FOLDER          + 'client_graph/'         + GSR_GRAPH_CSV,
