@@ -7,7 +7,6 @@ import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
 import { emptyFiles } from "./file_cleaners.js";
 
 
-
 //Save data to a file
 function saveData(folder, fileType) {
     const storage = diskStorage({
@@ -280,7 +279,7 @@ function getTheHash(callback) {
 }
 
 
-
+//Exports
 export {
     runImageProcessor,
     saveData,

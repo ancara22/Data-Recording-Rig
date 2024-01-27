@@ -21,4 +21,5 @@ function resetTimer() {
 
 timer = setTimeout(timerHandler, 5000); //Initiate the timer
 
+//Exports
 export { resetTimer };

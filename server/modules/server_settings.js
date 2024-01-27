@@ -35,7 +35,6 @@ const FILE_PATHS = {
     GSR_SECTIONS_JSON_PATH      : GSR_FOLDER          + GSR_SECTIONS_JSON,
     USER_INTRO_AUDIO_PATH       : USER_FOLDER         + USER_INTRO_WAV,
     USER_FILE_PATH              : USER_FOLDER         + USER_DATA_JSON,
-    //SESSION_OUTPUT_FILE_PATH    : SESSION_FOLDER      + 'recording_output.json',
 }
 
 //SSH rig connection config
@@ -57,7 +56,7 @@ const APP_CONFIG = {
 //Server configurations
 let SERVER_CONFIG = {
     OUTPUT_LENGTH               : 15,       //Length of the output json file (in minutes)
-    current_session_file        : '',      //Current session file name
+    current_session_file        : '',       //Current session file name
     rigActive                   : false,
     imagesNumber                : 0,
     audioNumber                 : 0,

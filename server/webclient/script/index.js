@@ -22,6 +22,8 @@ const vueApp = new Vue({
         audioNumber            : 0,            //Audio counter
         gsrTime                : '00hh 00mm',            //Gsr counter
         sessionsList           : [],
+        outputSessionContent   : {},
+        selectedFile           : null,
 
         //Rig image configurations
         imageSettings: {
@@ -51,8 +53,9 @@ const vueApp = new Vue({
     },
 
     mounted() {
-        this.getGSREmotions();
+        this.getGSREmotions();  //Get GSR data 
 
+        //Set the default gape
         const page = localStorage.getItem('page');
 
         if(page !== null && page !== undefined) {
@@ -67,6 +70,11 @@ const vueApp = new Vue({
         this.readConfigFile();                          //Get the config file data
 
         this.pageContent =='data' ? this.getGSRdata() : clearInterval(this.graphInterval);   //Clear the GSR updating interval on page change
+
+        this.getAllSessionsNames(); //Get all the recorded session files
+
+        
+
     },
 
     watch: {
@@ -85,12 +93,17 @@ const vueApp = new Vue({
 
                 this.graphInterval = setInterval(()=> this.getGSRdata(), 1000);
             } 
+
+            if(this.pageContent == "history") {
+                this.renderGSRSEssionPlot();
+            }
         },
 
         //Manage rig status interface
         rigActive: function(newStatus, oldStatus) {
             newStatus == true ? this.statusText = 'ONLINE' : this.statusText = 'OFFLINE';
         }
+
     },
 
     methods: {
@@ -170,8 +183,7 @@ const vueApp = new Vue({
                     this.audioNumber = data.audioNumber;
                     let { hours, minutes, sec } = this.secondsToHoursMinutes(data.gsrNumber)
                     this.gsrTime = hours + "h " + minutes + "m " + sec + "s";
-                    
-                    console.log('first', this.gsrTime)
+                
                 }).catch(error => console.error('Error:', error));
         },
 
@@ -340,7 +352,13 @@ const vueApp = new Vue({
         getAudioText() {
             fetch('/getAudioText')
                 .then(res => res.json())
-                .then(data => this.audioText = data)
+                .then(data => {
+                    data.forEach(item => {
+                        item.text.shift();
+                    })
+
+                    this.audioText = data;
+                })
         },
 
         //Get Image text
@@ -350,6 +368,7 @@ const vueApp = new Vue({
                 .then(data => this.imageText = data)
         },
 
+        //Convert seconds to time hh mm ss
         secondsToHoursMinutes(seconds) {
             //Calculate hours and remaining seconds
             const hours = Math.floor(seconds / 3600);
@@ -362,15 +381,99 @@ const vueApp = new Vue({
             return { hours, minutes, sec };
         },
 
+        //Get all sessions file names
         getAllSessionsNames() {
             fetch("/getAllSessions")
                 .then(response => response.json())
-                .then(data => this.sessionsList = data) 
-                .catch(error => console.error('Error:', error));
-        }
+                .then(data => {
+                    this.sessionsList = data;
+                    this.getFileContent(this.sessionsList[0]);
+                    this.selectedFile = this.sessionsList[0];
+                }).catch(error => console.error('Error:', error));
+        },
+
+        //Get the session file name content
+        getFileContent(fileName) {
+            fetch("/getOutputFileContent", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({ fileName: fileName + ".json" })
+            }).then(response => response.json()
+            ).then(data => {
+                this.outputSessionContent = data;
+                this.selectedFile = fileName;
+
+                if(this.pageContent == "history") {
+                    this.renderGSRSEssionPlot();
+                }
+            }).catch(error => console.error('Error:', error));
+        },
+
+        //extract the timestamp from a string and convert to date
+        getTime(fileName) {
+            const timestampString = fileName.replace('session_', '');
+            const base = timestampString.length > 8 ? 10 : 8;
+
+            let timestamp = parseInt(timestampString, 10);    //Parse the timestamp string to a number
+      
+            if(base > 8 && !fileName.includes('session_')) {
+                timestamp = timestamp * 1000;
+            }
+
+            //Check if the timestamp is a valid number
+            if (isNaN(timestamp)) {
+                throw new Error('Invalid timestamp in input string');
+            }
+
+            //Convert the timestamp to a Date object
+            const dateObject = new Date(timestamp);
+
+            // Format the date and time as 'YYYY-MM-DDTHH:mm:ss'
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };
+            const formattedDateTime = dateObject.toLocaleString('en-US', options).replace(/[-\/]/g, '-');
         
+            return formattedDateTime;
+        },
+
+        //Get sentiment if the input is object or return the original
+        getSentiment(sentiment) {
+            let response = sentiment;
+
+            if(typeof sentiment == "object") {
+                response  = sentiment.Sentiment
+            }
+
+            return response;
+        },
+
+        renderGSRSEssionPlot() {
+            let data = this.outputSessionContent.data.gsr;
+            let plotInput = [];
+
+            data.forEach(item => {
+                let section = item.section;
+
+                section.forEach(gsrRecord => {
+                    let timestamp = parseInt(Object.keys(gsrRecord)[0]);
+                    let value = Object.values(gsrRecord)[0];
+
+                    plotInput.push([timestamp, value]);
+                });
+            });
+
+            let layout = { title: 'GSR Data Graph', xaxis: { title: 'Timestamp' }, yaxis: { title: 'GSR' } };
+            let trace = { type: 'scatter', mode: 'lines', x: plotInput.map(row => new Date(row[0])), y: plotInput.map(row => row[1]) };
+                
+            setTimeout(() => {
+                //Drow the plot for GSR data
+                Plotly.purge("gsr-plot");
+                Plotly.newPlot("gsr-plot", [trace], layout);
+            }, 500)
+           
+        }
     }
 })
+
 
 
 

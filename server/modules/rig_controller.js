@@ -35,7 +35,6 @@ function rigControl(startRig) {
     })
 
     handleSSHError(ssh);
-
     ssh.connect(RIG_CONFIG); //Start connection
 }
 
@@ -55,7 +54,6 @@ function executeCommand(ssh) {
         stream.on("close", (code, signal) => { 
             console.log("Recording process closed. Exit code:", code, "Signal:", signal);
             ssh.end();
-           
         });
     });
 }
@@ -89,5 +87,5 @@ function handleSSHError(ssh) {
     })
 }
 
-
+//Export
 export { rigControl }

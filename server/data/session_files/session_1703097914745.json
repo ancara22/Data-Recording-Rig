@@ -147,26 +147,27 @@
                     {"1703098202": 440,"level": "High"},
                     {"1703098204": 429,"level": "High"},
                     {"1703098208": 414,"level": "High"},
-                    {"1703098210": 421,"level": "High"},
-                    {"1703098214": 423,"level": "High"},
-                    {"1703098216": 411,"level": "High"},
-                    {"1703098218": 419,"level": "High"},
-                    {"1703098221": 414,"level": "High"},
-                    {"1703098224": 413,"level": "High"},
-                    {"1703098229": 414,"level": "High"},
-                    {"1703098231": 428,"level": "High"},
-                    {"1703098235": 425,"level": "High"},
-                    {"1703098237": 427,"level": "High"},
-                    {"1703098239": 426,"level": "High"},
-                    {"1703098246": 416,"level": "High"},
-                    {"1703098250": 423,"level": "High"},
-                    {"1703098253": 428,"level": "High"},
-                    {"1703098256": 420,"level": "High"},
-                    {"1703098259": 421,"level": "High"},
-                    {"1703098263": 429,"level": "High"}
+                    {"1703098210": 321,"level": "High"},
+                    {"1703098214": 323,"level": "High"},
+                    {"1703098216": 311,"level": "High"},
+                    {"1703098218": 219,"level": "High"},
+                    {"1703098221": 214,"level": "High"},
+                    {"1703098224": 213,"level": "High"},
+                    {"1703098229": 214,"level": "High"},
+                    {"1703098231": 228,"level": "High"},
+                    {"1703098235": 225,"level": "High"},
+                    {"1703098237": 227,"level": "High"},
+                    {"1703098239": 226,"level": "High"},
+                    {"1703098246": 216,"level": "High"},
+                    {"1703098250": 323,"level": "High"},
+                    {"1703098253": 328,"level": "High"},
+                    {"1703098256": 320,"level": "High"},
+                    {"1703098259": 321,"level": "High"},
+                    {"1703098263": 329,"level": "High"}
                 ],
                 "sentiment": "Stress State"
             }
+            
         ],
         "eeg": [],
         "audio": [
@@ -193,6 +194,10 @@
                 "text": [
                     {
                         "speaker": "spk_1",
+                        "text": "The police. Yeah. Well, that's not good. Not at all. And who knows where it'll end up. It's, it's terrifying actually that that should happen in a democratic society. Let me ask you about uh kids, what you done by kids? I mean, young adults really and then into their, their twenties trying to form their way through life. One of my favorite movie clips is Rocky Balboa. It's probably the non intellectual version of Jordan Peterson in many ways because he said this to his son. He was getting a bit spoiled and entitled and moaning about being Rocky so as well. And he says this to him. I love those people. It's good. What do you think of it? Well, that ethos was what lifted up Sylvester Stallone to stardom very rapidly in his first movie. And what do I think about that? I think that young people are literally dying for that message. I really, and I mean, literally, they're so demoralized, it's just beyond belief. And so one of the things that's been painful"
+                    },
+                    {
+                        "speaker": "spk_2",
                         "text": "The police. Yeah. Well, that's not good. Not at all. And who knows where it'll end up. It's, it's terrifying actually that that should happen in a democratic society. Let me ask you about uh kids, what you done by kids? I mean, young adults really and then into their, their twenties trying to form their way through life. One of my favorite movie clips is Rocky Balboa. It's probably the non intellectual version of Jordan Peterson in many ways because he said this to his son. He was getting a bit spoiled and entitled and moaning about being Rocky so as well. And he says this to him. I love those people. It's good. What do you think of it? Well, that ethos was what lifted up Sylvester Stallone to stardom very rapidly in his first movie. And what do I think about that? I think that young people are literally dying for that message. I really, and I mean, literally, they're so demoralized, it's just beyond belief. And so one of the things that's been painful"
                     }
                 ],
@@ -280,6 +285,10 @@
             }
         ],
         "des": [
+            {
+                "1703098042": "audio_1703098042.wav",
+                "text": ". I'm feeling very good,"
+            },
             {
                 "1703098042": "audio_1703098042.wav",
                 "text": ". I'm feeling very good,"

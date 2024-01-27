@@ -137,12 +137,61 @@ webClientRoutes.post("/saveAudioIntro", saveData('user', 'audio'), (req, res) =>
 });
 
 webClientRoutes.get("/getAllSessions", (req, res) => {
-    let sessionsFiles = findTheSessionsJsonFiles(FILE_PATHS.SESSION_FOLDER);
+    fs.readdir(FILE_PATHS.SESSION_FOLDER, (err, files) => {
+        if (err) {
+            console.error('Error reading folder:', err);
+            return;
+        }
 
-    res.json(sessionsFiles);
+        //Filter files with the extension '.json'
+        const matchingFiles = files.map(file => {
+            const extension = path.extname(file),
+                fileName = path.basename(file, extension);
+
+            if(extension === '.json') return fileName;
+        })
+
+        res.json(matchingFiles);
+    }) 
 });
 
 
+//Read the file and return the file content
+webClientRoutes.post("/getOutputFileContent", (req, res) => {
+    const requestBody = req.body;
+
+    if (!requestBody || !requestBody.fileName) {
+        return res.status(400).json({ error: 'Invalid request. fileName is required.' });
+    }
+
+    let filePath = FILE_PATHS.SESSION_FOLDER + requestBody.fileName;
+
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error reading file.', details: err.message });
+        }
+
+        //Parse the JSON data
+        let jsonOutput;
+
+        try {
+            jsonOutput = JSON.parse(data);
+        } catch (parseError) {
+            return res.status(500).json({ error: 'Error parsing JSON.', details: parseError.message });
+        }
+
+        //Send back the json file content
+        res.json(jsonOutput);
+    });
+
+
+})
+
+
+
+//################################################################################################################################################
+// Functions
+//################################################################################################################################################
 
 //Read a JSON file function with callback
 function readFileAndHandleErrors(filePath, res, callback) {
@@ -194,32 +243,5 @@ function readCsvAndHandleErrors(filePath, res, callback) {
         console.log('Error reading CSV file: ', err);
     }
 }
-
-
-//Scan the sessions filder and return all the session json files
-function findTheSessionsJsonFiles(folderPath) {
-    fs.readdir(folderPath, (err, files) => {
-        if (err) {
-            console.error('Error reading folder:', err);
-            return;
-        }
-
-        //Filter files with the extension '.json'
-        const matchingFiles = files.map(file => {
-            const extension = path.extname(file),
-                fileName = path.basename(file, extension);
-
-            if(extension === '.json') return fileName;
-        })
-
-        return matchingFiles
-    });
-}
-
-
-
-
-
-export {
-    webClientRoutes
-}
+//Export
+export {  webClientRoutes }

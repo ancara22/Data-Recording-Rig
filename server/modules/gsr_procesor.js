@@ -48,7 +48,7 @@ function processGSRoutput(data, nr) {
     }
 }
 
-
+//Simple gsr data labeling from Low to High
 function predictSwetingLevel(value) {
     if(value > 400) {
         return "High";
@@ -136,7 +136,7 @@ async function writeSectionToCSV(data, callback) {
             if (err) console.error('Error writing to CSV file:', err)
         });
 
-        
+        //New data object
         let newData = {
             startTime: data.startTime,
             endTime: data.finishTime,
@@ -167,7 +167,7 @@ function createFileIfNotExists(filePath, content) {
     }
 }
 
-
+//Exports
 export {
     processGSRoutput,
     insertGSRData,

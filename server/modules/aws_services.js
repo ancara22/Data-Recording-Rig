@@ -5,11 +5,13 @@ import { readJSONFile, extractTimestamp } from "./utility.js";
 import { exec } from 'child_process';
 import { FILE_PATHS, EXPERIENCE_CONFIG } from "./server_settings.js";
 
+//Configure AWS region
 AWS.config.update({ region: 'eu-west-2' });
 
+//Initiate AWS components
 const transcribeService = new AWS.TranscribeService(); //Init AWS Transcriber
-const S3 = new AWS.S3(); //Init AWS S3 Bucket
-const comprehend = new AWS.Comprehend(); //Init AWS Comprehend
+const S3 = new AWS.S3();                               //Init AWS S3 Bucket
+const comprehend = new AWS.Comprehend();               //Init AWS Comprehend
 
 
 //Insert audio file to the AWS S3 Bucket 
@@ -343,7 +345,7 @@ function concatinateWavFiles(wavFile, callback) {
     })
 }
 
-
+//Remove the user introduction text from the conversation an label him
 function processTextObject(inputObject, username) {
     if (inputObject && inputObject.text && Array.isArray(inputObject.text)) {
         inputObject.text.shift();   //Remove the first element from the 'text' array

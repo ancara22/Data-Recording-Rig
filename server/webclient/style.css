@@ -205,6 +205,8 @@ body {
 
 #audio_text {
    height: 90%;
+   line-height: 1.5;
+   text-align: justify;
 }
 
 #audio_text,
@@ -232,7 +234,7 @@ body {
    justify-items: center;
    padding: 10px;
    border: 1px solid rgba(128, 128, 128, 0.124);
-   overflow: hidden;
+   
 }
 
 #audio_text div {
@@ -307,10 +309,8 @@ body {
 }
 
 #settings_container {
-   border: 1px solid rgba(128, 128, 128, 0.084);
    position: relative;
    top: 170px;
-   padding: 20px;
    flex-wrap: wrap;
    justify-content: center;
 }
@@ -382,14 +382,22 @@ body {
 
 #user_settings {
    width: 100%;
+   margin: 0;
    height: 350px;
    display: flex;
    justify-content: center;
    position: relative;
+   flex-direction: column;
+   align-items: center;
+   padding-bottom: 80px;
+   margin-bottom: 50px;
+   padding-top: 40px;
+   background: linear-gradient(164deg, rgba(2,0,36,0.1) 0%, rgba(145,234,228,0.1) 0%, rgba(134,168,231,0.4) 47%, rgba(127,127,213,0.8) 100%);
+   
 }
 
 #user_settings #control {
-   background-color: rgb(144, 144, 254);
+   background-color: rgb(46, 46, 132);
    width: 500px;
    height: 200px;
    display: flex;
@@ -414,6 +422,7 @@ body {
 
 #user_settings #control span {
    font-weight: bold;
+   margin-top: 20px;
 }
 
 #user_control_box {
@@ -429,21 +438,16 @@ body {
 .show {
    display: flex;
    height: 200px;
-   background-color: rgba(23, 23, 23, 0.959);
+   background-color: rgba(0, 5, 69, 0.959);
 }
 
-.moveDown {
-   display: flex;
-   height: 70px;
-   top: 160px;
-   background-color: rgb(144, 144, 254);
-}
+
 
 .hide {
    display: none;
 }
 
-#user_control_box button {
+#user_control_box button, #setUserButton {
    margin: 15px;
    padding: 10px 20px;
    cursor: pointer;
@@ -452,10 +456,12 @@ body {
    font-size: 16px;
    font-weight: bold;
    color: white;
+
 }
 
 #user_control_box button:hover {
    background-color: rgb(249, 108, 0);
+
 }
 
 #audio_recording_box {
@@ -501,4 +507,322 @@ body {
    background-color: rgb(195, 195, 195);
    border: none;
    color: white;
+}
+
+#container {
+   width: 95%;
+   height: max-content;
+   min-height: 100vh;
+   margin: 0 auto;
+   margin-top: 180px;
+   display: flex;
+   justify-content: space-between;
+
+}
+
+#sessions_list {
+   list-style: none;
+   width: 25%;
+   max-width: max-content;
+   height: inherit;
+   position: relative;
+   top: 10px;
+}
+
+#sessions_list li {
+   max-width: auto;
+   padding: 15px;
+   border: 1px solid rgb(210, 210, 210);
+   max-width: max-content;
+   cursor: pointer;
+   margin-top: 10px;
+
+}
+
+#sessions_list li:hover {
+   background-color: rgb(250, 196, 130);
+}
+
+.session_name {
+   display: block;
+   font-weight: bold;
+}
+
+.session_time {
+   display: block;
+   padding-top: 5px;
+   font-size: 0.8rem;
+   color: rgb(57, 41, 127);
+}
+
+#sessions_output {
+   margin-left: 2%;
+   width: 80%;
+   height: inherit;
+   padding: 20px
+}
+
+
+#head {
+   width: auto;
+   height: 150px;
+   background-color: rgb(38, 38, 131);
+   color: white;
+   padding: 20px;
+   border-radius: 5px;
+}
+
+h4 {
+   font-weight: bold;
+   margin-bottom: 20px;
+   font-size: 1.2rem;
+   
+   color: rgb(147, 145, 248);
+}
+
+#head_timestamp span {
+   margin-right: 40px;
+   font-weight: bold;
+}
+
+#head_timestamp span span {
+   font-weight: 100;
+}
+
+#head_timestamp {
+   margin-bottom: 20px;
+   margin-left: 50px;
+}
+
+.active {
+   background-color: rgb(170, 164, 252);
+   border: 1px solid white;
+}
+
+#head_user {
+   font-weight: bold;
+   margin-left: 50px;
+   margin-bottom: 20px;
+}
+
+#head_user span {
+   font-weight: 100;
+   
+}
+
+#head_version {
+   font-weight: bold;
+   margin-left: 50px;
+}
+
+#head_version span {
+   font-weight: 100;
+}
+
+#data_history {
+   width: auto;
+   height: max-content;
+   display: flex;
+   flex-direction: column;
+}
+
+#data_history {
+   margin-top: 20px;
+}
+
+#data_gsr {
+   width: 96%;
+   margin-bottom: 100px;
+   margin: 0 auto;
+   border: 1px solid rgb(213, 213, 213);
+   padding: 20px;
+
+}
+
+h6 {
+   font-size: 1rem;
+   font-style: italic;
+   text-align: center;
+   margin-bottom: 15px;
+}
+
+.recording_times {
+   padding: 10px;
+   border: 1px solid rgb(227, 227, 227);
+   margin-bottom: 15px;
+   height: 20px;
+   min-height: min-content;
+   display: flex;
+   justify-content: start;
+}
+
+.time {
+   margin-right: 40px;
+   margin-left: 50px;
+   float: left;
+}
+
+.time span {
+   font-weight: bold;
+}
+
+#gsr-plot {
+   width: auto;
+   height: 500px;
+}
+
+#audio_data {
+   display: flex;
+}
+
+.recording {
+   width: auto;
+   border-top: 1px solid rgb(227, 227, 227);
+   padding: 10px;
+   margin-bottom: 15px;
+}
+
+.conv_box {
+   margin-top: 10px;
+   line-height: 1.5;
+   text-align: justify;
+   padding: 10px;
+}
+
+.conv_speach {
+   margin-bottom: 10px;
+}
+
+.speaker {
+   font-weight: bold;
+}
+
+.conv_sentiment span {
+   font-weight: bold;
+}
+
+.conv_sentiment {
+   background-color: rgb(194, 194, 255);
+   padding: 10px;
+   text-align: center;
+}
+
+.recording .time, .recording .file_name {
+   color: rgb(170, 170, 170);
+   margin-top: 10px;
+}
+
+#experience_container {
+   background-color: rgb(38, 38, 131);
+   width: auto;
+   height: min-content;
+   padding: 30px;
+   border-radius: 5px;
+   color: white;
+   margin-bottom: 20px;
+   margin-top: 20px;
+
+}
+
+.experience {
+   margin-bottom: 20px;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.575);
+   padding: 15px;
+}
+
+.experience .text {
+   margin-left: 50px;
+   margin-top: 5px;
+   font-size: 1.1rem;
+}
+
+.experience .time, .experience .file_name {
+   color: rgb(147, 145, 248);
+   font-size: 0.9rem;
+} 
+
+.experience .text span {
+   font-weight: bold;
+}
+
+#image_data {
+   width: auto;
+   height: 500px;
+   border: 1px solid rgb(227, 227, 227);
+   margin-bottom: 20px;
+   padding: 15px;
+}
+
+#eeg_data {
+   width: auto;
+   height: 500px;
+   border: 1px solid rgb(227, 227, 227);
+   margin-bottom: 20px;
+   padding: 15px;
+}
+
+.scroll {
+   height: 1000px;
+   overflow: scroll;
+   margin-bottom: 20px;
+}
+
+.scroll_2 {
+   height: 1000px;
+   overflow: scroll;
+   margin-bottom: 20px;
+   height: 500px;
+   padding: 15px;
+}
+
+#sentiment_container {
+   width: auto;
+   border: 1px solid rgb(215, 215, 215);
+   padding: 20px;
+}
+
+.sentiment_box {
+   border: 1px solid rgb(204, 204, 204);
+   width: auto;
+   height: min-content;
+   margin-bottom: 10px;
+   padding: 10px;
+
+}
+
+.sentiment_box .sentiment {
+   margin-left: 50px;
+   margin-top: 10px;
+
+}
+
+.sentiment_box .sentiment span {
+   font-weight: bold;
+}
+
+.sentiment_box .file_name span {
+   font-weight: bold;
+}
+
+.sentiment_box .time, .sentiment_box .file_name {
+   color: rgb(171, 171, 171);
+   font-size: 0.9rem;
+}
+
+#data_audio {
+   border: 1px solid rgb(227, 227, 227);
+   padding-top: 20px;
+   margin-top: 20px;
+}
+
+#info {
+   margin-top: 10px;
+   margin-bottom: 30px;
+   width: 40%;
+   text-align: center;
+   line-height: 1.5em;
+}
+
+#info span {
+   font-weight: bold;
 }
