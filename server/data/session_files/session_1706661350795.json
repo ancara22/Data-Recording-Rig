@@ -1,0 +1,26 @@
+{
+    "head": {
+        "1706661350795": "session_1706661350795.json",
+        "user": "Deniss",
+        "version": 0.3,
+        "duration": 3000,
+        "blockchain": {
+            "authority": "Evolwe",
+            "hash": "de9c8a4db62ba172efbc1f062be94900a34ddbafe337150f21693b5e8e18ce4b"
+        }
+    },
+    "data": {
+        "gsr": [],
+        "eeg": {
+            "sessionIds": [],
+            "expression": [],
+            "performance": [],
+            "sensors": [],
+            "row": []
+        },
+        "audio": [],
+        "des": [],
+        "sentiment": [],
+        "image": []
+    }
+}

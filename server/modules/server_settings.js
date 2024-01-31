@@ -5,7 +5,12 @@ const AUDIO_FOLDER  = './data/audio/',
     USER_FOLDER     = './data/user/',
     IMAGE_FOLDER    = './data/images/',
     SESSION_FOLDER  = './data/session_files/',
-    CONVERTED_AUDIO = './data/audio/processed_audio/';
+    CONVERTED_AUDIO = './data/audio/processed_audio/',
+    EEG_FOLDER      = './data/eeg/',
+    FACIAL_EXPRESSIONS_FILE  = EEG_FOLDER  + 'facial_expressions.jsonl',
+    PERFORMANCE_METRICS_FILE = EEG_FOLDER  + 'performance_metrics.jsonl',
+    POWER_OF_SENSORS_FILE    = EEG_FOLDER  + 'power_of_sensors.jsonl',
+    ROW_EEG_FILE             = EEG_FOLDER  + 'row_eeg.jsonl';
 
 
 const AUDIO_OUTPUT_JSON     = 'audio_text.json',
@@ -20,6 +25,7 @@ const AUDIO_OUTPUT_JSON     = 'audio_text.json',
 
 const FILE_PATHS = {
     CONFIG_FILE_PATH            : '../config.ini',
+    EEG_FOLDER                  : EEG_FOLDER,
     AUDIO_FOLDER                : AUDIO_FOLDER,
     CONVERTED_AUDIO             : CONVERTED_AUDIO,
     GSR_FOLDER                  : GSR_FOLDER,
@@ -36,6 +42,8 @@ const FILE_PATHS = {
     GSR_SECTIONS_JSON_PATH      : GSR_FOLDER          + GSR_SECTIONS_JSON,
     USER_INTRO_AUDIO_PATH       : USER_FOLDER         + USER_INTRO_WAV,
     USER_FILE_PATH              : USER_FOLDER         + USER_DATA_JSON,
+    EEG_FILES_LIST              : [ FACIAL_EXPRESSIONS_FILE, PERFORMANCE_METRICS_FILE, POWER_OF_SENSORS_FILE, ROW_EEG_FILE]
+
 }
 
 //SSH rig connection config

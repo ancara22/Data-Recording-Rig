@@ -7,7 +7,7 @@ import { saveData } from './utility.js';
 import { FILE_PATHS } from './server_settings.js';
 import { SERVER_CONFIG } from './server_settings.js';
 import { rigControl } from './rig_controller.js';
-import { resetCSVFile } from './file_cleaners.js';
+import { cleanCSVFile } from './file_cleaners.js';
 
 
 
@@ -30,8 +30,8 @@ webClientRoutes.get('/rigStatus', (req, res) => res.json({
 
 //Save new configs to the file
 webClientRoutes.get("/rigStart", (req, res) => {
-    resetCSVFile(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, 'Timestamp,GSR');
-    resetCSVFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, 'startTime,endTime,Emotion\n');
+    cleanCSVFile(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, 'Timestamp,GSR');
+    cleanCSVFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, 'startTime,endTime,Emotion\n');
     handleRigControl(req, res, "start")
 });
 

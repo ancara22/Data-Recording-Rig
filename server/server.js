@@ -9,6 +9,9 @@ import { Cortex }              from './modules/cortex.js';
 import dotenv from "dotenv";
 import cors from "cors";
 
+
+
+
  //For Testing ######################################################################
 import { updateTheFinalFile }  from './modules/utility.js';
 import {insertToJSON } from "./modules/aws_services.js";
@@ -36,16 +39,19 @@ app.use(express.static(path.join(__dirname, 'webclient')));
 app.use('/', webClientRoutes); //Web clien routes
 app.use('/', serverRoutes);    //Server client routes
 
-//List the server
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
     //cleanOldRowData();        //Clean old row data
     //rigControl('config');     //Configure the rig
 
+  
+
+
 
     //For Testing ######################################################################
-    //updateTheFinalFile();         //Update the final file / interval            //TEST
+    updateTheFinalFile();         //Update the final file / interval            //TEST
     //concatinateWavFiles("./data/audio/row_audio/audio_1702150851.wav");         //TEST
     //getTheHash((hash) => console.log('hash: ', hash))                           //TEST
     //insertToJSON("./data/audio/audio_1703090328.json", "audio_1703090328.wav"); //TEST
@@ -68,11 +74,6 @@ let user = {
 
 let cortex = new Cortex(user, socketUrl)
 //cortex.run();
-
-
-
-
-
 
 
 

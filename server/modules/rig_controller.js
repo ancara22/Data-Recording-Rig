@@ -1,6 +1,6 @@
 import { Client } from 'ssh2';
 import { FILE_PATHS, RIG_CONFIG, APP_CONFIG } from "./server_settings.js";
-import { runImageProcessor, updateTheFinalFile } from './utility.js';
+import { runImageProcessor, runSessionFileUpdatingInterval } from './utility.js';
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,8 @@ function executeCommand(ssh) {
             return;
         }
 
-        updateTheFinalFile();     //Update the final file / interval
+        
+        runSessionFileUpdatingInterval();     //Update the final file / interval
         
         stream.stderr.on('data', (data) => console.error('Python Script Error:', data.toString()));
     

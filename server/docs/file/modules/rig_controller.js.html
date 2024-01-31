@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">modules/rig_controller.js | server</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Data collection and processing server"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="server"><meta property="twitter:description" content="Data collection and processing server"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/ancara22/pi-server"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/modules/cortex.js~Cortex.html">Cortex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatinateWavFiles">concatinateWavFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detectExterienceSampling">detectExterienceSampling</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertToJSON">insertToJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sendAudioToAWSS3">sendAudioToAWSS3</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanCSVFile">cleanCSVFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanOldRowData">cleanOldRowData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-emptyAllFiles">emptyAllFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-removeStreamFiles">removeStreamFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertGSRData">insertGSRData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-predictGSREmotion">predictGSREmotion</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-processGSRoutput">processGSRoutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rigControl">rigControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resetTimer">resetTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractTimestamp">extractTimestamp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllEEGFilesContent">getAllEEGFilesContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getJSONLFileContent">getJSONLFileContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getTheHash">getTheHash</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertDataToFinalFile">insertDataToFinalFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-readJSONFile">readJSONFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-runImageProcessor">runImageProcessor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-runSessionFileUpdatingInterval">runSessionFileUpdatingInterval</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-saveData">saveData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-writeJSONFile">writeJSONFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webClientRoutes">webClientRoutes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-config">config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-serverRoutes">serverRoutes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-APP_CONFIG">APP_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EXPERIENCE_CONFIG">EXPERIENCE_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FILE_PATHS">FILE_PATHS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RIG_CONFIG">RIG_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SERVER_CONFIG">SERVER_CONFIG</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">modules/rig_controller.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Client } from &apos;ssh2&apos;;
+import { FILE_PATHS, RIG_CONFIG, APP_CONFIG } from &quot;./server_settings.js&quot;;
+import { runImageProcessor, runSessionFileUpdatingInterval } from &apos;./utility.js&apos;;
+
+
+////////////////////////////////////////////////////////////////////////////
+//RIG Control
+////////////////////////////////////////////////////////////////////////////
+
+//Send the connfiguration, config.ini file to the raspberry pi
+function rigControl(startRig) {
+    const ssh = new Client();
+
+    //On connection ready send the configs
+    ssh.on(&quot;ready&quot;, () =&gt; {
+        console.log(&apos;Connection ready.&apos;)
+
+        ssh.sftp((er, sftp) =&gt; {
+            if(er) console.log(&quot;SSH connection is imposible!&quot;);
+
+            //Copy file to the raspberry pi directory
+            sftp.fastPut(FILE_PATHS.CONFIG_FILE_PATH, APP_CONFIG.PATH, (err) =&gt; {
+                if (err) {
+                    console.error(&apos;Error transferring the file:&apos;, err);
+                    sftp.end(); 
+                    ssh.end();
+                    return 0;
+                }
+
+                if(startRig != &apos;config&apos;)  {
+                    runTheRecordingApp(ssh, startRig);
+                    //startEEGRecording()   //EEG recording app
+                }
+            })
+        
+            sftp.on(&apos;close&apos;, () =&gt; ssh.end());       //Close the ssh connection
+        })
+    })
+
+    handleSSHError(ssh);
+    ssh.connect(RIG_CONFIG); //Start connection
+}
+
+//Execute the RIG terminal command
+function executeCommand(ssh) {
+    ssh.exec(APP_CONFIG.APP_RUNNING_COMMAND, (err, stream) =&gt; {
+        if (err) {
+            console.error(&quot;Error running the app:&quot;, err);
+            ssh.end();
+            return;
+        }
+
+        
+        runSessionFileUpdatingInterval();     //Update the final file / interval
+        
+        stream.stderr.on(&apos;data&apos;, (data) =&gt; console.error(&apos;Python Script Error:&apos;, data.toString()));
+    
+        stream.on(&quot;close&quot;, (code, signal) =&gt; { 
+            console.log(&quot;Recording process closed. Exit code:&quot;, code, &quot;Signal:&quot;, signal);
+            ssh.end();
+        });
+    });
+}
+
+//Run the recording app
+function runTheRecordingApp(ssh, startRig) {
+    //Stop all the previews processes
+    ssh.exec(APP_CONFIG.KILL_PYTHON_APPS_COMMAND, (err, stream) =&gt; {
+        const sleep = (milliseconds) =&gt; {
+            return new Promise(resolve =&gt; setTimeout(resolve, milliseconds));
+        };
+
+        if(startRig == &apos;start&apos;) {
+            sleep(1000).then(()=&gt; {
+                executeCommand(ssh);    // Run the rig recording on the raspberry pi
+                runImageProcessor();    //Rund image processor
+            })
+        }
+    }) 
+}
+
+//Handle the SSH error
+function handleSSHError(ssh) {
+    //On ssh connection error
+    ssh.on(&quot;error&quot;, (err) =&gt; {
+        if(err.code == &apos;ENOTFOUND&apos;) {
+            console.log(&apos;SSH connection error. The RIG is Offline.&apos;)
+        } else {
+            console.log(&apos;SSH connection error: &apos;, err)
+        }
+    })
+}
+
+function startEEGRecording() {
+    //EEG
+    let socketUrl = &apos;wss://localhost:6868&apos;;
+
+    let user = {
+        &quot;license&quot;: process.env.HEADSET_LICENSE,
+        &quot;clientId&quot;: process.env.HEADSET_CLIENT_ID,
+        &quot;clientSecret&quot;: process.env.HEADSET_CLIENT_SECRET,
+        &quot;debit&quot;: 1
+    }
+
+
+    let cortex = new Cortex(user, socketUrl)
+    cortex.run();
+
+}
+
+//Export
+export { rigControl }</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">modules/routes.js | server</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Data collection and processing server"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="server"><meta property="twitter:description" content="Data collection and processing server"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/ancara22/pi-server"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/modules/cortex.js~Cortex.html">Cortex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatinateWavFiles">concatinateWavFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detectExterienceSampling">detectExterienceSampling</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertToJSON">insertToJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sendAudioToAWSS3">sendAudioToAWSS3</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanCSVFile">cleanCSVFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanOldRowData">cleanOldRowData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-emptyAllFiles">emptyAllFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-removeStreamFiles">removeStreamFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertGSRData">insertGSRData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-predictGSREmotion">predictGSREmotion</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-processGSRoutput">processGSRoutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rigControl">rigControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resetTimer">resetTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractTimestamp">extractTimestamp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllEEGFilesContent">getAllEEGFilesContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getJSONLFileContent">getJSONLFileContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getTheHash">getTheHash</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertDataToFinalFile">insertDataToFinalFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-readJSONFile">readJSONFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-runImageProcessor">runImageProcessor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-runSessionFileUpdatingInterval">runSessionFileUpdatingInterval</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-saveData">saveData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-writeJSONFile">writeJSONFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webClientRoutes">webClientRoutes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-config">config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-serverRoutes">serverRoutes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-APP_CONFIG">APP_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EXPERIENCE_CONFIG">EXPERIENCE_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FILE_PATHS">FILE_PATHS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RIG_CONFIG">RIG_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SERVER_CONFIG">SERVER_CONFIG</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">modules/routes.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import express from &apos;express&apos;;
+import fs from &apos;fs&apos;;
+import { sendAudioToAWSS3 } from &apos;./aws_services.js&apos;;
+import { saveData } from &apos;./utility.js&apos;;
+import { resetTimer } from &apos;./timer.js&apos;;
+import { SERVER_CONFIG, FILE_PATHS } from &apos;./server_settings.js&apos;;
+import { insertGSRData, processGSRoutput } from &apos;./gsr_procesor.js&apos;;
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//Rig web-service
+//////////////////////////////////////////////////////////////////////////////////
+
+const serverRoutes = express.Router();
+
+//Flag to update the rig configs
+let config = { toUpdateConfig: false };
+
+//GSR section object
+let data = {
+    startTime: null,
+    finishTime: null,
+    gsrData: [],
+    artefacts: 0
+}
+
+//Used for trainig.
+let trainingFileStart = {
+    fileNumb: 43
+};
+
+
+//Get image and save to a file. 
+//It will be saved in a temp direcotry to avoid processing incompleate images
+serverRoutes.post(&apos;/image&apos;, saveData(&apos;images&apos;, &apos;image&apos;), (req, res) =&gt; {
+    SERVER_CONFIG.imagesNumber++; //Image counter for user interface
+
+    //Image is saved in the temporary direcotry
+    let imageFile = req.file,           //Image file
+        imageName = imageFile.filename, //Image name
+        tempPath = FILE_PATHS.IMAGE_FOLDER + imageName, //Temp saving directory
+        destinationPath = FILE_PATHS.IMAGE_FOLDER + &apos;row_images/&apos; + imageName; //Final directory, row_images
+
+    //Check if image is receved
+    if (!imageFile) {
+        console.error(&apos;No image file received&apos;);
+        return res.sendStatus(400);
+    }
+
+    fs.rename(tempPath, destinationPath, (err) =&gt; {}); //Relocate image from the temporary directory to destination direcotry
+
+    res.sendStatus(200);
+});
+
+//Get audio and save to the directory row_audio
+serverRoutes.post(&apos;/audio&apos;, saveData(&apos;audio/row_audio&apos;, &apos;audio&apos;), (req, res) =&gt; {
+    SERVER_CONFIG.audioNumber++; //Audio files counter for user interface
+
+    const audioFile = req.file; //File name
+    const filePath = FILE_PATHS.AUDIO_FOLDER + &apos;row_audio/&apos; + audioFile.filename; //Row data path
+
+    if (!audioFile) {
+        console.error(&apos;No audio file received&apos;);
+        res.sendStatus(400);
+    }
+
+    //Procces the audio file
+    fs.promises.readFile(filePath)
+        .then(() =&gt; {
+            sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
+            res.sendStatus(200);
+        })
+});
+
+//Receive GSR data
+serverRoutes.post(&apos;/gsr&apos;, (req, res) =&gt; {
+    SERVER_CONFIG.gsrNumber++; //GSR data counter for user interface
+
+    const gsrData = req.body;
+
+    if (!gsrData) {
+        console.error(&apos;No GSR data received&apos;);
+        return res.sendStatus(400);
+    }
+
+    insertGSRData(data, gsrData[&apos;gsr_data&apos;], trainingFileStart); //Insert gsr data/ Used for LM training 
+    processGSRoutput(gsrData[&apos;gsr_data&apos;], false); //Process GSr data, the permanent processor
+
+    res.sendStatus(200);
+});
+
+//For connection testing and rig config updating
+serverRoutes.get(&apos;/connection&apos;, (req, res) =&gt; {
+    res.json({
+        status: 200,
+        updateConfig: config.toUpdateConfig,
+    })
+    config.toUpdateConfig = false;
+    resetTimer();
+})
+
+//Exports
+export {
+    serverRoutes,
+    config
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

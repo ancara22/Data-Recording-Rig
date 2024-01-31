@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">modules/gsr_procesor.js | server</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="Data collection and processing server"><meta property="twitter:card" content="summary"><meta property="twitter:title" content="server"><meta property="twitter:description" content="Data collection and processing server"></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/ancara22/pi-server"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/modules/cortex.js~Cortex.html">Cortex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-concatinateWavFiles">concatinateWavFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-detectExterienceSampling">detectExterienceSampling</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertToJSON">insertToJSON</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-sendAudioToAWSS3">sendAudioToAWSS3</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanCSVFile">cleanCSVFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-cleanOldRowData">cleanOldRowData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-emptyAllFiles">emptyAllFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-removeStreamFiles">removeStreamFiles</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertGSRData">insertGSRData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-predictGSREmotion">predictGSREmotion</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-processGSRoutput">processGSRoutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-rigControl">rigControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-resetTimer">resetTimer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-extractTimestamp">extractTimestamp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAllEEGFilesContent">getAllEEGFilesContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getJSONLFileContent">getJSONLFileContent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getTheHash">getTheHash</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-insertDataToFinalFile">insertDataToFinalFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-readJSONFile">readJSONFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-runImageProcessor">runImageProcessor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-runSessionFileUpdatingInterval">runSessionFileUpdatingInterval</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-saveData">saveData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-writeJSONFile">writeJSONFile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-webClientRoutes">webClientRoutes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-config">config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-serverRoutes">serverRoutes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-APP_CONFIG">APP_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-EXPERIENCE_CONFIG">EXPERIENCE_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-FILE_PATHS">FILE_PATHS</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-RIG_CONFIG">RIG_CONFIG</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-SERVER_CONFIG">SERVER_CONFIG</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">modules/gsr_procesor.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import util from &quot;util&quot;;
+import fs from &apos;fs&apos;;
+import { exec } from &apos;child_process&apos;;
+import { FILE_PATHS } from &quot;./server_settings.js&quot;;
+import { readJSONFile, writeJSONFile } from &quot;./utility.js&quot;;
+
+////////////////////////////////////////////////////////////////////////////
+//GSR processing
+////////////////////////////////////////////////////////////////////////////
+
+let isDataUpdated = false;       //To update the GSR session
+
+//Predict GSR section emotion
+async function predictGSREmotion(inputGSR) {
+    try {
+        const inputGSRString = inputGSR.join(&apos;,&apos;);
+        const command = `python3 ./processors/gsr_predict_emotion.py ${inputGSRString}`;
+
+        const { stdout, stderr } = await util.promisify(exec)(command);
+        const emotion = stdout.trim();
+
+        return emotion;
+    } catch(error) {
+        console.error(`Error: ${error.message}`);
+    }
+}
+
+//Save GSR data to a csv file/ used for graphs visualisation
+function processGSRoutput(data, nr) {
+    let value = parseInt(data), 
+        notConnectedvalue = 600;    //600+ when the sensors are not connected
+    
+    if(value &lt; notConnectedvalue) {
+        //Save dat  to a csv file
+        let timestamp =  Math.floor(Date.now() / 1000); 
+        const data = `\n${timestamp}, ${value}`;
+
+        let filePath = `./data/gsr/gsr_training_data/gsrData${nr}.csv`;     //Creates a file that represent the gsr section for graph visualisation
+
+        if(nr == false) filePath = `./data/gsr/client_graph/gsr_graph.csv`;
+
+        createFileIfNotExists(filePath , &quot;Timestamp,GSR&quot;);
+
+        fs.appendFile(filePath, data, &quot;utf-8&quot;, (err) =&gt; {
+            if (err) console.log(err);
+            else console.log(&quot;GSR data saved: &quot; + value);
+        });
+    }
+}
+
+//Simple gsr data labeling from Low to High
+function predictSwetingLevel(value) {
+    if(value &gt; 400) {
+        return &quot;High&quot;;
+    } else if(value &gt; 350) {
+        return &quot;Medium&quot;;
+    } else if(value &gt; 300) {
+        return &quot;Normal&quot;;
+    } else if(value &gt; 250) {
+        return &quot;Low&quot;;
+    } else {
+        return &quot;Minimal&quot;;
+    }
+}
+
+//Insert data into 3 minuts sections All files
+function insertGSRData(data, dataValue, data2) {
+    let value = parseInt(dataValue),
+        notConnectedvalue = 600;
+
+    let timestamp =  Math.floor(Date.now() / 1000); 
+    let swetingLevel = predictSwetingLevel(value);
+
+    let formatedData = {
+        [timestamp]: value,
+        level: swetingLevel
+    }
+
+    if(value &lt; notConnectedvalue) {
+        if(data.startTime == null) {
+            data.startTime = Math.floor(Date.now() / 1000);
+            isDataUpdated = true;
+        }
+        data.gsrData.push(formatedData);
+    } else {
+        data.artefacts ++;
+    }
+
+    if(data.artefacts &gt;= 3) {
+        data.startTime = Math.floor(Date.now() / 1000);
+        data.artefacts = 0;
+    }
+
+    //processGSRoutput(dataValue, data2.fileNumb); //Creates separate files of each section/for manual lm training
+    
+    if(Math.floor(Date.now() / 1000) - data.startTime &gt;= 3 * 60 &amp;&amp; data.startTime != null &amp;&amp; (data.gsrData).length &gt;= 60 &amp;&amp; isDataUpdated) {
+            console.log(&apos;Insert GSR section&apos;)
+            data.finishTime = Math.floor(Date.now() / 1000); 
+            isDataUpdated = false;
+
+            writeSectionToCSV(data, () =&gt; {
+                data2.fileNumb++;
+                isDataUpdated = true;
+            });  
+    }
+}
+
+//Append the GSR section to the json output file 
+async function writeSectionTOJSON(gsrSection) {
+    readJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, (dataObject) =&gt; {
+        dataObject.push(gsrSection);                                    // Append new data
+        writeJSONFile(FILE_PATHS.GSR_SECTIONS_JSON_PATH, dataObject);   // Rewrite the JSON file
+    });
+}
+
+//Write gsr emotions
+function writeClientGSREmotionsToCSV(data) {
+    createFileIfNotExists(FILE_PATHS.CLIENT_EMOTIONS_PATH, &quot;Emotion&quot;);
+
+    const csvRow = `${data.startTime},${data.endTime},&quot;${ data.emotion_state }&quot;\n`;
+
+    fs.appendFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, csvRow, &quot;utf-8&quot;, (err) =&gt; {
+        if (err) console.log(err)
+    });
+}
+
+//Insert the section to csv file
+async function writeSectionToCSV(data, callback) {
+    try {
+        const gsrValues = data.gsrData.map(item =&gt; Object.values(item)[0]);
+
+        const emotion = await predictGSREmotion(gsrValues);
+        const csvRow = `${data.startTime},${data.finishTime},&quot;[${data.gsrData.join(&apos;, &apos;)}]&quot;,${emotion}\n`;
+
+        fs.appendFile(FILE_PATHS.GSR_TRAINING_FILE_PATH,  csvRow, (err) =&gt; {
+            if (err) console.error(&apos;Error writing to CSV file:&apos;, err)
+        });
+
+        //New data object
+        let newData = {
+            startTime: data.startTime,
+            endTime: data.finishTime,
+            gsr_section: data.gsrData,
+            emotion_state: emotion
+        }
+
+        writeClientGSREmotionsToCSV(newData);   //Write emotiuon in a csv file for user interface display
+        writeSectionTOJSON(newData);            //Save data in a json file
+
+        // Clear the data for the next section
+        data.startTime = null;
+        data.finishTime = null;
+        data.gsrData = [];
+
+        callback();
+    } catch(e) {
+        console.log(&apos;Error: &apos;, e)
+    }
+    
+}
+
+//Create the file if it doesnt exist
+function createFileIfNotExists(filePath, content) {
+    if (!fs.existsSync(filePath)) {
+      fs.writeFileSync(filePath, content || &apos;&apos;, &apos;utf-8&apos;);
+      console.log(`File created: ${filePath}`);
+    }
+}
+
+//Exports
+export {
+    processGSRoutput,
+    insertGSRData,
+    predictGSREmotion,
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
