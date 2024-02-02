@@ -15,3 +15,8 @@ The server is designed to handle tasks such as processing audio and image data, 
 <h5>Hashing and Cloud Integration:</h5> Implements secure data hashing and interacts with cloud services to ensure data integrity.
 <h5>Session Management:</h5> Monitors and manages user sessions, creating new sessions when needed.
 <h5>File Handling:</h5> Manages various data files, ensuring proper organization and storage.
+
+
+<h2>Connection Hosts: </h2>
+http://192.168.0.57:8080 - wifi home
+http://172.20.10.4:8080 - mobile hotspot

@@ -10,6 +10,7 @@ import { emptyAllFiles } from "./file_cleaners.js";
  * Middleware to handle file uploads and save them to a specified folder.
  *
  * @function
+ * @memberof module:utility
  * @param {string} folder - The folder where the data will be stored.
  * @param {string} fileType - The type of file being uploaded.
  * @returns {Function} Middleware function for handling file uploads.
@@ -328,6 +329,7 @@ function extractTimestamp(fromString) {
  * Runs the final file content update at regular intervals.
  *
  * @function
+ * @memberof module:utility
  */
 function runSessionFileUpdatingInterval() {
     setInterval(() => insertDataToFinalFile(), 1 * 60 * 100);
@@ -338,6 +340,7 @@ function runSessionFileUpdatingInterval() {
  * Update the session file when the time is more than defined time minutes.
  *
  * @function
+ * @memberof module:utility
  * @param {Function} callback - Callback function to be executed after the update.
  */
 function checkSessionFilePeriod(callback) {
@@ -374,6 +377,7 @@ function checkSessionFilePeriod(callback) {
  * Creates a new session.
  *
  * @function
+ * @memberof module:utility
  * @param {number} currentTime - Current time in milliseconds.
  * @param {object} userObject - User object containing session details.
  * @param {Function} callback - Callback function to be executed after the creation.
@@ -414,6 +418,7 @@ function createNewSession(currentTime, userObject, callback) {
  * Get image data from a CSV file.
  *
  * @function
+ * @memberof module:utility
  * @returns {Array} Parsed data containing image information.
  * @throws {Error} Throws an error if there's an issue reading or parsing the CSV file.
  */
@@ -431,6 +436,7 @@ function getImages() {
  * Hash the given data using SHA-256 algorithm.
  *
  * @function
+ * @memberof module:utility
  * @param {Object} data - The data to be hashed.
  * @returns {string} The SHA-256 hash of the data.
  */
@@ -449,6 +455,7 @@ function hashTheData(data) {
  * Get the hash from the cloud.
  *
  * @function
+ * @memberof module:utility
  * @param {Function} callback - The callback function to handle the retrieved hash.
  * @throws Will throw an error if there is an issue reading JSON files or making the API request.
  */
@@ -485,6 +492,7 @@ function getTheHash(callback) {
  * Read the JSONL file and return the content and session IDs.
  *
  * @function
+ * @memberof module:utility
  * @param {string} filePath - The path to the JSONL file.
  * @returns {Object} An object containing the converted data and session IDs.
  * @throws Will throw an error if there is an issue reading the file or parsing JSON.
@@ -529,6 +537,7 @@ function getJSONLFileContent(filePath) {
  * Get content from all EEG files and organize it by type.
  *
  * @function
+ * @memberof module:utility
  * @returns {Object} An object containing EEG data organized by type and unique session IDs.
  * @throws Will throw an error if there is an issue reading the files or parsing JSON.
  */

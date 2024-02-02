@@ -29,6 +29,7 @@ const vueApp = new Vue({
         imageList              : [],
         audioList              : [],
         currentAudioFile       : '',
+        metricNames            : ["At", "2", "3", "4", "5", "6"],
 
         //Rig image configurations
         imageSettings: {
@@ -80,9 +81,7 @@ const vueApp = new Vue({
 
         this.currentImageURL = this.currentImageURL ?   this.currentImageURL: './public/no-image.jpg';
 
-
-        
-
+      
     },
 
     watch: {
@@ -106,6 +105,11 @@ const vueApp = new Vue({
                 this.renderGSRSEssionPlot();
                 this.getAllImagesNames();
                 this.getAllAudioFiles();
+
+                setTimeout(() => {
+                    this.renderRowEEGCharts();
+                }, 500)
+               
                
             }
         },
@@ -417,11 +421,16 @@ const vueApp = new Vue({
                 this.outputSessionContent = data;
                 this.selectedFile = fileName;
                 
-
                 if(this.pageContent == "history") {
+                    Plotly.purge("gsr-plot");
                     this.renderGSRSEssionPlot();
                     this.getAllImagesNames();
                     this.getAllAudioFiles();
+                setTimeout(()=>{
+                    this.renderRowEEGCharts()
+                }, 500)
+                   
+                    
                 }
             }).catch(error => console.error('Error:', error));
         },
@@ -559,7 +568,6 @@ const vueApp = new Vue({
                 }).then(response => response.json()
                 ).then(data => {
                     this.audioList = data;
-                    console.log('data', data)
                     this.currentAudioFile =  '';
 
                     //fetch audio file
@@ -568,7 +576,6 @@ const vueApp = new Vue({
 
         handleSelectAudioOption(event) {
             let fileName = event.target.value;
-            console.log('e', fileName)
 
             fetch("/getAudioFilePath", {
                 method: 'POST',
@@ -578,6 +585,147 @@ const vueApp = new Vue({
             ).then(blob => {
                     this.currentAudioFile = URL.createObjectURL(blob);
             }).catch(error => console.error('Error:', error));
+        },
+
+        renderCharts(inputData, labels, ref, names = []) {
+            inputData.forEach((chartData, index) => {
+                const plotRef = ref + (index + 1);
+
+                const chartName = names.length ? names[index] : `Sensor ${index + 1}`;
+
+                let trace = { 
+                    type: 'scatter', 
+                    mode: 'lines',  
+                    line: {
+                        width: 0.5
+                    },
+                    x: labels.map(row => moment.unix(row).format("YYYY-MM-DD HH:mm:ss.SSS")), 
+                    y: chartData.data.map(row => parseInt(row))  
+                };
+
+                const layout = {
+                  title: chartName,
+                  yaxis: { title: 'EEG' },
+                };
+          
+                Plotly.purge(plotRef);
+                Plotly.newPlot(plotRef, [trace], layout);
+            });
+        },
+
+        formatRowEEG() {
+            let output = [];
+            let labels = [];
+            let rowEEG = this.outputSessionContent.data.eeg.row;
+            
+
+            for(let i = 0; i < 18; i++) {
+                output.push({
+                    data: []
+                })
+            }
+
+            let counter = 3;
+
+            rowEEG.forEach(row => {
+                if(counter == 0) {
+                    for(let i = 0; i < 18; i++) {
+                        output[i].data.push(row.eeg[i]);
+                    }
+        
+                    labels.push(row.time);
+                    counter = 3;
+                } else {
+                    counter--;
+                }
+              
+            });
+
+
+            return { output, labels }
+        },
+
+        renderRowEEGCharts() {
+            if(this.outputSessionContent.data.eeg?.sessionIds) {
+                let { output, labels } = this.formatRowEEG();
+
+                let reference = "row_eeg_sensor";
+                this.renderCharts(output, labels, reference);
+            } else {
+                for(let i = 0; i < 18; i++) {
+                    let reference = "row_eeg_sensor" + (i + 1);
+                    Plotly.purge(reference);
+                }
+            }
+           
+        },
+
+        formatFacialExpressions() {
+            let expressions = this.outputSessionContent?.data?.eeg?.expression;
+            let output = [];
+
+            if(expressions) {
+                let prevExpression = expressions[0].fac[0];
+                output.push(expressions[0]);
+    
+                for(let i = 1; i < expressions.length; i++) {
+                    if(prevExpression != expressions[i].fac[0]) {
+                        prevExpression = expressions[i].fac[0];
+                        output.push(expressions[i]);
+                    }
+                }
+            }
+
+            return output;
+
+        },
+
+        momentTime(time) {
+
+            return moment.unix(time).format("YYYY-MM-DD HH:mm:ss") 
+        },
+
+        formatPerrformanceMetrics() {
+            let output = [], labels = [];
+
+            let performance = this.outputSessionContent.data.eeg.performance;
+            
+
+            for(let i = 0; i < 6; i++) {
+                output.push({
+                    data: []
+                })
+            }
+
+            performance.forEach(row => {
+                for(let i = 0; i < 7; i++) {
+                    //The metrics are in the strange order
+                    output[i].data.push(row.met[i]);
+                }
+    
+                labels.push(row.time);
+
+            
+            });
+
+            return { output, labels };
+        },
+
+        renderPerformanceCharts() {
+            if(this.outputSessionContent.data.eeg?.sessionIds) {
+                let { output, labels } = this.formatPerrformanceMetrics();
+
+                let reference = "performance_metrics_chart";
+                let names = ["Att", "INT", "SS", "DD", "WW", "RR"];
+
+                this.renderCharts(output, labels, reference, names);
+            } else {
+                for(let i = 0; i < 6; i++) {
+                    let reference = "performance_metrics_chart" + (i + 1);
+                    Plotly.purge(reference);
+                }
+            }
+           
         }
     }
 })

@@ -168,7 +168,8 @@
                 "sentiment": "Stress State"
             }
         ],
-        "eeg": [],
+        "eeg": {
+        },
         "audio": [
             {
                 "1703097902": "audio_1703097902.wav",

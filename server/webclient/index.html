@@ -8,6 +8,7 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://momentjs.com/downloads/moment.js"></script>
     <title>RIG</title>
 </head>
 <body>
@@ -171,18 +172,18 @@
                         <div id="head_version">Version: <span>{{ outputSessionContent.head.version }}</span></div>
                     </div>
                     <div id="data_history">
-                        <div id="data_gsr">
+                        <div id="data_gsr" v-show="outputSessionContent.data.gsr.length != 0">
                             <h6>GSR Data</h6>
-                            <div class="gsr_section">
+                            <div class="gsr_section" :key="selectedFile">
                                 <div class="recording_times" v-for="gsr in outputSessionContent.data.gsr">
                                     <div class="time"><span>Start Time: </span>{{ getTime("" + gsr.start) }}</div>
                                     <div class="time"><span>End Time: </span>{{ getTime("" + gsr.end) }}</div>
                                     <div class="time"><span>Sentiment: </span>{{ gsr.sentiment }}</div>
                                 </div>
-                                <div id="gsr-plot"></div>
+                                <div id="gsr-plot" ></div>
                             </div>
                         </div>
-                        <div id="data_audio">
+                        <div id="data_audio" v-show="outputSessionContent.data.audio.length != 0">
                             <h6>Audio Data</h6>
                             <div id="audio_player">
                                 <span>Select an audio file: </span>
@@ -229,17 +230,54 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="eeg_data">
+                        <div id="eeg_data" v-show="this.outputSessionContent.data.eeg?.sessionIds" :key="selectedFile">
                             <h6>EEG Data</h6>
+                            <div id="eeg_titles">
+                                <span>Session IDs</span>
+                                <span>Facial Expressions</span>
+                            </div>
+                            <div id="eeg_head">
+                                <div id="eeg_sessionIds">
+                                    <table>
+                                        <tr v-for="sessions in outputSessionContent?.data?.eeg?.sessionIds">
+                                            <td>Session ID: {{ sessions  }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="face_expressions">
+                                    <table>
+                                        <tr>
+                                            <th>Expression</th>
+                                            <th>Time</th>
+                                        </tr>
+                                        <tr v-for="expression in formatFacialExpressions()">
+                                            <td>{{ expression.fac[0] }}</td>
+                                            <td>{{  momentTime(expression.time)  }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <span class="eeg_titles">Performance Metrics</span>
+                            <div id="performance_metrics">
+                                <div class="metrix_box" v-for="metricNr in 6" :key="metricNr">
+                                    <div :id="`performance_metrics_chart${metricNr}`"></div>
+                                </div>
+                            </div>
+                            <span class="eeg_titles">Row EEG</span>
+                            <div id="row_eeg">
+                                <div class="sensor_box" v-for="sensorNumber in 18" :key="sensorNumber">
+                                    <div :id="`row_eeg_sensor${sensorNumber}`"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div id="experience_container">
+                        <div id="experience_container" v-if="outputSessionContent.data.des.length != 0">
                             <div class="experience" v-for="desc in outputSessionContent.data.des">
                                 <div class="time">Start Time: {{ getTime(Object.entries(desc)[0][0]) + '' }}</div>
                                 <div class="file_name">Audio file name: {{ Object.entries(desc)[0][1] }}</div>
                                 <div class="text"><span>Experience Detected: </span>{{ desc.text }}</div>
                             </div>
                         </div>
-                        <div id="sentiment_container">
+                        <div id="sentiment_container" v-if="outputSessionContent.data.sentiment.length != 0">
                             <h6>Sentiments</h6>
                             <div class="scroll_2">
                                 <div class="sentiment_box" v-for="sentiment in outputSessionContent.data.sentiment">

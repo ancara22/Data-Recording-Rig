@@ -29,7 +29,7 @@ function rigControl(startRig) {
 
                 if(startRig != 'config')  {
                     runTheRecordingApp(ssh, startRig);
-                    //startEEGRecording()   //EEG recording app
+                    startEEGRecording()   //EEG recording app
                 }
             })
         

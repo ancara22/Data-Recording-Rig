@@ -198,7 +198,7 @@ webClientRoutes.post("/getAllAudioFiles", (req, res) => {
 
             let time = parseInt((fileName.split("_")[1]).split(".")[0]);
             let diferenceTime = time - startTime;
-            let frameTime = 60 * 60;
+            let frameTime = 60 * 15;
 
             if(extension === '.wav' && diferenceTime < frameTime) return fileName;
         })

@@ -767,7 +767,7 @@ h6 {
 
 #eeg_data {
    width: auto;
-   height: 500px;
+   height: max-content;
    margin-bottom: 20px;
    padding: 15px;
    box-shadow: var(--shadow)
@@ -926,4 +926,99 @@ audio {
 #audio_player span {
    margin-right: 10px;
    font-weight: bold;
+}
+
+#eeg_head {
+   display: flex;
+   justify-content: space-around;
+   height: 300px;
+
+}
+
+#eeg_head div {
+   border: 1px solid rgb(221, 221, 221);
+   width: 45%;
+   padding: 10px;
+   display: flex;
+   justify-content: space-around;
+   text-align: center;
+   overflow: scroll;
+   
+}
+
+#eeg_head div table {
+   width: 70%;
+   height: max-content
+}
+
+#eeg_head div table td {
+   border-bottom: 1px solid rgb(234, 234, 234);
+   padding: 10px;
+}
+
+
+#eeg_head div table th {
+   border-bottom: 1px solid rgb(105, 105, 105);
+   padding: 10px;
+   font-weight: bold;
+}
+
+#eeg_titles {
+   display: flex;
+   padding: 10px;
+   justify-content: space-around;
+   margin-top: 20px;
+
+}
+
+#eeg_titles span {
+   width: 45%;
+   text-align: center;
+   font-weight: bold;
+}
+
+#row_eeg {
+   margin-top: 20px;
+   width: 100%;
+   height: max-content;
+   display: flex;
+   flex-direction: column;
+   border: 1px solid rgb(216, 216, 216);
+}
+
+.sensor_box {
+   margin-bottom: 2px;
+   border-bottom: 1px solid rgb(211, 211, 211);
+   padding: 10px;
+   width: auto;
+}
+
+#performance_metrics {
+   margin-top: 20px;
+   width: 100%;
+   height: max-content;
+   display: flex;
+   flex-direction: column;
+   border: 1px solid rgb(228, 228, 228);
+}
+
+.metrix_box div {
+   margin-bottom: 2px;
+   padding: 10px;
+   display: block;
+   width: auto;
+   height: 150px;
+   border: 1px solid rgb(235, 235, 235);
+}
+
+
+.eeg_titles {
+   display: block;
+   margin-top: 50px;
+   font-weight: bold;
+   font-size: 16px;
+}
+
+.sensor_box div {
+   height: max-content;
 }
