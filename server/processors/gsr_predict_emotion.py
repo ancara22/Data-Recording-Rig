@@ -11,27 +11,25 @@ def calculate_slope(gsr_data):
     slope = gsr_diff / time_interval
     return np.mean(slope)
 
-
-def calculate_time_duration(startTime, finishTime):
-    start_time = pd.Timestamp(startTime)
-    end_time = pd.Timestamp(finishTime)
-    time_duration = end_time - start_time
-    return time_duration.total_seconds()
-
-
+# Parse input GSR data from command line arguments
 input_gsr = list(map(int, sys.argv[1].split(',')))
 
+# Calculate statistical features from GSR data
 variance = np.var(input_gsr)
 std_dev = np.std(input_gsr)
 slope = calculate_slope(input_gsr)
 
+# Prepare features for model prediction
 features = np.array([variance, std_dev, slope]).reshape(1, -1)
 
-#Get the trained model
+# Load the pre-trained model
 model = joblib.load('./processors/gsr_emotion_model.pkl')
 
+# Suppress user warnings during prediction
 warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
+
 # Make predictions
 predicted_emotion = model.predict(features)
 
+# Print the predicted emotion
 print(predicted_emotion[0])

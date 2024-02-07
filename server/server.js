@@ -6,6 +6,7 @@ import { rigControl }          from './modules/rig_controller.js';
 import { serverRoutes }        from './modules/routes.js';
 import { webClientRoutes }     from './modules/client-routes.js';
 import { cleanOldRowData }     from './modules/file_cleaners.js';
+import { runSessionFileUpdatingInterval } from './modules/utility.js';
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -27,17 +28,19 @@ app.use(express.static(path.join(__dirname, 'webclient')));
 app.use('/', webClientRoutes); //Web clien routes
 app.use('/', serverRoutes);    //Server client routes
 
+//Listen the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 
-    //cleanOldRowData();        //Clean old row data
-    //rigControl('config');     //Configure the rig
+    cleanOldRowData();        //Clean old row data
+    rigControl('config');     //Configure the rig
+    runSessionFileUpdatingInterval();
+
 });
 
 
 
-
-
+//####################################################################################################
 //Remove the colected data
 //Temp code, to be removed
 setInterval(() => {

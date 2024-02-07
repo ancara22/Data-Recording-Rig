@@ -1,3 +1,8 @@
+/**
+ * The Web Client Routes Module.
+ * @module webClientRoutes
+ */
+
 import express from 'express';
 import ini from 'ini';
 import fs from 'fs';
@@ -10,17 +15,33 @@ import { rigControl } from './rig_controller.js';
 import { cleanCSVFile } from './file_cleaners.js';
 
 
-
 //////////////////////////////////////////////////////////////////////////////////
 //Clien web-service
 //////////////////////////////////////////////////////////////////////////////////
 
 const webClientRoutes = express.Router();
 
-//Web interface/web page
+/**
+ * Route to serve the main web page.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get("/", (req, res) => res.sendFile(path.join(__dirname, '/webclient/index.html')));
 
-//Get rig status for the web client /Web client webservice
+
+/**
+ * Route to get rig status for the web client.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /rigStatus
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get('/rigStatus', (req, res) => res.json({
     rigActive: SERVER_CONFIG.rigActive,
     imagesNumber: SERVER_CONFIG.imagesNumber,
@@ -28,17 +49,44 @@ webClientRoutes.get('/rigStatus', (req, res) => res.json({
     gsrNumber: SERVER_CONFIG.gsrNumber
 }));
 
-//Save new configs to the file
+
+/**
+ * Route to start the rig and save new configs to the file.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /rigStart
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get("/rigStart", (req, res) => {
     cleanCSVFile(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, 'Timestamp,GSR');
     cleanCSVFile(FILE_PATHS.CLIENT_EMOTIONS_PATH, 'startTime,endTime,Emotion\n');
     handleRigControl(req, res, "start")
 });
 
-//Save new configs to the file
+
+/**
+ * Route to stop the rig.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /rigStop
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get("/rigStop", (req, res) => handleRigControl(req, res, "stop"));
 
-//Get gsr data from the file
+
+/**
+ * Route to get GSR data from the file.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /gsrData
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get('/gsrData', (req, res) => {
     readFileAndHandleErrors(FILE_PATHS.CLIENT_GSR_GRAPH_FILE_PATH, res, (data) => {
         let rows = data.trim().split('\n'),
@@ -49,7 +97,16 @@ webClientRoutes.get('/gsrData', (req, res) => {
     })
 });
 
-//getRigConfigFile
+
+/**
+ * Route to get the rig configuration.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /getConfig
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get('/getConfig', (req, res) => {
     readFileAndHandleErrors(FILE_PATHS.CONFIG_FILE_PATH, res, (data) => {
         const config = ini.parse(data)
@@ -57,7 +114,16 @@ webClientRoutes.get('/getConfig', (req, res) => {
     })
 });
 
-//Save new configs to the file
+
+/**
+ * Route to save new configs to the file.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /saveConfig
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post("/saveConfig", (req, res) => {
     const config = req.body.config,
         iniConfig = ini.stringify(config);
@@ -75,7 +141,16 @@ webClientRoutes.post("/saveConfig", (req, res) => {
     });
 });
 
-//Save new configs to the file
+
+/**
+ * Route to get emotions data from a file.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /getEmotions
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get("/getEmotions", (req, res) => {
     readFileAndHandleErrors(FILE_PATHS.CLIENT_EMOTIONS_PATH, res, (data) => {
         let rows = data.trim().split('\n'),
@@ -86,7 +161,16 @@ webClientRoutes.get("/getEmotions", (req, res) => {
     });
 });
 
-//Set the new username and session start time
+
+/**
+ * Route to set a new username and session start time.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /setNewUserName
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post('/setNewUserName', (req, res) => {
     let name = req.body.userName;
 
@@ -107,28 +191,64 @@ webClientRoutes.post('/setNewUserName', (req, res) => {
     })
 })
 
-//Get the user name and session start time
+
+/**
+ * Route to get the user name and session start time.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /getUserName
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get('/getUserName', (req, res) => {
     readFileAndHandleErrors(FILE_PATHS.USER_FILE_PATH, res, (data) => {
         res.send(data);
     })
 })
 
-//Get Extracted Audio text
+
+/**
+ * Route to get extracted audio text.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /getAudioText
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get('/getAudioText', (req, res) => {
     readFileAndHandleErrors(FILE_PATHS.AUDIO_TEXT_FILE_PATH, res, (data) => {
         res.send(data)
     })
 });
 
-//Get extracted Image text
+
+/**
+ * Route to get extracted image text.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /getImageText
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get('/getImageText', (req, res) => {
     readCsvAndHandleErrors(FILE_PATHS.IMAGE_TEXT_FILE_PATH, res, (data) => {
         res.json(data)
     })
 });
 
-//Save audio user intro
+
+/**
+ * Route to save audio user intro.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /saveAudioIntro
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post("/saveAudioIntro", saveData('user', 'audio'), (req, res) => {
     res.json({
         success: true,
@@ -136,6 +256,16 @@ webClientRoutes.post("/saveAudioIntro", saveData('user', 'audio'), (req, res) =>
     });
 });
 
+
+/**
+ * Route to get all sessions from a folder.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name GET /getAllSessions
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.get("/getAllSessions", (req, res) => {
     fs.readdir(FILE_PATHS.SESSION_FOLDER, (err, files) => {
         if (err) {
@@ -156,6 +286,15 @@ webClientRoutes.get("/getAllSessions", (req, res) => {
 });
 
 
+/**
+ * Route to get all images from a folder based on start time.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /getAllImages
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post("/getAllImages", (req, res) => {
     let startTime = Math.floor(req.body.startTime / 1000);
 
@@ -182,6 +321,15 @@ webClientRoutes.post("/getAllImages", (req, res) => {
 });
 
 
+/**
+ * Route to get all audio files from a folder based on start time.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /getAllAudioFiles
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post("/getAllAudioFiles", (req, res) => {
     let startTime = Math.floor(req.body.startTime / 1000);
 
@@ -208,7 +356,15 @@ webClientRoutes.post("/getAllAudioFiles", (req, res) => {
 });
 
 
-//Read the file and return the file content
+/**
+ * Route to get the content of a JSON file.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /getOutputFileContent
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post("/getOutputFileContent", (req, res) => {
     const requestBody = req.body;
 
@@ -239,7 +395,16 @@ webClientRoutes.post("/getOutputFileContent", (req, res) => {
 
 })
 
-//Read the file and return the file content
+
+/**
+ * Route to get the audio file path.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /getAudioFilePath
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post("/getAudioFilePath", (req, res) => {
     const audioFileName = req.body.audioFileName;
     const __dirname = path.resolve();
@@ -250,7 +415,16 @@ webClientRoutes.post("/getAudioFilePath", (req, res) => {
 
 })
 
-//Read the file and return the file content
+
+/**
+ * Route to get the image file.
+ * @function
+ * @memberof module:webClientRoutes
+ * @name POST /getImage
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @returns {void}
+ */
 webClientRoutes.post("/getImage", (req, res) => {
     const imageName = req.body.imageName;
     const __dirname = path.resolve();
@@ -266,7 +440,15 @@ webClientRoutes.post("/getImage", (req, res) => {
 // Functions
 //################################################################################################################################################
 
-//Read a JSON file function with callback
+/**
+ * Read a JSON file function with callback.
+ * @function
+ * @memberof module:webClientRoutes
+ * @param {string} filePath - The path to the JSON file.
+ * @param {express.Response} res - The Express response object.
+ * @param {Function} callback - The callback function to handle the file data.
+ * @returns {void}
+ */
 function readFileAndHandleErrors(filePath, res, callback) {
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
@@ -278,13 +460,29 @@ function readFileAndHandleErrors(filePath, res, callback) {
     });
 }
 
-//Handle rig control
+/**
+ * Handle rig control.
+ * @function
+ * @memberof module:webClientRoutes
+ * @param {express.Request} req - The Express request object.
+ * @param {express.Response} res - The Express response object.
+ * @param {string} action - The action to perform.
+ * @returns {void}
+ */
 function handleRigControl(req, res, action) {
     rigControl(action);
     res.status(200);
 }
 
-//Read CSV file
+/**
+ * Read CSV file and handle errors.
+ * @function
+ * @memberof module:webClientRoutes
+ * @param {string} filePath - The path to the CSV file.
+ * @param {express.Response} res - The Express response object.
+ * @param {Function} callback - The callback function to handle the CSV data.
+ * @returns {void}
+ */
 function readCsvAndHandleErrors(filePath, res, callback) {
     try {
         const data = [];
@@ -316,5 +514,7 @@ function readCsvAndHandleErrors(filePath, res, callback) {
         console.log('Error reading CSV file: ', err);
     }
 }
+
+
 //Export
 export {  webClientRoutes }

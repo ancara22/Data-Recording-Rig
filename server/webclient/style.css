@@ -840,8 +840,6 @@ h6 {
    font-weight: bold;
 }
 
-
-
 #image_data_container img {
    width: 60%;
    height: auto;
@@ -849,7 +847,6 @@ h6 {
    margin-top: 30px;
    max-height: 420px;
    overflow: hidden;
-   
 }
 
 #image_data select {
@@ -860,7 +857,6 @@ h6 {
 #image_data span {
    font-weight: bold;
 }
-
 
 #image_data_container {
    display: flex;
@@ -943,19 +939,17 @@ audio {
    justify-content: space-around;
    text-align: center;
    overflow: scroll;
-   
 }
 
 #eeg_head div table {
-   width: 70%;
+   width: 95%;
    height: max-content
 }
 
 #eeg_head div table td {
    border-bottom: 1px solid rgb(234, 234, 234);
-   padding: 10px;
+   padding: 5px;
 }
-
 
 #eeg_head div table th {
    border-bottom: 1px solid rgb(105, 105, 105);
@@ -1002,15 +996,12 @@ audio {
    border: 1px solid rgb(228, 228, 228);
 }
 
-.metrix_box div {
+.metrix_box{
    margin-bottom: 2px;
    padding: 10px;
-   display: block;
-   width: auto;
-   height: 150px;
+   
    border: 1px solid rgb(235, 235, 235);
 }
-
 
 .eeg_titles {
    display: block;
@@ -1019,6 +1010,24 @@ audio {
    font-size: 16px;
 }
 
-.sensor_box div {
+.eeg_settings_box {
    height: max-content;
+   padding: 20px;
+}
+
+#eeg_settings_box div {
+   padding: 10px;
+}
+
+#eeg_settings_box legend {
+   padding: 10px;
+   font-weight: bold;
+
+}
+
+#performance_metrics button, #row_eeg button {
+   padding: 10px;
+   background-color: rgb(253, 192, 165);
+   cursor: pointer;
+   border: none;
 }

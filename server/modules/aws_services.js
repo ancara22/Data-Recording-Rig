@@ -1,3 +1,8 @@
+/**
+ * The AWS Services Module.
+ * @module AWSServices
+ */
+
 import AWS from 'aws-sdk';
 import fs from 'fs';
 import https from 'https';
@@ -14,7 +19,11 @@ const S3 = new AWS.S3();                               //Init AWS S3 Bucket
 const comprehend = new AWS.Comprehend();               //Init AWS Comprehend
 
 
-//Insert audio file to the AWS S3 Bucket 
+/**
+ * Insert audio file to the AWS S3 Bucket
+ * @memberof module:AWSServices
+ * @param {string} audioFile - The name of the audio file
+ */
 function sendAudioToAWSS3(audioFile) {
     let filePath = FILE_PATHS.ROW_AUDIO_FOLDER_PATH + audioFile,
         convertedFilePath = FILE_PATHS.CONVERTED_AUDIO + audioFile;
@@ -39,7 +48,12 @@ function sendAudioToAWSS3(audioFile) {
     });  
 }
 
-//Create and run the Transcriber job on the AWS Transcriber service
+
+/**
+ * Create and run the Transcriber job on the AWS Transcribe service
+ * @memberof module:AWSServices
+ * @param {string} audioFile - The name of the audio file
+ */
 function transcribeTheAudioFile(audioFile) {
     let transcriptionJobName = "audioT_" + audioFile.replace('.wav', ''); //Create a unic job name
 
@@ -65,7 +79,12 @@ function transcribeTheAudioFile(audioFile) {
     });
 }
 
-//Request to the AWS Trascriber job, to get the job status
+/**
+ * Request to the AWS Transcribe job to get the job status
+ * @memberof module:AWSServices
+ * @param {string} transcriptionJobName - The name of the transcription job
+ * @param {string} audioFile - The name of the audio file
+ */
 function getTranscriptionStatus(transcriptionJobName, audioFile) {
     //Send the request
     transcribeService.getTranscriptionJob({
@@ -93,7 +112,12 @@ function getTranscriptionStatus(transcriptionJobName, audioFile) {
     })
 }
 
-//Get Transcriber output
+/**
+ * Function to get Transcribe data from the URL
+ * @memberof module:AWSServices
+ * @param {string} resultFileUrl - The URL of the Transcribe result file
+ * @param {string} audioFile - The name of the audio file
+ */
 function getTranscriptionData(result_file_url, audioFile) {
     let outputPath = './data/audio/' + (audioFile.replace('.wav', '.json')); //Output file name
     let file = fs.createWriteStream(outputPath); //Create a empty file
@@ -108,11 +132,16 @@ function getTranscriptionData(result_file_url, audioFile) {
                 insertToJSON(outputPath, audioFile)
             });
         });
-
     }).on('error', (err) => console.error('Error downloading JSON file:', err));
 }
 
-//Insert audio transcribed data in an json file
+
+/**
+ * Insert audio transcribed data into a JSON file.
+ * @memberof module:AWSServices
+ * @param {string} outputPath - The path of the transcribed audio data JSON file.
+ * @param {string} audioFile - The name of the audio file.
+ */
 function insertToJSON(outputPath, audioFile) {
     //One speaker data
     let newData = {
@@ -153,7 +182,6 @@ function insertToJSON(outputPath, audioFile) {
 
                             let dataJson = JSON.stringify(dataObject, null, 4); //Convert the object to json
 
-
                             //Write the json file
                             fs.writeFile(FILE_PATHS.AUDIO_TEXT_FILE_PATH, dataJson, 'utf8', (err) => {
                                 if (err) console.error('Error updating JSON file:', err)
@@ -171,7 +199,14 @@ function insertToJSON(outputPath, audioFile) {
         })
 }
 
-//Format the conversation to json format
+
+/**
+ * Format the conversation to JSON format.
+ * @memberof module:AWSServices
+ * @param {string} filePath - The path of the input file (from transcriber).
+ * @param {object} respons - Object to store formatted data.
+ * @returns {Promise} - Promise that resolves when formatting is complete.
+ */
 function formatTheAudioJson(filePath, respons) {
     return new Promise(async (resolve, reject) => {
         readJSONFile(FILE_PATHS.USER_FILE_PATH, (user) => {
@@ -251,14 +286,25 @@ function formatTheAudioJson(filePath, respons) {
     })
 }
 
-//Remove the a file
+
+/**
+ * Remove a JSON file.
+ * @memberof module:AWSServices
+ * @param {string} filePath - The path of the file to be removed.
+ */
 function removeAJsonFile(filePath) {
     fs.unlink(filePath, (err) => {
         if (err) console.error('Error removing file:', err)
     });
 }
 
-//Detect user exterience from the audio text
+
+/**
+ * Detect user experience from the audio text.
+ * @memberof module:AWSServices
+ * @param {object} dataObject - Object containing transcribed audio data.
+ * @returns {string|null} - Extracted experience text or null if not found.
+ */
 function detectExterienceSampling(dataObject) {
     let str = "",
         data = dataObject.text;
@@ -289,7 +335,13 @@ function detectExterienceSampling(dataObject) {
     }
 }
 
-//Extract wmotions from text using AWS Comprehend
+
+/**
+ * Extract emotions from text using AWS Comprehend.
+ * @memberof module:AWSServices
+ * @param {string} text - The input text for emotion extraction.
+ * @returns {Promise<object>} - A promise that resolves to the emotion detection result.
+ */
 function extractEmotionsFromText(text) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -306,7 +358,12 @@ function extractEmotionsFromText(text) {
     });
 }
 
-//Concatinate audio file to user intro
+/**
+ * Concatenate audio file to user intro.
+ * @memberof module:AWSServices
+ * @param {string} wavFile - The path of the audio file to be concatenated.
+ * @param {function} callback - Callback function to be called after the concatenation is complete.
+ */
 function concatinateWavFiles(wavFile, callback) {
     let fileEndTimestamp = extractTimestamp(wavFile),
         filePath = FILE_PATHS.CONVERTED_AUDIO + "audio_" + fileEndTimestamp + ".wav";
@@ -345,7 +402,13 @@ function concatinateWavFiles(wavFile, callback) {
     })
 }
 
-//Remove the user introduction text from the conversation an label him
+
+/**
+ * Remove the user introduction text from the conversation and label him.
+ * @memberof module:AWSServices
+ * @param {object} inputObject - Object containing transcribed audio data.
+ * @param {string} username - The username used for labeling the speaker.
+ */
 function processTextObject(inputObject, username) {
     if (inputObject && inputObject.text && Array.isArray(inputObject.text)) {
         inputObject.text.shift();   //Remove the first element from the 'text' array

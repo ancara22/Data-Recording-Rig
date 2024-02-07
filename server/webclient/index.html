@@ -13,6 +13,7 @@
 </head>
 <body>
     <div id="app">
+        <!-- Navigation Bar -->
         <div id="nav">
             <div id="menu">
                 <i class="fa-solid fa-bars"></i>
@@ -35,8 +36,12 @@
                 <span>{{ startTime ? new Date(startTime * 1000).toLocaleString(): "0000.00.00 00:00" }}</span>
             </div>
         </div>
+
+<!-- --------------------------------------------------------------------------------------------------------- -->
+        <!-- Rig Settings Page -->
         <div v-if="pageContent == 'settings'" id="settings_container">
             <div id="user_settings">
+                <!-- User Settings -->
                 <div id="info">To enable the <span>Start</span> button, click <span>Set User</span>, enter your username, 
                     and record a brief audio introduction by cliking <span>Start Recording</span> button and then <span>Save</span> button. Once done, the rig can be started correctly.
                 </div>
@@ -56,7 +61,9 @@
                     <span v-if="recording">Recording... {{ recordingTimer }}sec</span>
                 </div>
             </div>
+             <!-- Rig Settings -->
             <h1>Rig Settings</h1>
+             <!-- Image Settings -->
             <div class="settings_box">
                 <h3>Image</h3>
                 <div class="settings">
@@ -72,6 +79,7 @@
                     <input v-model="imageSettings.host" name="img_host" type="text">
                 </div>
             </div>
+            <!-- Audio Settings -->
             <div class="settings_box">
                 <h3>Audio</h3>
                 <div class="settings">
@@ -85,6 +93,7 @@
                     <input v-model="audioSettings.host" name="aud_host" type="text">
                 </div>
             </div>
+            <!-- GSR Settings -->
             <div class="settings_box">
                 <h3>GSR</h3>
                 <div class="settings">
@@ -99,10 +108,36 @@
                     <input v-model="connectionSettings.host" name="connection_host" type="text">
                 </div>
             </div>
+            <!-- EEG Headset Settings -->
+            <div class="settings_box eeg_settings_box" >
+                <h3>EEG</h3>
+                <div id="eeg_settings_box">
+                    <legend>Choose EEG Data Types</legend>
+                    <div>
+                        <input v-model="eegSettings.eeg" id="eeg_row" type="checkbox" name="eeg" value="eeg">
+                        <label for="eeg">Row EEG</label>
+                    </div>
+                    <div>
+                        <input v-model="eegSettings.fac" id="eeg_fac" type="checkbox" name="eeg" value="fac">
+                        <label for="fac">Facial Expressions</label>
+                    </div>
+                    <div>
+                        <input v-model="eegSettings.met" id="eeg_met" type="checkbox" name="eeg" value="met">
+                        <label for="met">Performance Metrics</label>
+                    </div>
+                    <div>
+                        <input v-model="eegSettings.pow" id="eeg_pow" type="checkbox" name="eeg" value="pow">
+                        <label for="pow">EEG Sensors Power</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Save Settings -->
             <div id="saveBtn">
                 <button @click="saveConfigFile">Save</button>
             </div>
         </div>
+ <!-- --------------------------------------------------------------------------------------------------------- -->
+        <!-- Dashboard Page -->
         <div id="rig_data_box" v-else-if="pageContent == 'data'">
             <div id="counter">
                 <h2>Data Collected:</h2>
@@ -152,7 +187,8 @@
                 </div>
             </div>
         </div>
-
+ <!-- --------------------------------------------------------------------------------------------------------- -->
+         <!-- History Page -->
         <div v-if="pageContent == 'history'">
             <div id="container">
                 <div id="sessions_list">
@@ -162,6 +198,7 @@
                     </li>
                 </div>
                 <div id="sessions_output">
+                    <!-- Head Data -->
                     <div id="head">
                         <h4>Head</h4>
                         <div id="head_timestamp">
@@ -172,6 +209,7 @@
                         <div id="head_version">Version: <span>{{ outputSessionContent.head.version }}</span></div>
                     </div>
                     <div id="data_history">
+                         <!-- GSR Data -->
                         <div id="data_gsr" v-show="outputSessionContent.data.gsr.length != 0">
                             <h6>GSR Data</h6>
                             <div class="gsr_section" :key="selectedFile">
@@ -183,6 +221,7 @@
                                 <div id="gsr-plot" ></div>
                             </div>
                         </div>
+                        <!-- Audio Data -->
                         <div id="data_audio" v-show="outputSessionContent.data.audio.length != 0">
                             <h6>Audio Data</h6>
                             <div id="audio_player">
@@ -210,7 +249,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        <!-- Image Data -->
                         <div id="image_data">
                         <h6>Image Data</h6>
                             <span>Select an Image: </span>
@@ -230,7 +269,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="eeg_data" v-show="this.outputSessionContent.data.eeg?.sessionIds" :key="selectedFile">
+                        <!-- EEG Data -->
+                        <div id="eeg_data" v-show="this.outputSessionContent.data.eeg?.sessionIds?.length != 0 && this.outputSessionContent.data.eeg?.sessionIds" :key="selectedFile">
                             <h6>EEG Data</h6>
                             <div id="eeg_titles">
                                 <span>Session IDs</span>
@@ -250,26 +290,31 @@
                                             <th>Expression</th>
                                             <th>Time</th>
                                         </tr>
-                                        <tr v-for="expression in formatFacialExpressions()">
-                                            <td>{{ expression.fac[0] }}</td>
-                                            <td>{{  momentTime(expression.time)  }}</td>
+                                        <tr v-for="expression in formatFacialExpressions()" v-show="expression?.fac">
+                                            <td>{{ expression?.fac[0] }}, {{ expression?.fac[1] }}, {{ expression?.fac[3] }}</td>
+                                            <td>{{  momentTime(expression?.time)  }}</td>
                                         </tr>
                                     </table>
                                 </div>
                             </div>
                             <span class="eeg_titles">Performance Metrics</span>
-                            <div id="performance_metrics">
-                                <div class="metrix_box" v-for="metricNr in 6" :key="metricNr">
+                          
+                            <div id="performance_metrics" >
+                                <button @click="renderPerformanceCharts()">Click to Display Performance Metrics</button>
+                                <div v-if="showEEGMetrics" class="metrix_box" v-for="metricNr in 6" :key="metricNr">
                                     <div :id="`performance_metrics_chart${metricNr}`"></div>
                                 </div>
                             </div>
                             <span class="eeg_titles">Row EEG</span>
+                             <!-- Row EEG Data -->
                             <div id="row_eeg">
-                                <div class="sensor_box" v-for="sensorNumber in 18" :key="sensorNumber">
+                                <button @click="renderRowEEGCharts()">Click to Display Row EEG Data</button>
+                                <div v-if="showEEGRow" class="sensor_box" v-for="sensorNumber in 12" :key="sensorNumber">
                                     <div :id="`row_eeg_sensor${sensorNumber}`"></div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Detected Experience Data -->
                         <div id="experience_container" v-if="outputSessionContent.data.des.length != 0">
                             <div class="experience" v-for="desc in outputSessionContent.data.des">
                                 <div class="time">Start Time: {{ getTime(Object.entries(desc)[0][0]) + '' }}</div>
@@ -277,6 +322,7 @@
                                 <div class="text"><span>Experience Detected: </span>{{ desc.text }}</div>
                             </div>
                         </div>
+                        <!-- Sentiment Data -->
                         <div id="sentiment_container" v-if="outputSessionContent.data.sentiment.length != 0">
                             <h6>Sentiments</h6>
                             <div class="scroll_2">

@@ -20,16 +20,17 @@ const vueApp = new Vue({
         audioText              : [],           //Audio extracted text and emotions
         imagesNumber           : 0,            //Images counter
         audioNumber            : 0,            //Audio counter
-        gsrTime                : '00hh 00mm',            //Gsr counter
-        sessionsList           : [],
-        outputSessionContent   : {},
-        selectedFile           : null,
-        currentImageURL        :  './public/no-image.jpg',
-        selectedImageName      : undefined,
-        imageList              : [],
-        audioList              : [],
-        currentAudioFile       : '',
-        metricNames            : ["At", "2", "3", "4", "5", "6"],
+        gsrTime                : '00hh 00mm',  //Gsr counter
+        sessionsList           : [],           //List of sessions
+        outputSessionContent   : {},           //Content of the current output session
+        selectedFile           : null,         //Currently selected file
+        currentImageURL        :  './public/no-image.jpg',  //Default image URL
+        selectedImageName      : undefined,    //Selected image name
+        imageList              : [],           //List of images
+        audioList              : [],           //List of audio files
+        currentAudioFile       : '',           //Currently selected audio file
+        showEEGMetrics         : false,        //Show EEG metrics status
+        showEEGRow             : false,        //Show EEG row status
 
         //Rig image configurations
         imageSettings: {
@@ -53,6 +54,14 @@ const vueApp = new Vue({
             frequence   : undefined,
             host        : undefined
         },
+        
+        //EEG headset settings
+        eegSettings: {
+            met: undefined, 
+            pow: undefined,
+            fac: undefined,
+            eeg: undefined
+        }, 
 
         //Rig connection configurations
         connectionSettings: { host: undefined }
@@ -64,32 +73,39 @@ const vueApp = new Vue({
         //Set the default gape
         const page = localStorage.getItem('page');
 
+        //Check if the page is stored in localStorage
         if(page !== null && page !== undefined) {
             this.pageContent = page 
         } else {
+            //Set 'settings' as the default page in localStorage
             localStorage.setItem('page', 'settings');
             this.pageContent = localStorage.getItem('page');
         }
         
-        setInterval(()=> this.getRigStatus(), 1000);    //Check the Rig Status in interval of time
+        //Check the Rig Status in an interval of time
+        setInterval(()=> this.getRigStatus(), 1000);
 
-        this.readConfigFile();                          //Get the config file data
+        //Get the config file data
+        this.readConfigFile();  
 
-        this.pageContent =='data' ? this.getGSRdata() : clearInterval(this.graphInterval);   //Clear the GSR updating interval on page change
+        //Clear the GSR updating interval on page change                
+        this.pageContent =='data' ? this.getGSRdata() : clearInterval(this.graphInterval);
 
-        this.getAllSessionsNames(); //Get all the recorded session files
+        //Get all the recorded session files
+        this.getAllSessionsNames();
 
+        //Set the default image URL if not already set
         this.currentImageURL = this.currentImageURL ?   this.currentImageURL: './public/no-image.jpg';
-
-      
     },
 
+    //Watcher for reactive data changes
     watch: {
         //Control the page content
         pageContent: function(newPage, oldPage) {
             //Control the GSR graph updates
             if(oldPage == 'data') clearInterval(this.graphInterval);
 
+            //Set the new page in localStorage
             newPage == "data" ? localStorage.setItem('page', 'data') : localStorage.setItem('page', 'settings');
             
             //Start the GSR grpath updating
@@ -101,28 +117,26 @@ const vueApp = new Vue({
                 this.graphInterval = setInterval(()=> this.getGSRdata(), 1000);
             } 
 
+            //Actions when switching to the 'history' page
             if(this.pageContent == "history") {
                 this.renderGSRSEssionPlot();
                 this.getAllImagesNames();
                 this.getAllAudioFiles();
-
-                setTimeout(() => {
-                    this.renderRowEEGCharts();
-                }, 500)
-               
-               
             }
         },
 
         //Manage rig status interface
         rigActive: function(newStatus, oldStatus) {
+            //Update the rig status label
             newStatus == true ? this.statusText = 'ONLINE' : this.statusText = 'OFFLINE';
         }
-
     },
 
     methods: {
-        //Get the server side configuration file
+        /**
+         * Fetch the server-side configuration file.
+         * Updates the application's settings based on the retrieved configuration.
+         */
         readConfigFile() {
             fetch('/getConfig')
                 .then(res => res.json())
@@ -139,6 +153,7 @@ const vueApp = new Vue({
                     //Get the audio recording configs
                     const audioConfig = data["config"]['audio'];
 
+                    //Update audio settings
                     this.audioSettings.frequence = parseFloat(audioConfig.frequence);
                     this.audioSettings.sampleRate = parseFloat(audioConfig.samp_rate);
                     this.audioSettings.chunk = parseFloat(audioConfig.chunk);
@@ -147,10 +162,21 @@ const vueApp = new Vue({
                     //Get the gsr recordign configs
                     this.gsrSettings.host = data["config"]['GSR'].gsr_host;
                     this.connectionSettings.host = data["config"]['CONNECTION'].host;
+
+                    const eegSettings = data["config"]['eeg'];
+
+                    //Update EEG settings
+                    this.eegSettings.eeg = eegSettings.eeg;
+                    this.eegSettings.pow = eegSettings.pow;
+                    this.eegSettings.met = eegSettings.met;
+                    this.eegSettings.fac = eegSettings.fac;
                 }).catch(error => console.error('Error geting config file:', error));
         },
 
-        //Save the configs and send to the server
+        /**
+         * Save the configurations and send them to the server.
+         * Posts the updated configuration to the server for persistence.
+         */
         saveConfigFile() {
             fetch("/saveConfig", {
                 method: 'POST',
@@ -180,6 +206,12 @@ const vueApp = new Vue({
                             mainY: this.imageSettings.size_y,
                             loresX: "640",
                             loresY: "480"
+                        },
+                        eeg: {
+                            met: this.eegSettings.met, 
+                            pow: this.eegSettings.pow,
+                            fac: this.eegSettings.fac,
+                            eeg: this.eegSettings.eeg
                         } 
                     }
                 }),
@@ -188,12 +220,16 @@ const vueApp = new Vue({
                 .catch(error => console.error('Error:', error));
         },
 
-        //Get the rig status
+        /**
+         * Fetch the rig status from the server.
+         * Updates local data with the rig's current status and statistics.
+         */
         getRigStatus() {
             fetch("/rigStatus")
                 .then(response => response.json())
                 .then(data => {
-                    this.rigActive = data.rigActive;   //Update the local rig status 
+                    //Update local rig status and statistics
+                    this.rigActive = data.rigActive; 
                     this.imagesNumber = data.imagesNumber;
                     this.audioNumber = data.audioNumber;
                     let { hours, minutes, sec } = this.secondsToHoursMinutes(data.gsrNumber)
@@ -202,7 +238,10 @@ const vueApp = new Vue({
                 }).catch(error => console.error('Error:', error));
         },
 
-        //Start the rig
+        /**
+         * Start the rig by sending a request to the server.
+         * Temporarily updates UI color during the operation.
+         */
         startRig() {
             this.tempColorGray = true;
 
@@ -214,7 +253,10 @@ const vueApp = new Vue({
                 .catch(error => console.error('Error:', error));
         },
 
-        //Stop the rig
+        /**
+         * Stop the rig by sending a request to the server.
+         * Updates local data with the new rig status.
+         */
         stopRig() {
             fetch("/rigStop")
                 .then(response => response.json())
@@ -222,7 +264,10 @@ const vueApp = new Vue({
                 .catch(error => console.error('Error:', error));
         },
 
-        //get GSR data from the server side file
+        /**
+         * Fetches GSR data from the server-side file and updates the GSR graph on the page.
+         * Also calls the 'getGSREmotions' method.
+         */
         getGSRdata() {
             fetch('/gsrData')
                 .then(res => res.json())
@@ -238,7 +283,7 @@ const vueApp = new Vue({
             this.getGSREmotions();
         },
 
-        //GET GSR Emotions from the server
+        //Fetches GSR Emotions from the server and updates the emotions list on the page.
         getGSREmotions() {
             let currentArrayLength = this.emotionsList.length;
 
@@ -252,7 +297,10 @@ const vueApp = new Vue({
                 }).catch(error => console.error('Error fetching GSR Emotions:', error));
         },
 
-        //Render GSR emotions on the page
+        /**
+         * Renders GSR emotions on the page.
+         * @param {Array} data - Array containing GSR emotion data.
+         */
         renderEmotions(data) {
             if(data.length > 0) {
                 let reversedData = data.reverse();
@@ -272,13 +320,17 @@ const vueApp = new Vue({
             }
         },
 
-        //Set a new user
+        //Sets a new user and adjusts UI elements accordingly.
         setNewUser() {
             this.isUserMenuDisplayed = false;
 
             if(this.userName != this.oldUsername) this.hideAudioRecording = false;
         },
 
+        /**
+         * Sends a request to set the new user name.
+         * After setting the name, continues recording with the same user.
+         */
         setUserName() {
             fetch("/setNewUserName", {
                 method: 'POST',
@@ -287,7 +339,10 @@ const vueApp = new Vue({
             }).then(() => this.continueRecording())
         },
  
-        //Ccontinue with the same user
+        /**
+         * Continues recording with the same user by fetching user information from the server.
+         * Updates local data with the fetched user information.
+         */
         continueRecording() {
             this.isUserMenuDisplayed = false;
 
@@ -301,7 +356,10 @@ const vueApp = new Vue({
                 }).catch(error => console.error('Error fetching GSR Emotions:', error));
         },
 
-        //Start audio recording
+        /**
+         * Starts audio recording by accessing the user's microphone.
+         * Sets up the recorder and starts a countdown timer.
+         */
         startRecording() {
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(stream => {
@@ -327,7 +385,11 @@ const vueApp = new Vue({
                 }).catch(error => console.error('Error accessing microphone:', error));
         },
 
-        //Stop audio recording
+        /**
+         * Stops audio recording.
+         * Exports the recorded data as a WAV format.
+         * Clears the recorder for the next recording.
+         */
         stopRecording() {
             this.recording = false;
             this.recorder.stop();   // Stop recording
@@ -345,7 +407,10 @@ const vueApp = new Vue({
             this.recorder.clear();  //Clear the recorder for the next recording
         },
 
-        //Send recording to the server and save
+        /**
+         * Sends the recorded audio to the server and saves it.
+         * Enables user interaction and continues recording.
+         */
         saveRecording() {
             if (this.audioData) {
                 const formData = new FormData();
@@ -363,7 +428,7 @@ const vueApp = new Vue({
             this.hideAudioRecording = true;
         },
 
-        //Get audio text
+        //Fetches audio text from the server.
         getAudioText() {
             fetch('/getAudioText')
                 .then(res => res.json())
@@ -376,14 +441,18 @@ const vueApp = new Vue({
                 })
         },
 
-        //Get Image text
+        //Fetches image text from the server.
         getImageText() {
             fetch('/getImageText')
                 .then(res => res.json())
                 .then(data => this.imageText = data)
         },
 
-        //Convert seconds to time hh mm ss
+        /**
+         * Converts seconds to hours, minutes, and seconds.
+         * @param {number} seconds - Total seconds to convert.
+         * @returns {Object} - Object containing hours, minutes, and seconds.
+         */
         secondsToHoursMinutes(seconds) {
             //Calculate hours and remaining seconds
             const hours = Math.floor(seconds / 3600);
@@ -396,7 +465,10 @@ const vueApp = new Vue({
             return { hours, minutes, sec };
         },
 
-        //Get all sessions file names
+        /**
+         * Fetches all session file names from the server.
+         * Sets the selected file and fetches its content.
+         */
         getAllSessionsNames() {
             fetch("/getAllSessions")
                 .then(response => response.json())
@@ -407,8 +479,15 @@ const vueApp = new Vue({
                 }).catch(error => console.error('Error:', error));
         },
 
-        //Get the session file name content
+        /**
+         * Fetches the content of the selected session file.
+         * Updates UI elements based on the selected file and page content.
+         * Calls methods to render GSR plot, fetch image names, and fetch audio files.
+         * @param {string} fileName - Name of the selected session file.
+         */
         getFileContent(fileName) {
+            this.showEEGRow = false;
+            this.showEEGMetrics = false;
             this.selectedAudio = ''
             this.currentAudioFile = ''
 
@@ -426,16 +505,15 @@ const vueApp = new Vue({
                     this.renderGSRSEssionPlot();
                     this.getAllImagesNames();
                     this.getAllAudioFiles();
-                setTimeout(()=>{
-                    this.renderRowEEGCharts()
-                }, 500)
-                   
-                    
                 }
             }).catch(error => console.error('Error:', error));
         },
 
-        //extract the timestamp from a string and convert to date
+        /**
+         * Extracts the timestamp from a string and converts it to a formatted date-time string.
+         * @param {string} fileName - Input string containing the timestamp.
+         * @returns {string} - Formatted date-time string.
+         */
         getTime(fileName) {
             const timestampString = fileName.replace('session_', '');
             const base = timestampString.length > 8 ? 10 : 8;
@@ -461,7 +539,11 @@ const vueApp = new Vue({
             return formattedDateTime;
         },
 
-        //Get sentiment if the input is object or return the original
+        /**
+         * Extracts the sentiment from an object or returns the original value.
+         * @param {Object|string} sentiment - Input sentiment value.
+         * @returns {string} - Extracted sentiment value.
+         */
         getSentiment(sentiment) {
             let response = sentiment;
 
@@ -472,6 +554,7 @@ const vueApp = new Vue({
             return response;
         },
 
+        //Renders the GSR session plot using Plotly.
         renderGSRSEssionPlot() {
             let data = this.outputSessionContent.data.gsr;
             let plotInput = [];
@@ -498,7 +581,10 @@ const vueApp = new Vue({
            
         },
 
-        //Get all sessions file names
+        /**
+         * Fetches all image names for the selected session.
+         * @param {Event} event - The change event from the select dropdown.
+         */
         getAllImagesNames() {
             let selectedFilecopy = this.selectedFile;
             let startTime = parseInt(selectedFilecopy.replace("session_", ""), 10);
@@ -516,12 +602,22 @@ const vueApp = new Vue({
                 }).catch(error => console.error('Error:', error));
         },
 
+        /**
+         * Handles the selection of an image option from the dropdown.
+         * Fetches the selected image.
+         * @param {Event} event - The change event from the select dropdown.
+         */
         handleSelectImageOption(event) {
             this.selectedImageName = event.target.value;
           
             this.fetchImage(this.selectedImageName);
         },
 
+        /**
+         * Fetches the image from the server based on the selected image name.
+         * Updates the current image URL.
+         * @param {string} imageName - Name of the selected image.
+         */
         fetchImage(imageName) {
             if(this.selectedImageName) {
                 fetch("/getImage", {
@@ -538,6 +634,11 @@ const vueApp = new Vue({
             }
         },
 
+        /**
+         * Converts a timestamp to a formatted date-time string.
+         * @param {number} timestamp - Timestamp to be converted.
+         * @returns {string} - Formatted date-time string.
+         */
         convertTime(timestamp) {
             const date = new Date(timestamp * 1000);
                     
@@ -555,6 +656,7 @@ const vueApp = new Vue({
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         },
 
+        //Fetches all audio files for the selected session from the server.
         getAllAudioFiles() {
             let selectedFilecopy = this.selectedFile;
             let startTime = parseInt(selectedFilecopy.replace("session_", ""), 10);
@@ -574,6 +676,11 @@ const vueApp = new Vue({
                 }).catch(error => console.error('Error:', error));
         },
 
+        /**
+         * Handles the selection of an audio option from the dropdown.
+         * Fetches the selected audio file.
+         * @param {Event} event - The change event from the select dropdown.
+         */
         handleSelectAudioOption(event) {
             let fileName = event.target.value;
 
@@ -587,10 +694,18 @@ const vueApp = new Vue({
             }).catch(error => console.error('Error:', error));
         },
 
-        renderCharts(inputData, labels, ref, names = []) {
+        /**
+         * Renders charts using Plotly based on the input data, labels, and reference.
+         * @param {Array} inputData - Array of data for each chart.
+         * @param {Array} labels - Array of labels for the x-axis.
+         * @param {string} ref - Reference for the chart div.
+         * @param {Array} names - Names for each chart (optional).
+         * @param {string} mainLabel - Label for the y-axis.
+         */
+        renderCharts(inputData, labels, ref, names = [], mainLabel = "EEG") {
             inputData.forEach((chartData, index) => {
                 const plotRef = ref + (index + 1);
-
+                
                 const chartName = names.length ? names[index] : `Sensor ${index + 1}`;
 
                 let trace = { 
@@ -605,7 +720,7 @@ const vueApp = new Vue({
 
                 const layout = {
                   title: chartName,
-                  yaxis: { title: 'EEG' },
+                  yaxis: { title: mainLabel },
                 };
           
                 Plotly.purge(plotRef);
@@ -613,11 +728,14 @@ const vueApp = new Vue({
             });
         },
 
+        /**
+         * Formats row EEG data from the output session content.
+         * @returns {Object} - Object containing formatted output and labels.
+         */
         formatRowEEG() {
             let output = [];
             let labels = [];
             let rowEEG = this.outputSessionContent.data.eeg.row;
-            
 
             for(let i = 0; i < 18; i++) {
                 output.push({
@@ -638,53 +756,81 @@ const vueApp = new Vue({
                 } else {
                     counter--;
                 }
-              
             });
 
+            output.shift();
+            output.shift();
+            output.pop();
+            output.pop();
 
             return { output, labels }
         },
 
+        /**
+         * Renders row EEG charts using Plotly.
+         * Sets a timeout to allow for proper rendering.
+         */
         renderRowEEGCharts() {
-            if(this.outputSessionContent.data.eeg?.sessionIds) {
-                let { output, labels } = this.formatRowEEG();
+            this.showEEGRow = true;
 
-                let reference = "row_eeg_sensor";
-                this.renderCharts(output, labels, reference);
-            } else {
-                for(let i = 0; i < 18; i++) {
-                    let reference = "row_eeg_sensor" + (i + 1);
-                    Plotly.purge(reference);
+            setTimeout(() => {
+                if(this.outputSessionContent.data.eeg?.sessionIds) {
+                    let { output, labels } = this.formatRowEEG();
+
+                    let reference = "row_eeg_sensor";
+                    this.renderCharts(output, labels, reference);
+                } else {
+                    for(let i = 0; i < 16; i++) {
+                        let reference = "row_eeg_sensor" + (i + 1);
+                        Plotly.purge(reference);
+                    }
                 }
-            }
-           
+            }, 500);
         },
 
+        /**
+         * Formats facial expressions data from the output session content.
+         * @returns {Array} - Array containing formatted facial expressions data.
+         */
         formatFacialExpressions() {
             let expressions = this.outputSessionContent?.data?.eeg?.expression;
             let output = [];
 
-            if(expressions) {
-                let prevExpression = expressions[0].fac[0];
+            if(expressions != undefined && expressions[0]?.fac) {
+                let prevExpression1 = expressions[0].fac[0];
+                let prevExpression2 = expressions[0].fac[1];
+                let prevExpression3 = expressions[0].fac[3];
+
                 output.push(expressions[0]);
     
                 for(let i = 1; i < expressions.length; i++) {
-                    if(prevExpression != expressions[i].fac[0]) {
-                        prevExpression = expressions[i].fac[0];
+                    if(prevExpression1 != expressions[i].fac[0] || prevExpression2 != expressions[i].fac[1] || prevExpression3 != expressions[i].fac[3]) {
+                        prevExpression1 = expressions[i].fac[0];
+                        prevExpression2 = expressions[i].fac[1];
+                        prevExpression3 = expressions[i].fac[3];
+
                         output.push(expressions[i]);
                     }
                 }
             }
 
             return output;
-
         },
 
+        /**
+         * Converts a UNIX timestamp to a formatted date-time string using the Moment.js library.
+         * @param {number} time - UNIX timestamp to be converted.
+         * @returns {string} - Formatted date-time string (YYYY-MM-DD HH:mm:ss).
+         */
         momentTime(time) {
 
             return moment.unix(time).format("YYYY-MM-DD HH:mm:ss") 
         },
 
+        /**
+         * Formats performance metrics data from the output session content.
+         * @returns {Object} - Object containing formatted output and labels.
+         */
         formatPerrformanceMetrics() {
             let output = [], labels = [];
 
@@ -696,37 +842,53 @@ const vueApp = new Vue({
                     data: []
                 })
             }
+            
+
+            let step = 1;
 
             performance.forEach(row => {
-                for(let i = 0; i < 7; i++) {
+                for(let i = 0; i < 6; i++) {
+                    if((step + i) == 7) step++;
                     //The metrics are in the strange order
-                    output[i].data.push(row.met[i]);
+                    output[i].data.push(Math.round(row.met[i + step] * 100));
+                    step++;
+                    
                 }
-    
-                labels.push(row.time);
 
-            
+                step = 1;
+              
+                labels.push(row.time);
             });
+
+            console.log('output', output)
+            console.log('labels', labels)
 
             return { output, labels };
         },
 
+        /**
+         * Renders performance metrics charts using Plotly.
+         * Sets a timeout to allow for proper rendering.
+         */
         renderPerformanceCharts() {
-            if(this.outputSessionContent.data.eeg?.sessionIds) {
-                let { output, labels } = this.formatPerrformanceMetrics();
+            this.showEEGMetrics = true;
 
-                let reference = "performance_metrics_chart";
-                let names = ["Att", "INT", "SS", "DD", "WW", "RR"];
-
-                this.renderCharts(output, labels, reference, names);
-            } else {
-                for(let i = 0; i < 6; i++) {
-                    let reference = "performance_metrics_chart" + (i + 1);
-                    Plotly.purge(reference);
+            setTimeout(() => {
+                if(this.outputSessionContent.data.eeg?.sessionIds) {
+                    let { output, labels } = this.formatPerrformanceMetrics();
+    
+                    let reference = "performance_metrics_chart";
+                    let names = ["Attention", "Engagement", "Excitement", "Interest", "Relaxation", "Stress"];
+    
+                    this.renderCharts(output, labels, reference, names, "Metrics");
+                } else {
+                    for(let i = 0; i < 6; i++) {
+                        let reference = "performance_metrics_chart" + (i + 1);
+                        Plotly.purge(reference);
+                    }
                 }
-            }
-           
-        }
+            }, 500)
+        },
     }
 })
 

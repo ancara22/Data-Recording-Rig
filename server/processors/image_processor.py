@@ -7,13 +7,14 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from concurrent.futures import ThreadPoolExecutor
 
+# Directories
 row_images = "./data/images/row_images"
 processed_images = "./data/images/processed_images"
 
 # Track the processed images
 processed_images_array = []
 
-#Read the image, face detection, face bluring, dext recognition, text extraction
+# Read the image, face detection, face blurring, text recognition, text extraction
 def processImage(imagePath):
     try:
         processed_images_array.append(imagePath)
@@ -79,7 +80,7 @@ def processImage(imagePath):
         print(exc)
 
 
-#New image handler
+# New image handler
 class ImageHandler(FileSystemEventHandler):
     def __init__(self):
         self.thread_pool = ThreadPoolExecutor(max_workers=1)
@@ -93,7 +94,7 @@ class ImageHandler(FileSystemEventHandler):
 
 
 if __name__ == "__main__":
-    #Observe the row_images folder content
+    # Observe the row_images folder content
     image_handler = ImageHandler()
     observer = Observer()
     observer.schedule(image_handler, path=row_images, recursive=False)

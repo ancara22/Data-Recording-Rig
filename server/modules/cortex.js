@@ -1,13 +1,29 @@
+/**
+ * The Cortex EEG headset Module.
+ * @module CortexEEGHeadset
+ */
+
 import WebSocket from 'ws';
 import fs from "fs";
+import ini from "ini";
+
+const settingsFilePath = "../config.ini";
 
 //Headset responses code
 const WARNING_CODE_HEADSET_DISCOVERY_COMPLETE = 142;
 const WARNING_CODE_HEADSET_CONNECTED = 104;
 
 
-//EEG Headset controler
+/**
+ * Class representing the EEG Headset controller using the Cortex API.
+ */
 export class Cortex {
+    /**
+     * Creates an instance of the Cortex class.
+     * @memberof module:CortexEEGHeadset
+     * @param {object} user - The user credentials for authentication.
+     * @param {string} socketUrl - The URL of the WebSocket for data communication.
+     */
     constructor(user, socketUrl) {
         //Data web-socket
         this.socket = new WebSocket(socketUrl, { rejectUnauthorized: false });
@@ -17,7 +33,12 @@ export class Cortex {
         this.isHeadsetConnected = false
     }
 
-    //Sumscript to the data, get data from the headset
+     /**
+     * Subscribes to the specified streams for EEG data.
+     * @memberof module:CortexEEGHeadset
+     * @param {string[]} streams - An array of streams to subscribe to (e.g., ['eeg', 'fac', 'met']).
+     * @returns {void}
+     */
     sub(streams){
         this.socket.on('open',async ()=>{
             //Check the authentification 
@@ -28,7 +49,11 @@ export class Cortex {
         })
     }
 
-    //Refresh headset list /scaning the available devices
+    /**
+     * Refreshes the list of connected headsets by sending a controlDevice command with 'refresh'.
+     * @memberof module:CortexEEGHeadset
+     * @returns {void}
+     */
     refreshHeadsetList() {
         const REFRESH_HEADSET_LIST_ID = 14;
 
@@ -45,7 +70,11 @@ export class Cortex {
         socket.send(JSON.stringify(refreshHeadsetListRequest));
     }
 
-    //Query headset id
+     /**
+     * Queries the headset ID and checks if the headset is connected.
+     * @memberof module:CortexEEGHeadset
+     * @returns {Promise<object>} - A promise that resolves with the query result.
+     */
     queryHeadsetId() {
         return new Promise((resolve, reject) => {
             const QUERY_HEADSET_ID = 2;
@@ -90,7 +119,11 @@ export class Cortex {
         });
     }
 
-    //Request acces to the api/headset
+    /**
+     * Requests access to the Cortex API using the provided user credentials.
+     * @module CortexEEGHeadset
+     * @returns {Promise<string>} - A promise that resolves with the access request result.
+     */
     requestAccess(){
         let socket = this.socket
         let user = this.user
@@ -120,7 +153,12 @@ export class Cortex {
         })
     }
 
-    //Control hadset
+     /**
+     * Controls the specified headset, attempting to connect to it.
+     * @param {string} headsetId - The ID of the headset to control.
+     * @module CortexEEGHeadset
+     * @returns {Promise<object>} - A promise that resolves with the controlDevice result.
+     */
     controlDevice(headsetId){
         let socket = this.socket
         const CONTROL_DEVICE_ID = 3
@@ -156,7 +194,11 @@ export class Cortex {
         }) 
     }
 
-    //Authorize user
+    /**
+     * Authorizes the user, obtaining the Cortex token, and calls refreshHeadsetList upon success.
+     * @module CortexEEGHeadset
+     * @returns {Promise<string>} - A promise that resolves with the Cortex token.
+     */
     authorize(){
         let socket = this.socket
         let user = this.user
@@ -191,7 +233,13 @@ export class Cortex {
         })
     }
 
-    //Create session with the headset
+    /**
+     * Creates a session with the specified headset.
+     * @module CortexEEGHeadset
+     * @param {string} authToken - The Cortex token obtained during authorization.
+     * @param {string} headsetId - The ID of the headset to create a session with.
+     * @returns {Promise<string>} - A promise that resolves with the session ID.
+     */
     createSession(authToken, headsetId) {
         const CREATE_SESSION_ID = 5;
 
@@ -234,7 +282,14 @@ export class Cortex {
         });
     }
 
-    //Subrequest, sned the subscription to the EEG data, and handle the result 
+    /**
+     * Sends a subscription request for EEG data to the Cortex API and handles the result.
+     * @module CortexEEGHeadset
+     * @param {string[]} streams - An array of streams to subscribe to (e.g., ['eeg', 'fac', 'met']).
+     * @param {string} authToken - The authentication token obtained during authorization.
+     * @param {string} sessionId - The session ID associated with the EEG headset.
+     * @returns {void}
+     */ 
     subRequest(stream, authToken, sessionId){
         let socket = this.socket
         const SUB_REQUEST_ID = 6 
@@ -264,10 +319,9 @@ export class Cortex {
     }
 
     /**
-     * - query headset infor
-     * - connect to headset with control device request
-     * - authentication and get back auth token
-     * - create session and get back session id
+     * Queries the session information, including headset ID, control device, authorization, and session creation.
+     * @module CortexEEGHeadset
+     * @returns {Promise<void>} - A promise that resolves when session information is queried successfully.
      */
     async querySessionInfo(){
         let qhResult = "", headsetId = "", ctResult = "", authToken = "", sessionId = ""
@@ -292,10 +346,10 @@ export class Cortex {
     }
 
     /**
-     * - check if user logined
-     * - check if app is granted for access
-     * - query session info to prepare for sub and train
-    */
+     * Checks if the user is logged in, if the app is granted access, and queries session information.
+     * @module CortexEEGHeadset
+     * @returns {Promise<void>} - A promise that resolves when access is granted, and session information is queried.
+     */
     async checkGrantAccessAndQuerySessionInfo(){
         let requestAccessResult = ""
 
@@ -322,7 +376,11 @@ export class Cortex {
         }   
     }
 
-    //Listend the socket warnings
+    /**
+     * Listens for warnings from the socket and takes appropriate actions based on the warning codes.
+     * @module CortexEEGHeadset
+     * @returns {void}
+     */
     listenForWarnings() {
         this.socket.on('message', (data) => {
             try {
@@ -345,7 +403,12 @@ export class Cortex {
         });
     }
 
-    //Handle received data
+    /**
+     * Handles the received data based on the data type (e.g., 'eeg', 'fac', 'pow').
+     * @module CortexEEGHeadset
+     * @param {object} receivedData - The data received from the EEG headset.
+     * @returns {void}
+     */
     handleData(receivedData) {
         let type = Object.keys(receivedData)[0];
 
@@ -364,7 +427,13 @@ export class Cortex {
         }
     }
 
-    //Append received data to file
+    /**
+     * Inserts the received data into a JSONL file with the specified file name.
+     * @module CortexEEGHeadset
+     * @param {string} fileName - The name of the JSONL file to insert data into.
+     * @param {object} data - The data to be inserted into the JSONL file.
+     * @returns {void}
+     */
     insertDataToJsonl(fileName, data) {
         let jsonData = JSON.stringify(data) + "\n"; //jsonl line
 
@@ -376,7 +445,11 @@ export class Cortex {
 
     }
 
-    //Run the headset streaming
+    /**
+     * Runs the EEG headset streaming by subscribing to the specified streams.
+     * @module CortexEEGHeadset
+     * @returns {void}
+     */
     run() {
         this.listenForWarnings();
 
@@ -391,7 +464,18 @@ export class Cortex {
             pow - The band power of each EEG sensor. It includes the alpha, low beta, high beta, gamma, and theta bands
             com - The results of the mental commands detection. 
         */
-        let streams = ['eeg', 'fac', 'met', 'pow']
+
+        let iniFileContent = fs.readFileSync(settingsFilePath, 'utf-8');
+        let settings = ini.parse(iniFileContent);
+
+        let streams = []
+
+        settings.eeg.met ? streams.push('met'): '';
+        settings.eeg.fac ? streams.push('fac'): '';
+        settings.eeg.eeg ? streams.push('eeg'): '';
+        settings.eeg.pow ? streams.push('pow'): '';
+
+        console.log('streams', streams)
 
         this.sub(streams);
     }

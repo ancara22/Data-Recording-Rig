@@ -1,3 +1,8 @@
+/**
+ * The RigControl Module.
+ * @module RigControl
+ */
+
 import { Client } from 'ssh2';
 import { FILE_PATHS, RIG_CONFIG, APP_CONFIG } from "./server_settings.js";
 import { runImageProcessor, runSessionFileUpdatingInterval } from './utility.js';
@@ -7,7 +12,18 @@ import { runImageProcessor, runSessionFileUpdatingInterval } from './utility.js'
 //RIG Control
 ////////////////////////////////////////////////////////////////////////////
 
-//Send the connfiguration, config.ini file to the raspberry pi
+/**
+ * Send the configuration file (config.ini) to the Raspberry Pi.
+ * If specified, also starts the recording application on the Raspberry Pi.
+ *
+ * @function
+ * @memberof module:RigControl
+ * @param {string} startRig - If 'config', only sends the configuration file; otherwise, starts the recording application.
+ * @returns {void}
+ * @example
+ * // Example of using rigControl function
+ * rigControl('start'); // Sends the configuration file and starts the recording application
+ */
 function rigControl(startRig) {
     const ssh = new Client();
 
@@ -41,7 +57,17 @@ function rigControl(startRig) {
     ssh.connect(RIG_CONFIG); //Start connection
 }
 
-//Execute the RIG terminal command
+/**
+ * Execute the RIG terminal command to run the recording application.
+ *
+ * @function
+ * @memberof module:RigControl
+ * @param {Client} ssh - The SSH client instance for connecting to the Raspberry Pi.
+ * @returns {void}
+ * @example
+ * // Example of using executeCommand function
+ * executeCommand(sshInstance); // Executes the RIG terminal command to run the recording application
+ */
 function executeCommand(ssh) {
     ssh.exec(APP_CONFIG.APP_RUNNING_COMMAND, (err, stream) => {
         if (err) {
@@ -49,7 +75,6 @@ function executeCommand(ssh) {
             ssh.end();
             return;
         }
-
         
         runSessionFileUpdatingInterval();     //Update the final file / interval
         
@@ -62,7 +87,19 @@ function executeCommand(ssh) {
     });
 }
 
-//Run the recording app
+
+/**
+ * Run the recording app.
+ *
+ * @function
+ * @memberof module:RigControl
+ * @param {Client} ssh - The SSH client instance for connecting to the Raspberry Pi.
+ * @param {string} startRig - If 'start', starts the recording application; otherwise, stops preview processes.
+ * @returns {void}
+ * @example
+ * // Example of using runTheRecordingApp function
+ * runTheRecordingApp(sshInstance, 'start'); // Starts the recording application on the Raspberry Pi
+ */
 function runTheRecordingApp(ssh, startRig) {
     //Stop all the previews processes
     ssh.exec(APP_CONFIG.KILL_PYTHON_APPS_COMMAND, (err, stream) => {
@@ -79,7 +116,17 @@ function runTheRecordingApp(ssh, startRig) {
     }) 
 }
 
-//Handle the SSH error
+/**
+ * Handle SSH connection errors.
+ *
+ * @function
+ * @memberof module:RigControl
+ * @param {Client} ssh - The SSH client instance for connecting to the Raspberry Pi.
+ * @returns {void}
+ * @example
+ * // Example of using handleSSHError function
+ * handleSSHError(sshInstance); // Handles SSH connection errors
+ */
 function handleSSHError(ssh) {
     //On ssh connection error
     ssh.on("error", (err) => {
@@ -91,6 +138,16 @@ function handleSSHError(ssh) {
     })
 }
 
+/**
+ * Start EEG recording.
+ *
+ * @function
+ * @memberof module:RigControl
+ * @returns {void}
+ * @example
+ * // Example of using startEEGRecording function
+ * startEEGRecording(); // Starts EEG recording
+ */
 function startEEGRecording() {
     //EEG
     let socketUrl = 'wss://localhost:6868';
@@ -102,10 +159,8 @@ function startEEGRecording() {
         "debit": 1
     }
 
-
     let cortex = new Cortex(user, socketUrl)
     cortex.run();
-
 }
 
 //Export

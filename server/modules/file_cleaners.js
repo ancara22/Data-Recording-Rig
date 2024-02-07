@@ -1,3 +1,8 @@
+/**
+ * The File Cleaner Module.
+ * @module FileCleaner
+ */
+
 import { promisify } from "util";
 import { join } from 'path';
 import fs, { readdir, unlink } from 'fs';
@@ -7,7 +12,18 @@ import { FILE_PATHS } from "./server_settings.js";
 //REMOVE FILES/ file cleaners
 ////////////////////////////////////////////////////////////////////////////
 
-//Remove images from the directory
+/**
+ * Remove files with names containing 'stream' or 'audio' from the specified directory.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @param {string} directoryPath - The path of the directory from which to remove files.
+ * @returns {void}
+ * @example
+ * // Example of using removeStreamFiles function
+ * const directoryPath = './data/images';
+ * removeStreamFiles(directoryPath);
+ */
 function removeStreamFiles(directoryPath) {
 	readdir(directoryPath, (err, files) => {
 		if (err) {
@@ -26,7 +42,18 @@ function removeStreamFiles(directoryPath) {
 	});
 }
 
-//Empty the data files
+/**
+ * Empty the content of specified files and clean old row files.
+ *
+ * @async
+ * @function
+ * @memberof module:FileCleaner
+ * @returns {Promise<void>}
+ * @throws {Error} If there is an issue writing to files.
+ * @example
+ * // Example of using emptyAllFiles function
+ * await emptyAllFiles();
+ */
 async function emptyAllFiles() {
 	try {
 		const writeFile = promisify(fs.writeFile);
@@ -47,7 +74,19 @@ async function emptyAllFiles() {
 	}
 }
 
-//Empty the Image csv file
+/**
+ * Empty the content of the specified CSV file.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @param {string} filePath - The path of the CSV file to be cleaned.
+ * @param {string} content - The content to be written to the CSV file.
+ * @returns {void}
+ * @example
+ * // Example of using cleanCSVFile function
+ * const filePath = './data/images/image_text.csv';
+ * cleanCSVFile(filePath, 'image,text\n');
+ */
 function cleanCSVFile(filePath, content) {
 	try {
 		//Write the new content to the CSV file
@@ -57,7 +96,18 @@ function cleanCSVFile(filePath, content) {
 	}
 }
 
-//Clean the JSONL file
+/**
+ * Clean the content of the specified JSONL file by truncating it to zero length.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @param {string} filePath - The path of the JSONL file to be cleaned.
+ * @returns {void}
+ * @example
+ * // Example of using cleanJSONL function
+ * const filePath = './data/eeg_data.jsonl';
+ * cleanJSONL(filePath);
+ */
 function cleanJSONL(filePath) {
 	try {
 		fs.truncateSync(filePath, 0);
@@ -66,7 +116,16 @@ function cleanJSONL(filePath) {
 	}
 }
 
-//Clean old row files
+/**
+ * Clean old row files by removing files with names containing 'stream' or 'audio'.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @returns {void}
+ * @example
+ * // Example of using cleanOldRowData function
+ * cleanOldRowData();
+ */
 function cleanOldRowData() {
 	let folders = ["data/audio/row_audio", "data/images/row_images"];
 

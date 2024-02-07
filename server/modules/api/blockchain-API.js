@@ -1,3 +1,8 @@
+/**
+ * The Blockchain API Module.
+ * @module BlockchainAPI
+ */
+
 const express = require('express');
 const crypto =  require('crypto');
 const serverless = require('aws-serverless-express');
@@ -12,7 +17,14 @@ const app = express();
 
 app.use(express.json());
 
-//Rehash route
+
+/**
+ * Route handler for rehashing operation.
+ * @memberof module:BlockchainAPI
+ * @param {object} req - Express request object.
+ * @param {object} res - Express response object.
+ * @returns {void}
+ */
 app.post('/rehash', (req, res) => {
     const hash = req.body.hash;
     const user = req.body.user;
@@ -21,7 +33,14 @@ app.post('/rehash', (req, res) => {
 });
 
 
-//Rehash data
+/**
+ * Rehashes the provided hash value with additional data and stores the result in DynamoDB.
+ * @memberof module:BlockchainAPI
+ * @param {string} hash - The original hash value.
+ * @param {string} user - The user associated with the hash.
+ * @param {object} res - Express response object for sending the result.
+ * @returns {void}
+ */
 function rehash(hash, user, res) {
     try {
         //Prepare data

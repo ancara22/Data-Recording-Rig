@@ -1,6 +1,56 @@
+# Blockchain API
 
-Could Blockchain API
-########################################################
+## Overview
 
-- The app deploied on the AWS Lambda could server.
-- Used for double hashing and storing the data
+The Blockchain API is a serverless application built with Express.js and AWS Lambda. It provides a rehashing operation, allowing users to rehash a provided hash value with additional data and store the result in DynamoDB.
+
+## Table of Contents
+
+- [Deployment](#deployment)
+- [Usage](#usage)
+- [Routes](#routes)
+- [AWS Configuration](#aws-configuration)
+
+## Deployment
+
+The Blockchain API is designed to be deployed on AWS Lambda. Follow these steps to deploy the application:
+
+1. **Create an AWS Lambda Function:**
+
+   - Set up an AWS Lambda function in the AWS Management Console.
+   - Choose the Node.js runtime.
+   - Upload your deployment package, including the `blockchain-API.js` file and `node_modules`.
+
+2. **Set Lambda Settings:**
+
+   - Configure environment all necessary settings in the AWS Lambda function.
+
+3. **API Gateway Integration:**
+
+   - Connect the Lambda function to API Gateway to expose your API as an HTTP endpoint.
+
+4. **Permissions:**
+
+   - Ensure that the Lambda function has the necessary permissions to interact with DynamoDB.
+
+5. **Testing:**
+
+   - Test your API endpoint using the provided routes.
+
+## Usage
+
+Once the Blockchain API is deployed, you can use the provided `/rehash` route to perform the rehashing operation.
+
+## Routes
+
+### `POST /rehash`
+
+Rehashes the provided hash value with additional data and stores the result in DynamoDB.
+
+- **Request:**
+
+  ```json
+  {
+    "hash": "originalHashValue",
+    "user": "associatedUser"
+  }

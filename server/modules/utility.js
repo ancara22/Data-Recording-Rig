@@ -1,3 +1,8 @@
+/**
+ * The Utility Module.
+ * @module UtilityModule
+ */
+
 import multer, { diskStorage } from 'multer';
 import fs from 'fs';
 import { exec } from 'child_process';
@@ -5,21 +10,24 @@ import Papa from 'papaparse';
 import crypto from 'crypto';
 import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
 import { emptyAllFiles } from "./file_cleaners.js";
+import { setTimeout } from 'timers/promises';
+
 
 /**
- * Middleware to handle file uploads and save them to a specified folder.
+ * Creates and returns a middleware for handling file uploads and saving them to a specified folder.
  *
  * @function
- * @memberof module:utility
- * @param {string} folder - The folder where the data will be stored.
+ * @memberof module:UtilityModule
+ * @param {string} folder - The folder where the files will be saved.
  * @param {string} fileType - The type of file being uploaded.
- * @returns {Function} Middleware function for handling file uploads.
- * @throws {Error} Throws an error if there is an issue with file storage.
- *
+ * @returns {function} A middleware function for handling file uploads.
  * @example
- * const uploadMiddleware = saveData('uploads', 'image');
- * app.post('/upload', uploadMiddleware, (req, res) => {
- *   // Handle file upload
+ * // Use saveData middleware for handling image uploads
+ * app.post('/upload-image', saveData('images', 'image'), (req, res) => {
+ *     // Handle the uploaded image file
+ *     const uploadedFile = req.file;
+ *     // Additional logic...
+ *     res.sendStatus(200);
  * });
  */
 function saveData(folder, fileType) {
@@ -40,16 +48,24 @@ function saveData(folder, fileType) {
     return upload.single(fileType);
 }
 
+
 /**
  * Run the image processor Python script.
- *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name runImageProcessor
  * @throws {Error} If there is an error during execution.
  * @returns {void}
  * @example
+ * // Execute the image processor
  * runImageProcessor();
+ *
+ * @description
+ * This function runs the image processor Python script specified in the APP_CONFIG.
+ * It utilizes the child_process.exec method to execute the script and captures
+ * any errors, standard output, or standard error messages. If an error occurs
+ * during execution, it is thrown to indicate failure. The captured output is logged
+ * to the console.
  */
 function runImageProcessor() {
     exec(APP_CONFIG.IMAGE_PROCESSOR_COMMAND, (error, stdout, stderr) => {
@@ -74,13 +90,14 @@ function runImageProcessor() {
  * Read the content of a JSON file and parse it into a JavaScript object.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name readJSONFile
  * @param {string} filePath - The path to the JSON file.
  * @param {Function} [callback=() => {}] - A callback function to be executed after reading the file.
  * @throws {Error} If there is an error reading or parsing the JSON file.
  * @returns {void}
  * @example
+ * // Read data from a JSON file and log it
  * readJSONFile('/path/to/file.json', (dataObject) => {
  *   console.log('Read data:', dataObject);
  * });
@@ -106,19 +123,21 @@ function readJSONFile(filePath, callback = () => {}) {
  * Write data to a JSON file, formatting the JSON content for readability.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name writeJSONFile
  * @param {string} filePath - The path to the JSON file.
  * @param {Object} data - The data to be written to the file.
  * @throws {Error} If there is an error writing the JSON file.
  * @returns {void}
  * @example
+ * // Create sample JSON data
  * const jsonData = { key: 'value' };
+ * // Write JSON data to a file
  * writeJSONFile('/path/to/file.json', jsonData);
  */
 function writeJSONFile(filePath, data) {
     try {
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 4), 'utf8');
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 0), 'utf8');
     } catch (error) {
         console.error(`Error writing JSON file (${filePath}):`, error);
     }
@@ -134,10 +153,11 @@ function writeJSONFile(filePath, data) {
  * Get and convert image data from the data file.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name convertImageData
  * @returns {Array<Object>} An array of objects containing converted image data.
  * @example
+ * // Get and convert image data
  * const convertedData = convertImageData();
  * console.log(convertedData);
  */
@@ -151,7 +171,8 @@ function convertImageData() {
             timestamp = extractTimestamp(imageName);
 
         let data = {
-            [timestamp]: imageName,
+            time: timestamp,
+            file: imageName,
             text: row.text
         }
 
@@ -161,15 +182,18 @@ function convertImageData() {
 
     return result;
 }
+
+
 /**
  * Convert audio data and extract audio text, detected experience, and sentiments.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name convertAudioData
  * @param {Array<Object>} audioData - Array of audio data objects.
  * @returns {Object} Object containing audio data, experience data, and sentiments.
  * @example
+ * // Convert audio data and extract relevant information
  * const audioData = [...]; // Your audio data array
  * const { audioObject, experienceObject, sentiments } = convertAudioData(audioData);
  * console.log(audioObject, experienceObject, sentiments);
@@ -181,18 +205,21 @@ function convertAudioData(audioData) {
 
     audioData.forEach(audioSection => {
         let data = {
-            [audioSection.timestamp]: audioSection.audio_file,
+            time: audioSection.timestamp,
+            file: audioSection.audio_file,
             text: audioSection.text,
             sentiment: audioSection.text_emotion
         }
 
         let des = {
-            [audioSection.timestamp]: audioSection.audio_file,
+            time: audioSection.timestamp,
+            file:  audioSection.audio_file,
             text: audioSection.experienceDetected,
         }
 
         sentiments.push({
-            [audioSection.timestamp]: audioSection.audio_file,
+            time: audioSection.timestamp,
+            file:  audioSection.audio_file,
             sentiment: audioSection.text_emotion
         })
 
@@ -215,12 +242,13 @@ function convertAudioData(audioData) {
  * Convert GSR (Galvanic Skin Response) data and update the sentiments array.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name convertGSRData
  * @param {Array<Object>} gsrData - Array of GSR data objects.
  * @param {Array<Object>} sentiments - Array of sentiment data to be updated.
  * @returns {Array<Object>} Array of formatted GSR data objects.
  * @example
+ * // Convert GSR data and update sentiments array
  * const gsrData = [...]; // Your GSR data array
  * const sentiments = [...]; // Your sentiments array
  * const gsrObject = convertGSRData(gsrData, sentiments);
@@ -232,14 +260,13 @@ function convertGSRData(gsrData, sentiments) {
     //Format the GSR datax
     gsrData.forEach(gsrSection => {
         let data = {
-            start: gsrSection.startTime,
-            end: gsrSection.endTime,
+            time: gsrSection.startTime,
             section: gsrSection.gsr_section,
             sentiment: gsrSection.emotion_state
         }
 
         sentiments.push({
-            [gsrSection.startTime]: gsrSection.endTime,
+            time: gsrSection.startTime,
             sentiment: gsrSection.emotion_state
         })
 
@@ -254,9 +281,10 @@ function convertGSRData(gsrData, sentiments) {
  * Create the final output file by merging and formatting various data sources.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name insertDataToFinalFile
  * @example
+ * // Create the final output file
  * insertDataToFinalFile();
  */
 function insertDataToFinalFile() {
@@ -281,7 +309,7 @@ function insertDataToFinalFile() {
                     //Create the final data format
                     const merged = {
                         head: {
-                            [user.sessionStart]: user.sessionFile,
+                            time: user.sessionStart,
                             user: user.currentUser,
                             version: user.version,
                             duration: user.duration,
@@ -292,7 +320,7 @@ function insertDataToFinalFile() {
                             eeg: eegObject,
                             audio: audioObject,
                             des: experienceObject,
-                            sentiment: sentiments,
+                            overallSentiment: sentiments,
                             image: imageObject
                         }
                     }
@@ -305,16 +333,16 @@ function insertDataToFinalFile() {
     })
 }
 
-
 /**
  * Extract the timestamp from a string.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
  * @name extractTimestamp
  * @param {string} fromString - The input string containing the timestamp.
  * @returns {number|null} Extracted timestamp as a number or null if not found.
  * @example
+ * // Extract timestamp from a string
  * const timestamp = extractTimestamp("Day 1: 12345");
  * console.log(timestamp); // Output: 12345
  */
@@ -329,7 +357,11 @@ function extractTimestamp(fromString) {
  * Runs the final file content update at regular intervals.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name runSessionFileUpdatingInterval
+ * @example
+ * // Run the final file content update at regular intervals
+ * runSessionFileUpdatingInterval();
  */
 function runSessionFileUpdatingInterval() {
     setInterval(() => insertDataToFinalFile(), 1 * 60 * 100);
@@ -337,11 +369,17 @@ function runSessionFileUpdatingInterval() {
 
 
 /**
- * Update the session file when the time is more than defined time minutes.
+ * Update the session file when the time is more than the defined time in minutes.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name checkSessionFilePeriod
  * @param {Function} callback - Callback function to be executed after the update.
+ * @example
+ * // Update the session file and execute a callback function
+ * checkSessionFilePeriod(() => {
+ *    // Your callback logic here
+ * });
  */
 function checkSessionFilePeriod(callback) {
     try {
@@ -353,12 +391,8 @@ function checkSessionFilePeriod(callback) {
             const currentTime = new Date().getTime();
             const timeDifference = currentTime - sessionStart;
 
-            let shouldCreateNewSession = () => {
-                return (sessionStart == '' || sessionFile == '' || timeDifference > SERVER_CONFIG.OUTPUT_LENGTH * 60 * 1000)
-            }
-
             //Check if the difference is more than minutes (minutes * 60 * 1000 milliseconds)
-            if (shouldCreateNewSession) {
+            if (sessionStart == '' || sessionFile == '' || timeDifference > SERVER_CONFIG.OUTPUT_LENGTH * 60 * 1000) {
                 createNewSession(currentTime, userObject, callback);
             } else {
                 SERVER_CONFIG.current_session_file = FILE_PATHS.SESSION_FOLDER + sessionFile; //Difference is less than setted time
@@ -377,13 +411,21 @@ function checkSessionFilePeriod(callback) {
  * Creates a new session.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name createNewSession
  * @param {number} currentTime - Current time in milliseconds.
  * @param {object} userObject - User object containing session details.
  * @param {Function} callback - Callback function to be executed after the creation.
+ * @example
+ * // Create a new session and execute a callback function
+ * createNewSession(currentTime, userObject, () => {
+ *    // Your callback logic here
+ * });
  */
 function createNewSession(currentTime, userObject, callback) {
     getTheHash((hash) => {
+        let sessionStart = '';
+        let sessionFile  = '';
         //Create a new JSON file with the name "session" + current timestamp
         const newFileName = `session_${currentTime}.json`;
         const newSessionFilename = FILE_PATHS.SESSION_FOLDER + newFileName;
@@ -408,7 +450,7 @@ function createNewSession(currentTime, userObject, callback) {
         });
 
         writeJSONFile(FILE_PATHS.USER_FILE_PATH, concatinatedOBJ);
-        emptyAllFiles();
+        //emptyAllFiles();
         callback();
     });
 }
@@ -418,9 +460,13 @@ function createNewSession(currentTime, userObject, callback) {
  * Get image data from a CSV file.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name getImages
  * @returns {Array} Parsed data containing image information.
  * @throws {Error} Throws an error if there's an issue reading or parsing the CSV file.
+ * @example
+ * const imageArray = getImages();
+ * console.log(imageArray);
  */
 function getImages() {
     const imageCsv = fs.readFileSync(FILE_PATHS.IMAGE_TEXT_FILE_PATH, 'utf8'); //Read the image text csv file
@@ -436,9 +482,14 @@ function getImages() {
  * Hash the given data using SHA-256 algorithm.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name hashTheData
  * @param {Object} data - The data to be hashed.
  * @returns {string} The SHA-256 hash of the data.
+ * @example
+ * const dataToHash = { key: 'value' };
+ * const hashedData = hashTheData(dataToHash);
+ * console.log(hashedData);
  */
 function hashTheData(data) {
     // Convert data to JSON string
@@ -455,9 +506,14 @@ function hashTheData(data) {
  * Get the hash from the cloud.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name getTheHash
  * @param {Function} callback - The callback function to handle the retrieved hash.
  * @throws Will throw an error if there is an issue reading JSON files or making the API request.
+ * @example
+ * getTheHash((rehashedValue) => {
+ *    console.log('Rehashed value:', rehashedValue);
+ * });
  */
 function getTheHash(callback) {
     // Read user.json file
@@ -492,43 +548,31 @@ function getTheHash(callback) {
  * Read the JSONL file and return the content and session IDs.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name getJSONLFileContent
  * @param {string} filePath - The path to the JSONL file.
- * @returns {Object} An object containing the converted data and session IDs.
+ * @returns {Object} An object containing the converted data.
  * @throws Will throw an error if there is an issue reading the file or parsing JSON.
+ * @example
+ * const filePath = '/path/to/data.jsonl';
+ * const { convertedData } = getJSONLFileContent(filePath);
+ * console.log('Converted Data:', convertedData);
  */
 function getJSONLFileContent(filePath) {
-    let sids = [],
-        previeusSession = undefined;
-
     try {
         //Convert Data
         const fileContent = fs.readFileSync(filePath, 'utf-8').split('\n').filter(line => line.trim() !== '')
-        const convertedData = fileContent.map(item => JSON.parse(item));
+        let convertedData = fileContent.map(item => JSON.parse(item));
 
         convertedData.forEach(element => {
-            if (previeusSession == undefined) {
-                previeusSession = element.sid;
-                sids.push(previeusSession);
-            } else if (element.sid != previeusSession) {
-                previeusSession = element.sid;
-                sids.push(previeusSession);
-            }
-
             delete element.sid;
         });
 
-        return {
-            convertedData,
-            sids
-        };
+        return convertedData;
 
     } catch (error) {
         console.log('Error reading JSONL file: ', error);
-        return {
-            convertedData: [],
-            sids: []
-        };
+        return [];
     }
 }
 
@@ -537,46 +581,118 @@ function getJSONLFileContent(filePath) {
  * Get content from all EEG files and organize it by type.
  *
  * @function
- * @memberof module:utility
+ * @memberof module:UtilityModule
+ * @name getAllEEGFilesContent
  * @returns {Object} An object containing EEG data organized by type and unique session IDs.
  * @throws Will throw an error if there is an issue reading the files or parsing JSON.
+ * @example
+ * const eegData = getAllEEGFilesContent();
+ * console.log('EEG Data:', eegData);
  */
 function getAllEEGFilesContent() {
-    let sessionIDs = [];
-
     let finalEEGdata = {
-        sessionIds: [],
-        expression: [],
-        performance: [],
-        sensors: [],
-        row: []
     }
 
     FILE_PATHS.EEG_FILES_LIST.forEach(file => {
-        let type = undefined;
+        let type = undefined, data = [];
+        let convertedData = getJSONLFileContent(file);
 
         // Determine the type of EEG file based on its name
         if (file.includes('facial')) {
             type = "expression";
+
+            convertedData.forEach(element => {
+                let elObject = {
+                    time: element.time,
+                    eyeAction: element.fac[0],
+                    upperFace: {
+                        action: element.fac[1],
+                        power: element.fac[2]
+                    },
+                    lowerFace: {
+                        action: element.fac[3],
+                        power: element.fac[4]
+                    }
+                }
+
+                data.push(elObject);
+            });
         } else if (file.includes('performance')) {
-            type = "performance";
+            type = "cognition";
+
+            convertedData.forEach(element => {
+                if(element.met[0]) {
+                    let elObject = {
+                        time: element.time,
+                        engagement: element.met[1],
+                        excitement: element.met[3],
+                        stress: element.met[5],
+                        longExcitement: element.met[6],
+                        relaxation: element.met[8],
+                        interest: element.met[10],
+                        focus: element.met[12],
+                    }
+    
+                    data.push(elObject);
+                }   
+            });
         } else if (file.includes('sensors')) {
-            type = "sensors";
-        } else if (file.includes('row')) {
-            type = "row";
+            type = "frequencyAnalysis";
+
+            convertedData.forEach(element => {
+                let elObject = {
+                    time: element.time,
+                    bandPower: {
+                        "AF3/theta": element.pow[0],"AF3/alpha": element.pow[1],"AF3/betaL": element.pow[2],"AF3/betaH": element.pow[3],"AF3/gamma": element.pow[4],
+                        "F7/theta": element.pow[5],"F7/alpha": element.pow[6],"F7/betaL": element.pow[7],"F7/betaH": element.pow[8],"F7/gamma": element.pow[9],
+                        "F3/theta": element.pow[10],"F3/alpha": element.pow[11],"F3/betaL": element.pow[12],"F3/betaH": element.pow[13],"F3/gamma": element.pow[14],
+                        "FC5/theta": element.pow[15],"FC5/alpha": element.pow[16],"FC5/betaL": element.pow[17],"FC5/betaH": element.pow[18],"FC5/gamma": element.pow[19],
+                        "T7/theta": element.pow[20],"T7/alpha": element.pow[21],"T7/betaL": element.pow[22],"T7/betaH": element.pow[23],"T7/gamma": element.pow[24],
+                        "P7/theta": element.pow[25],"P7/alpha": element.pow[26],"P7/betaL": element.pow[27],"P7/betaH": element.pow[28],"P7/gamma": element.pow[29],
+                        "O1/theta": element.pow[30],"O1/alpha": element.pow[31],"O1/betaL": element.pow[32],"O1/betaH": element.pow[33],"O1/gamma": element.pow[34],
+                        "O2/theta": element.pow[35],"O2/alpha": element.pow[36],"O2/betaL": element.pow[37],"O2/betaH": element.pow[38],"O2/gamma": element.pow[39],
+                        "P8/theta": element.pow[40],"P8/alpha": element.pow[41],"P8/betaL": element.pow[42],"P8/betaH": element.pow[43],"P8/gamma": element.pow[44],
+                        "T8/theta": element.pow[45],"T8/alpha": element.pow[46],"T8/betaL": element.pow[47],"T8/betaH": element.pow[48],"T8/gamma": element.pow[49],
+                        "FC6/theta": element.pow[50],"FC6/alpha": element.pow[51],"FC6/betaL": element.pow[52],"FC6/betaH": element.pow[53],"FC6/gamma": element.pow[54],
+                        "F4/theta": element.pow[55],"F4/alpha": element.pow[56],"F4/betaL": element.pow[57],"F4/betaH": element.pow[58],"F4/gamma": element.pow[59],
+                        "F8/theta": element.pow[60],"F8/alpha": element.pow[61],"F8/betaL": element.pow[62],"F8/betaH": element.pow[63],"F8/gamma": element.pow[64],
+                        "AF4/theta": element.pow[65],"AF4/alpha": element.pow[66],"AF4/betaL": element.pow[67],"AF4/betaH": element.pow[68],"AF4/gamma": element.pow[69]
+                    }
+                }
+
+                data.push(elObject);
+            });
+        } else if (file.includes('raw')) {
+            type = "rawEEG";
+
+            convertedData.forEach(element => {
+                let elObject = {
+                time: element.time,
+                AF3: element.eeg[2],
+                F7: element.eeg[3],
+                F3: element.eeg[4],
+                FC5: element.eeg[5],
+                T7: element.eeg[6],
+                P7: element.eeg[7],
+                O1: element.eeg[8],
+                O2: element.eeg[9],
+                P8: element.eeg[10],
+                T8: element.eeg[11],
+                FC6: element.eeg[12],
+                F4: element.eeg[13],
+                F8: element.eeg[14],
+                AF4: element.eeg[15]
+                }
+
+                data.push(elObject);
+            
+            });
         }
 
-        let { convertedData, sids } = getJSONLFileContent(file);
-
-        // Collect session IDs and organize data by type
-        sessionIDs.push(...sids);
-        finalEEGdata[type] = convertedData;
-    });
-
-    // Remove duplicate session IDs using a Set
-    let unicIds = new Set(sessionIDs);
-    finalEEGdata.sessionIds = [...unicIds];
-
+        // Collect and organize data by type
+        finalEEGdata[type] = data;  
+});
+  
     return finalEEGdata;
 }
 
