@@ -30,7 +30,7 @@ const vueApp = new Vue({
         audioList              : [],           //List of audio files
         currentAudioFile       : '',           //Currently selected audio file
         showEEGMetrics         : false,        //Show EEG metrics status
-        showEEGRow             : false,        //Show EEG row status
+        showEEGRaw             : false,        //Show EEG raw status
 
         //Rig image configurations
         imageSettings: {
@@ -102,6 +102,9 @@ const vueApp = new Vue({
     watch: {
         //Control the page content
         pageContent: function(newPage, oldPage) {
+            this.showEEGRaw = false;
+            this.showEEGMetrics = false;
+
             //Control the GSR graph updates
             if(oldPage == 'data') clearInterval(this.graphInterval);
 
@@ -446,6 +449,7 @@ const vueApp = new Vue({
             fetch('/getImageText')
                 .then(res => res.json())
                 .then(data => this.imageText = data)
+
         },
 
         /**
@@ -486,7 +490,7 @@ const vueApp = new Vue({
          * @param {string} fileName - Name of the selected session file.
          */
         getFileContent(fileName) {
-            this.showEEGRow = false;
+            this.showEEGRaw = false;
             this.showEEGMetrics = false;
             this.selectedAudio = ''
             this.currentAudioFile = ''
@@ -499,7 +503,8 @@ const vueApp = new Vue({
             ).then(data => {
                 this.outputSessionContent = data;
                 this.selectedFile = fileName;
-                
+                console.log('first', this.outputSessionContent.data) ///Remove
+
                 if(this.pageContent == "history") {
                     Plotly.purge("gsr-plot");
                     this.renderGSRSEssionPlot();
@@ -515,8 +520,12 @@ const vueApp = new Vue({
          * @returns {string} - Formatted date-time string.
          */
         getTime(fileName) {
-            const timestampString = fileName.replace('session_', '');
-            const base = timestampString.length > 8 ? 10 : 8;
+            let timestampString = fileName.replace('session_', '');
+            const base = timestampString.length > 8 ? 11 : 8;
+
+            if(timestampString.length > 11 && !fileName.includes('session_')) {
+                timestampString /= 1000;
+            }
 
             let timestamp = parseInt(timestampString, 10);    //Parse the timestamp string to a number
       
@@ -571,7 +580,7 @@ const vueApp = new Vue({
             });
 
             let layout = { title: 'GSR Data Graph', xaxis: { title: 'Timestamp' }, yaxis: { title: 'GSR' } };
-            let trace = { type: 'scatter', mode: 'lines', x: plotInput.map(row => new Date(row[0])), y: plotInput.map(row => row[1]) };
+            let trace = { type: 'scatter', mode: 'lines', x: plotInput.map(row => new Date(row[0] * 1000)), y: plotInput.map(row => row[1]) };
                 
             setTimeout(() => {
                 //Drow the plot for GSR data
@@ -653,7 +662,7 @@ const vueApp = new Vue({
             const seconds = date.getSeconds().toString().padStart(2, '0');
 
             //Return formatted date and time string (YYYY-MM-DD HH:MM:SS)
-            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
         },
 
         //Fetches all audio files for the selected session from the server.
@@ -703,10 +712,18 @@ const vueApp = new Vue({
          * @param {string} mainLabel - Label for the y-axis.
          */
         renderCharts(inputData, labels, ref, names = [], mainLabel = "EEG") {
-            inputData.forEach((chartData, index) => {
+            let arrayOfArrays = [];
+            if(typeof inputData == 'object') {
+                arrayOfArrays = Object.values(inputData).map(array => [...array]);
+            } else {
+                arrayOfArrays = inputData;
+            }
+
+            arrayOfArrays.forEach((chartData, index) => {
                 const plotRef = ref + (index + 1);
-                
                 const chartName = names.length ? names[index] : `Sensor ${index + 1}`;
+
+                let data = (chartData.data != undefined) ? chartData.data.map(row => parseInt(row)): chartData
 
                 let trace = { 
                     type: 'scatter', 
@@ -715,7 +732,7 @@ const vueApp = new Vue({
                         width: 0.5
                     },
                     x: labels.map(row => moment.unix(row).format("YYYY-MM-DD HH:mm:ss.SSS")), 
-                    y: chartData.data.map(row => parseInt(row))  
+                    y: data
                 };
 
                 const layout = {
@@ -732,56 +749,44 @@ const vueApp = new Vue({
          * Formats row EEG data from the output session content.
          * @returns {Object} - Object containing formatted output and labels.
          */
-        formatRowEEG() {
-            let output = [];
+        formatRawEEG(list) {
+            let output = { AF3: [], F7: [], F3: [], FC5: [], T7: [], P7: [], O1: [], O2: [], P8: [], T8: [], FC6: [], F4: [], F8: [], AF4: [] };
             let labels = [];
-            let rowEEG = this.outputSessionContent.data.eeg.row;
-
-            for(let i = 0; i < 18; i++) {
-                output.push({
-                    data: []
-                })
-            }
-
+            let rawEEG = this.outputSessionContent.data.eeg.rawEEG;
             let counter = 3;
 
-            rowEEG.forEach(row => {
+            rawEEG.forEach(row => {
                 if(counter == 0) {
-                    for(let i = 0; i < 18; i++) {
-                        output[i].data.push(row.eeg[i]);
-                    }
-        
+                    list.forEach(el => {
+                        output[el].push(row[el]);
+                    });
+
                     labels.push(row.time);
-                    counter = 3;
                 } else {
                     counter--;
                 }
             });
 
-            output.shift();
-            output.shift();
-            output.pop();
-            output.pop();
-
             return { output, labels }
         },
 
         /**
-         * Renders row EEG charts using Plotly.
+         * Renders raw EEG charts using Plotly.
          * Sets a timeout to allow for proper rendering.
          */
-        renderRowEEGCharts() {
-            this.showEEGRow = true;
+        renderRawEEGCharts() {
+            this.showEEGRaw = true;
 
             setTimeout(() => {
-                if(this.outputSessionContent.data.eeg?.sessionIds) {
-                    let { output, labels } = this.formatRowEEG();
+                let list = [ "AF3", "F7", "F3", "FC5", "T7", "P7", "O1", "O2", "P8", "T8", "FC6", "F4", "F8", "AF4" ];
+                if(this.outputSessionContent.data.eeg?.length != 0) {
+                    let { output, labels } = this.formatRawEEG(list);
 
-                    let reference = "row_eeg_sensor";
-                    this.renderCharts(output, labels, reference);
+                    let reference = "raw_eeg_sensor_";
+                    this.renderCharts(output, labels, reference, list);
                 } else {
-                    for(let i = 0; i < 16; i++) {
-                        let reference = "row_eeg_sensor" + (i + 1);
+                    for(let i = 0; i < 13; i++) {
+                        let reference = "raw_eeg_sensor_" + (i + 1);
                         Plotly.purge(reference);
                     }
                 }
@@ -796,18 +801,18 @@ const vueApp = new Vue({
             let expressions = this.outputSessionContent?.data?.eeg?.expression;
             let output = [];
 
-            if(expressions != undefined && expressions[0]?.fac) {
-                let prevExpression1 = expressions[0].fac[0];
-                let prevExpression2 = expressions[0].fac[1];
-                let prevExpression3 = expressions[0].fac[3];
+            if(expressions != undefined && expressions.length != 0) {
+                let prevExpression1 = expressions[0].eyeAction;
+                let prevExpression2 = expressions[0].upperFace.action;
+                let prevExpression3 = expressions[0].lowerFace.action;
 
                 output.push(expressions[0]);
     
                 for(let i = 1; i < expressions.length; i++) {
-                    if(prevExpression1 != expressions[i].fac[0] || prevExpression2 != expressions[i].fac[1] || prevExpression3 != expressions[i].fac[3]) {
-                        prevExpression1 = expressions[i].fac[0];
-                        prevExpression2 = expressions[i].fac[1];
-                        prevExpression3 = expressions[i].fac[3];
+                    if(prevExpression1 != expressions[i].eyeAction || prevExpression2 != expressions[i].upperFace.action || prevExpression3 != expressions[i].lowerFace.action) {
+                        prevExpression1 = expressions[i].eyeAction;
+                        prevExpression2 = expressions[i].upperFace.action;
+                        prevExpression3 = expressions[i].lowerFace.action;
 
                         output.push(expressions[i]);
                     }
@@ -824,7 +829,7 @@ const vueApp = new Vue({
          */
         momentTime(time) {
 
-            return moment.unix(time).format("YYYY-MM-DD HH:mm:ss") 
+            return moment.unix(time).format("DD-MM-YYYY HH:mm:ss") 
         },
 
         /**
@@ -832,36 +837,31 @@ const vueApp = new Vue({
          * @returns {Object} - Object containing formatted output and labels.
          */
         formatPerrformanceMetrics() {
-            let output = [], labels = [];
+            let labels = [];
+            let performance = this.outputSessionContent.data.eeg.cognition;
 
-            let performance = this.outputSessionContent.data.eeg.performance;
-            
-
-            for(let i = 0; i < 6; i++) {
-                output.push({
-                    data: []
-                })
+            let output = {
+                engagement: [],
+                excitement: [],
+                stress: [],
+                longExcitement: [],
+                relaxation: [],
+                interest: [],
+                focus: []
             }
-            
 
-            let step = 1;
-
+            //Insert the metrics
             performance.forEach(row => {
-                for(let i = 0; i < 6; i++) {
-                    if((step + i) == 7) step++;
-                    //The metrics are in the strange order
-                    output[i].data.push(Math.round(row.met[i + step] * 100));
-                    step++;
-                    
-                }
+                output.engagement.push(Math.round(row.engagement * 100));
+                output.excitement.push(Math.round(row.excitement * 100));
+                output.stress.push(Math.round(row.stress * 100));
+                output.longExcitement.push(Math.round(row.longExcitement * 100));
+                output.relaxation.push(Math.round(row.relaxation * 100));
+                output.interest.push(Math.round(row.interest * 100));
+                output.focus.push(Math.round(row.focus * 100));
 
-                step = 1;
-              
                 labels.push(row.time);
             });
-
-            console.log('output', output)
-            console.log('labels', labels)
 
             return { output, labels };
         },
@@ -874,11 +874,14 @@ const vueApp = new Vue({
             this.showEEGMetrics = true;
 
             setTimeout(() => {
-                if(this.outputSessionContent.data.eeg?.sessionIds) {
+                if(this.outputSessionContent.data.eeg.length != 0) {
                     let { output, labels } = this.formatPerrformanceMetrics();
+
+                    console.log('output', output)
+                    console.log('labels', labels)
     
                     let reference = "performance_metrics_chart";
-                    let names = ["Attention", "Engagement", "Excitement", "Interest", "Relaxation", "Stress"];
+                    let names = ["Engagement", "Excitement", "Stress", "Long Excitement", "Relaxation", "Interest", "Focus"];
     
                     this.renderCharts(output, labels, reference, names, "Metrics");
                 } else {

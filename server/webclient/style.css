@@ -933,7 +933,7 @@ audio {
 
 #eeg_head div {
    border: 1px solid rgb(221, 221, 221);
-   width: 45%;
+   width: 80%;
    padding: 10px;
    display: flex;
    justify-content: space-around;
@@ -971,7 +971,7 @@ audio {
    font-weight: bold;
 }
 
-#row_eeg {
+#raw_eeg {
    margin-top: 20px;
    width: 100%;
    height: max-content;
@@ -1025,7 +1025,7 @@ audio {
 
 }
 
-#performance_metrics button, #row_eeg button {
+#performance_metrics button, #raw_eeg button {
    padding: 10px;
    background-color: rgb(253, 192, 165);
    cursor: pointer;

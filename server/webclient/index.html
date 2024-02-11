@@ -114,8 +114,8 @@
                 <div id="eeg_settings_box">
                     <legend>Choose EEG Data Types</legend>
                     <div>
-                        <input v-model="eegSettings.eeg" id="eeg_row" type="checkbox" name="eeg" value="eeg">
-                        <label for="eeg">Row EEG</label>
+                        <input v-model="eegSettings.eeg" id="eeg_raw" type="checkbox" name="eeg" value="eeg">
+                        <label for="eeg">Raw EEG</label>
                     </div>
                     <div>
                         <input v-model="eegSettings.fac" id="eeg_fac" type="checkbox" name="eeg" value="fac">
@@ -160,7 +160,7 @@
                     <div>
                         <div id="audio_text">
                             <div v-for="conv in audioText">
-                                <span class="timestamp">Time: {{ new Date( parseInt(conv.timestamp) * 1000).toLocaleString() }} - 2023.15.11 23:42</span>
+                                <span class="timestamp">Time: {{ new Date( parseInt(conv.time) * 1000).toLocaleString() }} - 2023.15.11 23:42</span>
                                 <li v-for="speach in conv.text"><span>{{ speach.speaker }}: </span>{{ speach.text }}</li>
                                 <li v-if="conv.experienceDetected != null" class="audio_text_emotion"><span>Experience Detected: </span>{{ conv.experienceDetected }}</li>
                                 <li class="audio_text_emotion"><span>Text Emotion: </span>{{ conv.text_emotion.Sentiment }}</li>
@@ -171,7 +171,7 @@
                 <div class="text_box_2" >
                     <span>Text from image:</span>
                     <div id="image_text">
-                        <li v-for="image in imageText"><span>{{ image.imageTime }}:  </span>{{ image.text }}</li>
+                        <li v-for="image in imageText"><span>{{ image.time }}:  </span>{{ image.text }}</li>
                     </div>
                 </div>
             </div>
@@ -181,7 +181,7 @@
                     <div id="history">
                         <li v-for="emotion in emotionsList" :class="{'current': emotion.current}">
                             {{ emotion.emotion }}
-                            <span>{{ emotion.startTime }} - {{ emotion.endTime }} </span>
+                            <span>{{ emotion.startTime }}</span>
                         </li>
                     </div>
                 </div>
@@ -194,7 +194,7 @@
                 <div id="sessions_list">
                     <li v-for="file in sessionsList" :key="file" @click="getFileContent(file)" :class="{ 'active': file == selectedFile }">
                         <span class="session_name">{{ file }}</span>
-                        <span class="session_time">Time: {{ getTime(file) }}</span>
+                        <span class="session_time">Time: {{ getTime(file + "") }}</span>
                     </li>
                 </div>
                 <div id="sessions_output">
@@ -202,8 +202,7 @@
                     <div id="head">
                         <h4>Head</h4>
                         <div id="head_timestamp">
-                            <span>Time: <span>{{ getTime(Object.entries(outputSessionContent.head)[0][1]) }}</span></span>
-                            <span>Session Name: <span>{{ Object.entries(outputSessionContent.head)[0][1] }}</span></span>
+                            <span>Time: <span>{{ getTime(outputSessionContent.head.time + " ") }}</span></span>
                         </div>
                         <div id="head_user">User Name: <span>{{ outputSessionContent.head.user }}</span></div>
                         <div id="head_version">Version: <span>{{ outputSessionContent.head.version }}</span></div>
@@ -214,8 +213,7 @@
                             <h6>GSR Data</h6>
                             <div class="gsr_section" :key="selectedFile">
                                 <div class="recording_times" v-for="gsr in outputSessionContent.data.gsr">
-                                    <div class="time"><span>Start Time: </span>{{ getTime("" + gsr.start) }}</div>
-                                    <div class="time"><span>End Time: </span>{{ getTime("" + gsr.end) }}</div>
+                                    <div class="time"><span>Start Time: </span>{{ getTime("" + gsr.time) }}</div>
                                     <div class="time"><span>Sentiment: </span>{{ gsr.sentiment }}</div>
                                 </div>
                                 <div id="gsr-plot" ></div>
@@ -237,8 +235,8 @@
                             </div>
                             <div class="scroll">
                                 <div class="recording" v-for="audio in outputSessionContent.data.audio">
-                                    <div class="time">Start Time: {{ getTime(Object.entries(audio)[0][0]) + '' }}</div>
-                                    <div class="file_name">Audio file name: {{ Object.entries(audio)[0][1] }}</div>
+                                    <div class="time">Start Time: {{ getTime(audio.time + " ") + '' }}</div>
+                                    <div class="file_name">Audio file name: {{ audio.file }}</div>
                                     <div class="conv_box">
                                         <div class="conv_speach" v-for="conv in audio.text">
                                             <span class="speaker">{{ conv.speaker }}: </span>
@@ -264,34 +262,30 @@
                                     <h5>Image Text</h5>
                                     <div id="content">
                                         <p id="li_default" v-if="outputSessionContent.data.image.length == 0">No Text</p>
-                                        <li v-for="image in outputSessionContent.data.image"><span>{{ convertTime(image.imageTime) }}:  </span>{{ image.text }}</li>
+                                        <li v-for="image in outputSessionContent.data.image"><span>{{ convertTime(image.time) }}:  </span>{{ image.text }}</li>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- EEG Data -->
-                        <div id="eeg_data" v-show="this.outputSessionContent.data.eeg?.sessionIds?.length != 0 && this.outputSessionContent.data.eeg?.sessionIds" :key="selectedFile">
+                        <div id="eeg_data" :key="selectedFile">
                             <h6>EEG Data</h6>
                             <div id="eeg_titles">
-                                <span>Session IDs</span>
                                 <span>Facial Expressions</span>
                             </div>
                             <div id="eeg_head">
-                                <div id="eeg_sessionIds">
-                                    <table>
-                                        <tr v-for="sessions in outputSessionContent?.data?.eeg?.sessionIds">
-                                            <td>Session ID: {{ sessions  }}</td>
-                                        </tr>
-                                    </table>
-                                </div>
                                 <div id="face_expressions">
                                     <table>
                                         <tr>
-                                            <th>Expression</th>
+                                            <th>Eye Action</th>
+                                            <th>Upper Face</th>
+                                            <th>Lower Face</th>
                                             <th>Time</th>
                                         </tr>
-                                        <tr v-for="expression in formatFacialExpressions()" v-show="expression?.fac">
-                                            <td>{{ expression?.fac[0] }}, {{ expression?.fac[1] }}, {{ expression?.fac[3] }}</td>
+                                        <tr v-for="expression in formatFacialExpressions()" v-show="expression?.time">
+                                            <td>{{ expression?.eyeAction }}</td>
+                                            <td>{{ expression?.upperFace.action }}</td>
+                                            <td>{{ expression?.lowerFace.action }}</td>
                                             <td>{{  momentTime(expression?.time)  }}</td>
                                         </tr>
                                     </table>
@@ -301,34 +295,34 @@
                           
                             <div id="performance_metrics" >
                                 <button @click="renderPerformanceCharts()">Click to Display Performance Metrics</button>
-                                <div v-if="showEEGMetrics" class="metrix_box" v-for="metricNr in 6" :key="metricNr">
+                                <div v-if="showEEGMetrics" class="metrix_box" v-for="metricNr in 7" :key="metricNr">
                                     <div :id="`performance_metrics_chart${metricNr}`"></div>
                                 </div>
                             </div>
-                            <span class="eeg_titles">Row EEG</span>
-                             <!-- Row EEG Data -->
-                            <div id="row_eeg">
-                                <button @click="renderRowEEGCharts()">Click to Display Row EEG Data</button>
-                                <div v-if="showEEGRow" class="sensor_box" v-for="sensorNumber in 12" :key="sensorNumber">
-                                    <div :id="`row_eeg_sensor${sensorNumber}`"></div>
+                            <span class="eeg_titles">Raw EEG</span>
+                             <!-- Raw EEG Data -->
+                            <div id="raw_eeg">
+                                <button @click="renderRawEEGCharts()">Click to Display Raw EEG Data</button>
+                                <div v-if="showEEGRaw" class="sensor_box" v-for="sensorNumber in 14" :key="sensorNumber">
+                                    <div :id="`raw_eeg_sensor_${sensorNumber}`"></div>
                                 </div>
                             </div>
                         </div>
                         <!-- Detected Experience Data -->
                         <div id="experience_container" v-if="outputSessionContent.data.des.length != 0">
                             <div class="experience" v-for="desc in outputSessionContent.data.des">
-                                <div class="time">Start Time: {{ getTime(Object.entries(desc)[0][0]) + '' }}</div>
-                                <div class="file_name">Audio file name: {{ Object.entries(desc)[0][1] }}</div>
+                                <div class="time">Start Time: {{ getTime("" + desc.time) }}</div>
+                                <div class="file_name">Audio file name: {{ desc.file }}</div>
                                 <div class="text"><span>Experience Detected: </span>{{ desc.text }}</div>
                             </div>
                         </div>
                         <!-- Sentiment Data -->
-                        <div id="sentiment_container" v-if="outputSessionContent.data.sentiment.length != 0">
-                            <h6>Sentiments</h6>
+                        <div id="sentiment_container" v-if="outputSessionContent.data.overallSentiment.length != 0">
+                            <h6>Overall Sentiment</h6>
                             <div class="scroll_2">
-                                <div class="sentiment_box" v-for="sentiment in outputSessionContent.data.sentiment">
-                                    <div class="time"><span>Recording time: </span>{{ getTime(Object.entries(sentiment)[0][0]) + '' }}</div>
-                                    <div class="file_name"><span>Source: </span>{{ Object.entries(sentiment)[0][1] }}</div>
+                                <div class="sentiment_box" v-for="sentiment in outputSessionContent.data.overallSentiment">
+                                    <div class="time"><span>Recording time: </span>{{ getTime(sentiment.time + "") }}</div>
+                                    <div class="file_name" ><span>Source: </span>{{ sentiment.file }} <span v-if="!sentiment.file">Data Analyse</span></div>
                                     <div class="sentiment"><span>Sentiment: </span>{{  getSentiment(sentiment.sentiment) }} </div>
                                 </div>
                             </div>
