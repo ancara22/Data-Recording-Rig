@@ -29,6 +29,31 @@ The server is designed to handle tasks such as processing audio and image data, 
 <h5>File Handling:</h5> Manages various data files, ensuring proper organization and storage.
 
 
+<h2>Headset Enviroment: </h2>
+The Emotive Headset Authentification details must be store int the server/.env file, and contain:
+<h5>HEADSET_CLIENT_SECRET</h5> = 'YourHeadsetSecret'
+<h5>HEADSET_CLIENT_ID</h5> = 'YourHeadseclientID'
+<h5>HEADSET_LICENSE</h5> = 'YourHeadsetLicense'
+
+
 <h2>Connection Hosts: </h2>
-http://192.168.0.57:8080 - wifi home
-http://172.20.10.4:8080 - mobile hotspot
+Please update the host url for all the data, when/if you are modifying the network.
+<h5>!!! The RIG and Server must be connected to the same Network</h5>
+
+Examples:
+http://192.168.0.57:8080 - My home wifi
+http://172.20.10.4:8080 - My phone hotspot
+
+
+
+<h2>Documentation: </h2>
+To generate and open the documentation you can run the commands:
+
+- To generate the documentation
+``
+npm docs 
+
+- To open the documentation in a browser page
+``
+npm open-docs  
+``
