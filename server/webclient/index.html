@@ -32,8 +32,8 @@
                 <button class="backColorRed" @click="stopRig" v-if="rigActive == true">Stop</button>
             </div>
             <div id="startTime">
-                <span>Start Time:</span>
-                <span>{{ startTime ? new Date(startTime * 1000).toLocaleString(): "0000.00.00 00:00" }}</span>
+                <span>Session start:</span>
+                <span>{{ startTime ? new Date(startTime).toLocaleString(): "0000.00.00 00:00" }}</span>
             </div>
         </div>
 
@@ -160,7 +160,7 @@
                     <div>
                         <div id="audio_text">
                             <div v-for="conv in audioText">
-                                <span class="timestamp">Time: {{ new Date( parseInt(conv.time) * 1000).toLocaleString() }} - 2023.15.11 23:42</span>
+                                <span class="timestamp">Time: {{ new Date( parseInt(conv.timestamp) * 1000).toLocaleString()}}</span>
                                 <li v-for="speach in conv.text"><span>{{ speach.speaker }}: </span>{{ speach.text }}</li>
                                 <li v-if="conv.experienceDetected != null" class="audio_text_emotion"><span>Experience Detected: </span>{{ conv.experienceDetected }}</li>
                                 <li class="audio_text_emotion"><span>Text Emotion: </span>{{ conv.text_emotion.Sentiment }}</li>
@@ -171,7 +171,7 @@
                 <div class="text_box_2" >
                     <span>Text from image:</span>
                     <div id="image_text">
-                        <li v-for="image in imageText"><span>{{ image.time }}:  </span>{{ image.text }}</li>
+                        <li v-for="image in imageText"><span>{{ image.imageTime }}:  </span>{{ image.text }}</li>
                     </div>
                 </div>
             </div>

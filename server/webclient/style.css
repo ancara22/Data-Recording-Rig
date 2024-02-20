@@ -774,16 +774,17 @@ h6 {
 }
 
 .scroll {
-   height: 1000px;
+   max-height: 1000px;
+   height: fit-content;
    overflow: scroll;
    margin-bottom: 20px;
 }
 
 .scroll_2 {
-   height: 1000px;
+   max-height: 1000px;
+   height: fit-content;
    overflow: scroll;
    margin-bottom: 20px;
-   height: 500px;
    padding: 15px;
 }
 

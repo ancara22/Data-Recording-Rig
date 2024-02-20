@@ -47,10 +47,10 @@ setInterval(() => {
     let dirPath = 'data/images/processed_images';
     //removeStreamFiles(dirPath);
 
-    let dirPath2 = 'data/images/row_images';
+    let dirPath2 = 'data/images/raw_images';
     //removeStreamFiles(dirPath2);
 
-    let dirPath3 = 'data/audio/row_audio';
+    let dirPath3 = 'data/audio/raw_audio';
     //removeStreamFiles(dirPath3);
 }, 30000)
 

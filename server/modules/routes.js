@@ -72,7 +72,7 @@ serverRoutes.post('/image', saveData('images', 'image'), (req, res) => {
     let imageFile = req.file,           //Image file
         imageName = imageFile.filename, //Image name
         tempPath = FILE_PATHS.IMAGE_FOLDER + imageName, //Temp saving directory
-        destinationPath = FILE_PATHS.IMAGE_FOLDER + 'row_images/' + imageName; //Final directory, row_images
+        destinationPath = FILE_PATHS.IMAGE_FOLDER + 'raw_images/' + imageName; //Final directory, raw_images
 
     //Check if image is receved
     if (!imageFile) {
@@ -88,27 +88,27 @@ serverRoutes.post('/image', saveData('images', 'image'), (req, res) => {
 
 /**
  * POST request handler for uploading and saving audio files.
- * Audio files are saved in the 'row_audio' directory.
+ * Audio files are saved in the 'raw_audio' directory.
  *
  * @function
  * @memberof module:ServerRoutes
  * @name /audio
- * @param {string} 'audio/row_audio' - The subdirectory for saving audio files.
+ * @param {string} 'audio/raw_audio' - The subdirectory for saving audio files.
  * @param {string} 'audio' - The type of data being saved (audio).
  * @param {express.Request} req - The Express request object.
  * @param {express.Response} res - The Express response object.
  * @returns {void}
  * @example
  * // Example of using the /audio route
- * serverRoutes.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
+ * serverRoutes.post('/audio', saveData('audio/raw_audio', 'audio'), (req, res) => {
  *     // Your custom logic for handling audio upload
  * });
  */
-serverRoutes.post('/audio', saveData('audio/row_audio', 'audio'), (req, res) => {
+serverRoutes.post('/audio', saveData('audio/raw_audio', 'audio'), (req, res) => {
     SERVER_CONFIG.audioNumber++; //Audio files counter for user interface
 
     const audioFile = req.file; //File name
-    const filePath = FILE_PATHS.AUDIO_FOLDER + 'row_audio/' + audioFile.filename; //Row data path
+    const filePath = FILE_PATHS.AUDIO_FOLDER + 'raw_audio/' + audioFile.filename; //Row data path
 
     if (!audioFile) {
         console.error('No audio file received');

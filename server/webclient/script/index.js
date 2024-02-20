@@ -436,10 +436,6 @@ const vueApp = new Vue({
             fetch('/getAudioText')
                 .then(res => res.json())
                 .then(data => {
-                    data.forEach(item => {
-                        item.text.shift();
-                    })
-
                     this.audioText = data;
                 })
         },

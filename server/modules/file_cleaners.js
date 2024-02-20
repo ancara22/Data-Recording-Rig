@@ -127,7 +127,7 @@ function cleanJSONL(filePath) {
  * cleanOldRowData();
  */
 function cleanOldRowData() {
-	let folders = ["data/audio/row_audio", "data/images/row_images"];
+	let folders = ["data/audio/raw_audio", "data/images/raw_images"];
 
 	folders.forEach(folder => {
 		removeStreamFiles(folder);

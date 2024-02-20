@@ -15,7 +15,7 @@ const EEG_FOLDER      = './data/eeg/';      //The folder path for EEG (Electroen
 const FACIAL_EXPRESSIONS_FILE  = EEG_FOLDER  + 'facial_expressions.jsonl';  //The file path for facial expressions data related to EEG.
 const PERFORMANCE_METRICS_FILE = EEG_FOLDER  + 'performance_metrics.jsonl'; //The file path for performance metrics data related to EEG.
 const POWER_OF_SENSORS_FILE    = EEG_FOLDER  + 'power_of_sensors.jsonl';    //The file path for power of sensors data related to EEG.
-const ROW_EEG_FILE             = EEG_FOLDER  + 'raw_eeg.jsonl'; //The file path for raw EEG data.
+const RAW_EEG_FILE             = EEG_FOLDER  + 'raw_eeg.jsonl'; //The file path for raw EEG data.
 
 
 const AUDIO_OUTPUT_JSON     = 'audio_text.json',    //Output JSON file for audio data.
@@ -39,7 +39,7 @@ const AUDIO_OUTPUT_JSON     = 'audio_text.json',    //Output JSON file for audio
 * @property {string} IMAGE_FOLDER - Folder path for image data.
 * @property {string} PROCESSED_IMAGES - Folder path for processed images.
 * @property {string} SESSION_FOLDER - Folder path for session files.
-* @property {string} ROW_AUDIO_FOLDER_PATH - Folder path for raw audio data.
+* @property {string} RAW_AUDIO_FOLDER_PATH - Folder path for raw audio data.
 * @property {string} CLIENT_GSR_GRAPH_FILE_PATH - File path for the client GSR graph CSV.
 * @property {string} CLIENT_EMOTIONS_PATH - File path for the client emotions CSV related to GSR.
 * @property {string} GSR_TRAINING_FILE_PATH - File path for GSR training data CSV.
@@ -60,7 +60,7 @@ const FILE_PATHS = {
     IMAGE_FOLDER                : IMAGE_FOLDER,
     PROCESSED_IMAGES            : IMAGE_FOLDER        + 'processed_images',
     SESSION_FOLDER              : SESSION_FOLDER,
-    ROW_AUDIO_FOLDER_PATH       : AUDIO_FOLDER        + 'row_audio/',
+    RAW_AUDIO_FOLDER_PATH       : AUDIO_FOLDER        + 'raw_audio/',
     CLIENT_GSR_GRAPH_FILE_PATH  : GSR_FOLDER          + 'client_graph/'         + GSR_GRAPH_CSV,
     CLIENT_EMOTIONS_PATH        : GSR_FOLDER          + 'client_graph/'         + GSR_CLIENT_EMOTIONS_CSV,
     GSR_TRAINING_FILE_PATH      : GSR_FOLDER          + 'gsr_training_data/'    + GSR_TRAINING_CSV,
@@ -69,7 +69,7 @@ const FILE_PATHS = {
     GSR_SECTIONS_JSON_PATH      : GSR_FOLDER          + GSR_SECTIONS_JSON,
     USER_INTRO_AUDIO_PATH       : USER_FOLDER         + USER_INTRO_WAV,
     USER_FILE_PATH              : USER_FOLDER         + USER_DATA_JSON,
-    EEG_FILES_LIST              : [ FACIAL_EXPRESSIONS_FILE, PERFORMANCE_METRICS_FILE, POWER_OF_SENSORS_FILE, ROW_EEG_FILE]
+    EEG_FILES_LIST              : [ FACIAL_EXPRESSIONS_FILE, PERFORMANCE_METRICS_FILE, POWER_OF_SENSORS_FILE, RAW_EEG_FILE]
 
 }
 

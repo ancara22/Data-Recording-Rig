@@ -6,6 +6,7 @@
 import { Client } from 'ssh2';
 import { FILE_PATHS, RIG_CONFIG, APP_CONFIG } from "./server_settings.js";
 import { runImageProcessor, runSessionFileUpdatingInterval } from './utility.js';
+import { Cortex } from "./cortex.js"
 
 
 ////////////////////////////////////////////////////////////////////////////

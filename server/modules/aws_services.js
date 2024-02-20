@@ -25,7 +25,7 @@ const comprehend = new AWS.Comprehend();               //Init AWS Comprehend
  * @param {string} audioFile - The name of the audio file
  */
 function sendAudioToAWSS3(audioFile) {
-    let filePath = FILE_PATHS.ROW_AUDIO_FOLDER_PATH + audioFile,
+    let filePath = FILE_PATHS.RAW_AUDIO_FOLDER_PATH + audioFile,
         convertedFilePath = FILE_PATHS.CONVERTED_AUDIO + audioFile;
 
     concatinateWavFiles(filePath, () => {

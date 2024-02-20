@@ -8,7 +8,7 @@ from watchdog.events import FileSystemEventHandler
 from concurrent.futures import ThreadPoolExecutor
 
 # Directories
-row_images = "./data/images/row_images"
+raw_images = "./data/images/raw_images"
 processed_images = "./data/images/processed_images"
 
 # Track the processed images
@@ -37,8 +37,8 @@ def processImage(imagePath):
             image[y:y+roi.shape[0], x:x+roi.shape[1]] = roi 
 
         #Processing for text detection
-        ret, thresh1 = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY) #cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV 
-        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (20, 20))
+        ret, thresh1 = cv2.threshold(gray, 0, 255,  cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV) #cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV ; cv2.THRESH_BINARY
+        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (60, 60))
         dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
         contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         image2 = image.copy()
@@ -94,10 +94,10 @@ class ImageHandler(FileSystemEventHandler):
 
 
 if __name__ == "__main__":
-    # Observe the row_images folder content
+    # Observe the raw_images folder content
     image_handler = ImageHandler()
     observer = Observer()
-    observer.schedule(image_handler, path=row_images, recursive=False)
+    observer.schedule(image_handler, path=raw_images, recursive=False)
     observer.start()
 
     try:

@@ -1,1 +1,42 @@
-[]
+[
+    {
+        "timestamp": 1708372423,
+        "text": [
+            {
+                "speaker": "spk_1",
+                "text": "Yeah, very so fine online. And you can see that headset is sending a lot of data. So, based on our f expression, uh, based on our performance metrics, performance metrics are something like, uh, attention interest, um, stress level of relaxation level and, uh, so on and so on. So they are coming a little bit, uh, more. Ok. Are you to, to stop €5 Zan?"
+            }
+        ],
+        "audio_file": "audio_1708372423.wav",
+        "experienceDetected": null,
+        "text_emotion": {
+            "Sentiment": "POSITIVE",
+            "SentimentScore": {
+                "Positive": 0.6565424203872681,
+                "Negative": 0.006327680312097073,
+                "Neutral": 0.33683523535728455,
+                "Mixed": 0.0002947198518086225
+            }
+        }
+    },
+    {
+        "timestamp": 1708372488,
+        "text": [
+            {
+                "speaker": "spk_1",
+                "text": "Idea of alas is the most easy of you want another. So, yeah. Was it? Hello, I'm Daniel. And today I'll demonstrate the 0.3497 from the control. So I'll demonstrate how I'm getting data from the A G headset, how I'm analyzing the, the text, just rndeg data and, uh, how I'm storing the, all of them in the final uh format. So I'll show now so you can see on the screen, but I'm uh, ordering now. The headset. It's not what I said."
+            }
+        ],
+        "audio_file": "audio_1708372488.wav",
+        "experienceDetected": null,
+        "text_emotion": {
+            "Sentiment": "NEUTRAL",
+            "SentimentScore": {
+                "Positive": 0.37354254722595215,
+                "Negative": 0.0046794842928647995,
+                "Neutral": 0.6217033267021179,
+                "Mixed": 0.00007467778050340712
+            }
+        }
+    }
+]

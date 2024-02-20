@@ -414,7 +414,7 @@ export class Cortex {
 
         if(type == "eeg") {
             //Row EEG data
-            this.insertDataToJsonl("row_eeg.jsonl", receivedData);
+            this.insertDataToJsonl("raw_eeg.jsonl", receivedData);
         } else if(type == "fac") {
             //Facial Expresions
             this.insertDataToJsonl("facial_expressions.jsonl", receivedData);
