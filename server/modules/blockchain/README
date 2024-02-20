@@ -54,3 +54,16 @@ Rehashes the provided hash value with additional data and stores the result in D
     "hash": "originalHashValue",
     "user": "associatedUser"
   }
+
+
+## Serverless
+To deploy the blockchain function on AWS Lambda, you need to execute the following commands:
+
+   - npm install -g serverless
+   - serverless login //You need a Serverless.com account if you want to deploy it also on serverless.com, or you can omit it.
+   - serverless deploy
+
+- **Notice:**
+Before deploying the function, make sure to include your AWS credentials in the ~/.aws file or execute:
+
+   - serverless config credentials --provider aws --key YOUR_ACCESS_KEY_ID --secret YOUR_SECRET_ACCESS_KEY
