@@ -33,7 +33,7 @@ export class Cortex {
         this.isHeadsetConnected = false
     }
 
-     /**
+    /**
      * Subscribes to the specified streams for EEG data.
      * @memberof module:CortexEEGHeadset
      * @param {string[]} streams - An array of streams to subscribe to (e.g., ['eeg', 'fac', 'met']).
@@ -46,6 +46,22 @@ export class Cortex {
 
             //Run the subbscription to the data
             this.subRequest(streams, this.authToken, this.sessionId)
+        })
+    }
+
+    /**
+     * Unsubscribes to the specified streams for EEG data.
+     * @memberof module:CortexEEGHeadset
+     * @param {string[]} streams - An array of streams to unsubscribe to (e.g., ['eeg', 'fac', 'met']).
+     * @returns {void}
+     */
+    unsub(streams){
+        this.socket.on('open',async ()=>{
+            //Check the authentification 
+            await this.checkGrantAccessAndQuerySessionInfo()
+
+            //Run the subbscription to the data
+            this.subRequestUnsubscribe(streams, this.authToken, this.sessionId)
         })
     }
 
@@ -318,6 +334,41 @@ export class Cortex {
         })
     }
 
+     /**
+     * Sends a unsubscription request for EEG data to the Cortex API and handles the result.
+     * @module CortexEEGHeadset
+     * @param {string[]} streams - An array of streams to unsubscribe to (e.g., ['eeg', 'fac', 'met']).
+     * @param {string} authToken - The authentication token obtained during authorization.
+     * @param {string} sessionId - The session ID associated with the EEG headset.
+     * @returns {void}
+     */ 
+    subRequestUnsubscribe(stream, authToken, sessionId){
+        let socket = this.socket
+        const SUB_REQUEST_ID = 6 
+
+        let subRequestUnsubscribe = { 
+            "jsonrpc": "2.0", 
+            "method": "unsubscribe", 
+            "params": { 
+                "cortexToken": authToken,
+                "session": sessionId,
+                "streams": stream
+            }, 
+            "id": SUB_REQUEST_ID
+        }
+
+        socket.send(JSON.stringify(subRequestUnsubscribe))
+
+        //Handle data receiving
+        socket.on('message', (data)=>{
+            try {
+                let parsedData = JSON.parse(data.toString('utf8')); //Received data from the headsetr
+                console.log(parsedData + '\r\n');
+
+            } catch (error) {}
+        })
+    }
+
     /**
      * Queries the session information, including headset ID, control device, authorization, and session creation.
      * @module CortexEEGHeadset
@@ -480,6 +531,12 @@ export class Cortex {
         this.sub(streams);
     }
     
+    /*
+     * Stop the Recording
+     */
+    stopRecording() {
+        this.unsub(streams);
+    }
 }
 
 

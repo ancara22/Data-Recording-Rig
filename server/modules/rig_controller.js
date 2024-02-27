@@ -9,6 +9,8 @@ import { runImageProcessor, runSessionFileUpdatingInterval } from './utility.js'
 import { Cortex } from "./cortex.js"
 
 
+let cortex;
+
 ////////////////////////////////////////////////////////////////////////////
 //RIG Control
 ////////////////////////////////////////////////////////////////////////////
@@ -47,6 +49,10 @@ function rigControl(startRig) {
                 if(startRig != 'config')  {
                     runTheRecordingApp(ssh, startRig);
                     startEEGRecording()   //EEG recording app
+                }
+
+                if(startRig == "stop") {
+                    cortex.stopRecording();
                 }
             })
         
@@ -160,7 +166,7 @@ function startEEGRecording() {
         "debit": 1
     }
 
-    let cortex = new Cortex(user, socketUrl)
+    cortex = new Cortex(user, socketUrl)
     cortex.run();
 }
 
