@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: cortex.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: cortex.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * The Cortex EEG headset Module.
  * @module CortexEEGHeadset
  */
@@ -13,7 +41,7 @@ const settingsFilePath = "../config.ini";
 const WARNING_CODE_HEADSET_DISCOVERY_COMPLETE = 142;
 const WARNING_CODE_HEADSET_CONNECTED = 104;
 
-let streams = []
+
 /**
  * Class representing the EEG Headset controller using the Cortex API.
  */
@@ -89,7 +117,7 @@ export class Cortex {
      /**
      * Queries the headset ID and checks if the headset is connected.
      * @memberof module:CortexEEGHeadset
-     * @returns {Promise<object>} - A promise that resolves with the query result.
+     * @returns {Promise&lt;object>} - A promise that resolves with the query result.
      */
     queryHeadsetId() {
         return new Promise((resolve, reject) => {
@@ -138,7 +166,7 @@ export class Cortex {
     /**
      * Requests access to the Cortex API using the provided user credentials.
      * @module CortexEEGHeadset
-     * @returns {Promise<string>} - A promise that resolves with the access request result.
+     * @returns {Promise&lt;string>} - A promise that resolves with the access request result.
      */
     requestAccess(){
         let socket = this.socket
@@ -173,7 +201,7 @@ export class Cortex {
      * Controls the specified headset, attempting to connect to it.
      * @param {string} headsetId - The ID of the headset to control.
      * @module CortexEEGHeadset
-     * @returns {Promise<object>} - A promise that resolves with the controlDevice result.
+     * @returns {Promise&lt;object>} - A promise that resolves with the controlDevice result.
      */
     controlDevice(headsetId){
         let socket = this.socket
@@ -213,7 +241,7 @@ export class Cortex {
     /**
      * Authorizes the user, obtaining the Cortex token, and calls refreshHeadsetList upon success.
      * @module CortexEEGHeadset
-     * @returns {Promise<string>} - A promise that resolves with the Cortex token.
+     * @returns {Promise&lt;string>} - A promise that resolves with the Cortex token.
      */
     authorize(){
         let socket = this.socket
@@ -254,7 +282,7 @@ export class Cortex {
      * @module CortexEEGHeadset
      * @param {string} authToken - The Cortex token obtained during authorization.
      * @param {string} headsetId - The ID of the headset to create a session with.
-     * @returns {Promise<string>} - A promise that resolves with the session ID.
+     * @returns {Promise&lt;string>} - A promise that resolves with the session ID.
      */
     createSession(authToken, headsetId) {
         const CREATE_SESSION_ID = 5;
@@ -266,7 +294,7 @@ export class Cortex {
             const checkHeadsetId = async () => {
                 const response = await this.queryHeadsetId();
 
-                const found = response["result"].find(item => String(item["id"]) === String(headsetId) && item["status"] === "connected");
+                const found = response["result"].find(item => String(item["id"]) === String(headsetId) &amp;&amp; item["status"] === "connected");
                 if (found) {
                     clearInterval(queryInterval);
 
@@ -372,7 +400,7 @@ export class Cortex {
     /**
      * Queries the session information, including headset ID, control device, authorization, and session creation.
      * @module CortexEEGHeadset
-     * @returns {Promise<void>} - A promise that resolves when session information is queried successfully.
+     * @returns {Promise&lt;void>} - A promise that resolves when session information is queried successfully.
      */
     async querySessionInfo(){
         let qhResult = "", headsetId = "", ctResult = "", authToken = "", sessionId = ""
@@ -399,7 +427,7 @@ export class Cortex {
     /**
      * Checks if the user is logged in, if the app is granted access, and queries session information.
      * @module CortexEEGHeadset
-     * @returns {Promise<void>} - A promise that resolves when access is granted, and session information is queried.
+     * @returns {Promise&lt;void>} - A promise that resolves when access is granted, and session information is queried.
      */
     async checkGrantAccessAndQuerySessionInfo(){
         let requestAccessResult = ""
@@ -446,7 +474,7 @@ export class Cortex {
                     }
 
                     // After headset scanning finishes, if no headset is connected yet, the app should call the controlDevice("refresh") again
-                    if (message.warning.code === WARNING_CODE_HEADSET_DISCOVERY_COMPLETE && !this.isHeadsetConnected) {
+                    if (message.warning.code === WARNING_CODE_HEADSET_DISCOVERY_COMPLETE &amp;&amp; !this.isHeadsetConnected) {
                         this.refreshHeadsetList();
                     }
                 } 
@@ -519,6 +547,8 @@ export class Cortex {
         let iniFileContent = fs.readFileSync(settingsFilePath, 'utf-8');
         let settings = ini.parse(iniFileContent);
 
+        let streams = []
+
         settings.eeg.met ? streams.push('met'): '';
         settings.eeg.fac ? streams.push('fac'): '';
         settings.eeg.eeg ? streams.push('eeg'): '';
@@ -544,3 +574,26 @@ export class Cortex {
 
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AWSServices.html">AWSServices</a></li><li><a href="module-BlockchainAPI.html">BlockchainAPI</a></li><li><a href="module-CortexEEGHeadset.html">CortexEEGHeadset</a></li><li><a href="module-FileCleaner.html">FileCleaner</a></li><li><a href="module-GSRProcessor.html">GSRProcessor</a></li><li><a href="module-RigControl.html">RigControl</a></li><li><a href="module-ServerRoutes.html">ServerRoutes</a></li><li><a href="module-ServerSettings.html">ServerSettings</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-UtilityModule.html">UtilityModule</a></li><li><a href="module-webClientRoutes.html">webClientRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="module-CortexEEGHeadset.Cortex.html">Cortex</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Feb 29 2024 23:10:17 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

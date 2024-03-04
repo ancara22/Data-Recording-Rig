@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utility.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utility.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * The Utility Module.
  * @module UtilityModule
  */
@@ -12,7 +40,6 @@ import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
 import { emptyAllFiles } from "./file_cleaners.js";
 import { setTimeout } from 'timers/promises';
 
-let sessionFileUpdatingIntervalId = null;
 
 /**
  * Creates and returns a middleware for handling file uploads and saving them to a specified folder.
@@ -156,7 +183,7 @@ function writeJSONFile(filePath, data) {
  * @function
  * @memberof module:UtilityModule
  * @name convertImageData
- * @returns {Array<Object>} An array of objects containing converted image data.
+ * @returns {Array&lt;Object>} An array of objects containing converted image data.
  * @example
  * // Get and convert image data
  * const convertedData = convertImageData();
@@ -178,7 +205,7 @@ function convertImageData() {
         }
 
         let exist = result.find(img => img.text === data.text);
-        if (timestamp != null && !exist) result.push(data);
+        if (timestamp != null &amp;&amp; !exist) result.push(data);
     })
 
     return result;
@@ -191,7 +218,7 @@ function convertImageData() {
  * @function
  * @memberof module:UtilityModule
  * @name convertAudioData
- * @param {Array<Object>} audioData - Array of audio data objects.
+ * @param {Array&lt;Object>} audioData - Array of audio data objects.
  * @returns {Object} Object containing audio data, experience data, and sentiments.
  * @example
  * // Convert audio data and extract relevant information
@@ -245,9 +272,9 @@ function convertAudioData(audioData) {
  * @function
  * @memberof module:UtilityModule
  * @name convertGSRData
- * @param {Array<Object>} gsrData - Array of GSR data objects.
- * @param {Array<Object>} sentiments - Array of sentiment data to be updated.
- * @returns {Array<Object>} Array of formatted GSR data objects.
+ * @param {Array&lt;Object>} gsrData - Array of GSR data objects.
+ * @param {Array&lt;Object>} sentiments - Array of sentiment data to be updated.
+ * @returns {Array&lt;Object>} Array of formatted GSR data objects.
  * @example
  * // Convert GSR data and update sentiments array
  * const gsrData = [...]; // Your GSR data array
@@ -365,18 +392,9 @@ function extractTimestamp(fromString) {
  * runSessionFileUpdatingInterval();
  */
 function runSessionFileUpdatingInterval() {
-    sessionFileUpdatingIntervalId = setInterval(() => insertDataToFinalFile(), 1 * 60 * 100);
+    setInterval(() => insertDataToFinalFile(), 1 * 60 * 100);
 }
 
-/**
- * Stops the session file updating interval.
- * 
- * @function stopSessionFileUpdatingInterval
- * @returns {void}
- */
-function stopSessionFileUpdatingInterval() {
-    clearInterval(sessionFileUpdatingIntervalId);
-}
 
 /**
  * Update the session file when the time is more than the defined time in minutes.
@@ -460,7 +478,7 @@ function createNewSession(currentTime, userObject, callback) {
         });
 
         writeJSONFile(FILE_PATHS.USER_FILE_PATH, concatinatedOBJ);
-        emptyAllFiles();
+        //emptyAllFiles();
         callback();
     });
 }
@@ -714,10 +732,31 @@ export {
     runImageProcessor,
     saveData,
     runSessionFileUpdatingInterval,
-    stopSessionFileUpdatingInterval,
     insertDataToFinalFile,
     readJSONFile,
     extractTimestamp,
     getTheHash,
     writeJSONFile
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AWSServices.html">AWSServices</a></li><li><a href="module-BlockchainAPI.html">BlockchainAPI</a></li><li><a href="module-CortexEEGHeadset.html">CortexEEGHeadset</a></li><li><a href="module-FileCleaner.html">FileCleaner</a></li><li><a href="module-GSRProcessor.html">GSRProcessor</a></li><li><a href="module-RigControl.html">RigControl</a></li><li><a href="module-ServerRoutes.html">ServerRoutes</a></li><li><a href="module-ServerSettings.html">ServerSettings</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-UtilityModule.html">UtilityModule</a></li><li><a href="module-webClientRoutes.html">webClientRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="module-CortexEEGHeadset.Cortex.html">Cortex</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Feb 29 2024 23:10:17 GMT+0000 (Greenwich Mean Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -26,11 +26,12 @@ def processImage(imagePath):
 
         #Processing for image bluring
         face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_alt.xml')
-        face_data = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=1, minSize=(40, 40))
+        face_data = face_cascade.detectMultiScale(gray, scaleFactor=1.5, minNeighbors=2, minSize=(20, 20))
+        
 
         #Draw rectangle around the faces
         for (x, y, w, h) in face_data: 
-            cv2.rectangle(image, (x, y), (x + w, y + h), (180, 180, 180), 2) 
+            cv2.rectangle(image, (x, y), (x + w, y + h), (188, 188, 188), 2) 
             roi = image[y:y+h, x:x+w] 
         
             roi = cv2.GaussianBlur(roi, (99, 99), 100) 
@@ -38,12 +39,12 @@ def processImage(imagePath):
 
         #Processing for text detection
         ret, thresh1 = cv2.threshold(gray, 0, 255,  cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV) #cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV ; cv2.THRESH_BINARY
-        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (60, 60))
-        dilation = cv2.dilate(thresh1, rect_kernel, iterations = 1)
+        rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (20, 20))
+        dilation = cv2.dilate(thresh1, rect_kernel, iterations = 3)
         contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
         image2 = image.copy()
 
-        contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 100]
+        contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 10]
 
         #Execute text searching
         for cnt in contours:
@@ -62,7 +63,7 @@ def processImage(imagePath):
 
                 # Append the OCR result to the CSV file
                 if formated_text != "" and len(formated_text) > 10:
-                    writer.writerow([os.path.basename(imagePath), formated_text])
+                    writer.writerow([os.path.basename(imagePath), "\"" + formated_text + "\""])
 
         # Save the new image
         image_name = os.path.basename(imagePath)
