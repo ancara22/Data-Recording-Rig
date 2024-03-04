@@ -365,6 +365,7 @@ function extractTimestamp(fromString) {
  * runSessionFileUpdatingInterval();
  */
 function runSessionFileUpdatingInterval() {
+    console.log('Running the session file controls interval.')
     sessionFileUpdatingIntervalId = setInterval(() => insertDataToFinalFile(), 1 * 60 * 100);
 }
 

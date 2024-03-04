@@ -277,7 +277,7 @@ const vueApp = new Vue({
                 .then(data => {
                     //Set the plot for gsr data
                     let layout = { title: 'GSR Data Graph', xaxis: { title: 'Timestamp' }, yaxis: { title: 'GSR' } };
-                    let trace = { type: 'scatter', mode: 'lines', x: data.gsr_data.map(row => new Date(row[0])), y: data.gsr_data.map(row => row[1]) };
+                    let trace = { type: 'scatter', mode: 'lines', x: data.gsr_data.map(row => new Date(row[0] * 1000)), y: data.gsr_data.map(row => row[1]) };
                     
                     //Drow the plot for GSR data
                     Plotly.newPlot('gsrGraph', [trace], layout);

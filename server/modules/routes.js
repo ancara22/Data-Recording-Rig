@@ -105,6 +105,7 @@ serverRoutes.post('/image', saveData('images', 'image'), (req, res) => {
  * });
  */
 serverRoutes.post('/audio', saveData('audio/raw_audio', 'audio'), (req, res) => {
+    console.log('Received an audio file.')
     SERVER_CONFIG.audioNumber++; //Audio files counter for user interface
 
     const audioFile = req.file; //File name

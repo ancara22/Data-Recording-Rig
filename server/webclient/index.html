@@ -32,7 +32,7 @@
                 <button class="backColorRed" @click="stopRig" v-if="rigActive == true">Stop</button>
             </div>
             <div id="startTime">
-                <span>Session start:</span>
+                <span>Last session start:</span>
                 <span>{{ startTime ? new Date(startTime).toLocaleString(): "0000.00.00 00:00" }}</span>
             </div>
         </div>

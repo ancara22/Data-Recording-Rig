@@ -21,7 +21,7 @@ let timer;
  */
 function timerHandler() {
     SERVER_CONFIG.rigActive = false;
-    console.log('Rig is not active!');
+    console.log('\n------The Rig is not active!-----');
 }
 
 /**

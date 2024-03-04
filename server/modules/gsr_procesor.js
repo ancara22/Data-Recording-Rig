@@ -79,6 +79,8 @@ function processGSRoutput(data, nr) {
             if (err) console.log(err);
             else console.log("GSR data saved: " + value);
         });
+    } else {
+        console.log("The GSR sensors are not connected!")
     }
 }
 

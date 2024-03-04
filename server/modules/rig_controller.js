@@ -52,6 +52,7 @@ function rigControl(startRig) {
                 }
 
                 if(startRig == "stop") {
+                    console.log('Stopping the Recording process.')
                     stopSessionFileUpdatingInterval();
                     cortex.stopRecording();
                 }
@@ -116,6 +117,7 @@ function runTheRecordingApp(ssh, startRig) {
         };
 
         if(startRig == 'start') {
+            console.log('Starting the Recording process.')
             sleep(1000).then(()=> {
                 executeCommand(ssh);    // Run the rig recording on the raspberry pi
                 runImageProcessor();    //Rund image processor
@@ -139,7 +141,7 @@ function handleSSHError(ssh) {
     //On ssh connection error
     ssh.on("error", (err) => {
         if(err.code == 'ENOTFOUND') {
-            console.log('SSH connection error. The RIG is Offline.')
+            console.log('SSH connection error. No active devices!')
         } else {
             console.log('SSH connection error: ', err)
         }
@@ -157,6 +159,8 @@ function handleSSHError(ssh) {
  * startEEGRecording(); // Starts EEG recording
  */
 function startEEGRecording() {
+    console.log('Starting the EEG recording.')
+
     //EEG
     let socketUrl = 'wss://localhost:6868';
 
