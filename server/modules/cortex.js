@@ -287,7 +287,7 @@ export class Cortex {
                         let parsedData = JSON.parse(data);
 
                         if (parsedData.id === CREATE_SESSION_ID) {
-                            sessionId = parsedData['result']['id'];
+                            sessionId = parsedData.id;
                             resolve(sessionId);
                         }
                     });

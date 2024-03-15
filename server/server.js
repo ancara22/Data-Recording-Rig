@@ -34,7 +34,7 @@ app.listen(port, () => {
 
     cleanOldRowData();        //Clean old row data
     rigControl('config');     //Configure the rig
-    //runSessionFileUpdatingInterval();
+   runSessionFileUpdatingInterval();
 
 });
 
