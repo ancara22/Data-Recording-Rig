@@ -10,7 +10,6 @@ import Papa from 'papaparse';
 import crypto from 'crypto';
 import { FILE_PATHS, SERVER_CONFIG, APP_CONFIG } from "./server_settings.js";
 import { emptyAllFiles } from "./file_cleaners.js";
-import { setTimeout } from 'timers/promises';
 
 let sessionFileUpdatingIntervalId = null;
 
@@ -708,6 +707,64 @@ function getAllEEGFilesContent() {
 }
 
 
+//Function that will check the server enviroment and create all the neccessary folders and files
+function checkEnviroment() {
+    const enviromentFolders = [
+        FILE_PATHS.DATA_FOLDER, 
+        FILE_PATHS.AUDIO_FOLDER, 
+        FILE_PATHS.EEG_FOLDER, 
+        FILE_PATHS.GSR_FOLDER, 
+        FILE_PATHS.IMAGE_FOLDER, 
+        FILE_PATHS.USER_FOLDER, 
+        FILE_PATHS.SESSION_FOLDER, 
+        FILE_PATHS.RAW_AUDIO_FOLDER_PATH, 
+        FILE_PATHS.PROCESSED_IMAGES, 
+        FILE_PATHS.CONVERTED_AUDIO, 
+        FILE_PATHS.GSR_CLIENT_GRAPH_FOLDER, 
+        FILE_PATHS.GSR_TRAINING_FOLDER,
+        FILE_PATHS.IMAGE_TEXT_FOLDER
+    ];
+
+    const enviromentFiles = [
+        FILE_PATHS.AUDIO_TEXT_FILE_PATH, 
+        ...FILE_PATHS.EEG_FILES_LIST, 
+        FILE_PATHS.GSR_SECTIONS_JSON_PATH, 
+        FILE_PATHS.USER_FILE_PATH,
+    ]
+
+    enviromentFolders.forEach(path => {
+        fs.access(path, fs.constants.F_OK, (err) => {
+            if(err) {
+                fs.mkdir(path, {recursive: true }, (err) => {
+                    if (err) {
+                        console.error('Error creating folder:', err);
+                    } else {
+                        console.log('Folder created successfully');
+                    }
+                })
+            }
+        })
+    });
+
+    enviromentFiles.forEach(filePath => {
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if(err) {
+                fs.writeFile(filePath, JSON.stringify([]), (err) => {
+                    if (err) {
+                        console.error('Error creating file:', err);
+                    } else {
+                        console.log('File created successfully');
+                    }
+                });
+            }
+        })
+    });
+
+
+    console.log('The Enviroment is Ready!')
+
+}
+
 //Exports
 export {
     getAllEEGFilesContent,
@@ -720,5 +777,6 @@ export {
     readJSONFile,
     extractTimestamp,
     getTheHash,
-    writeJSONFile
+    writeJSONFile,
+    checkEnviroment
 }

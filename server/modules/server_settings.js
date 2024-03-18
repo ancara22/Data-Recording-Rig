@@ -5,17 +5,21 @@
 
 
 //Server file paths
-const AUDIO_FOLDER  = './data/audio/';      //The folder path for audio data.
-const GSR_FOLDER      = './data/gsr/';      //The folder path for GSR (Galvanic Skin Response) data.
-const USER_FOLDER     = './data/user/';     //The folder path for user-related data.
-const IMAGE_FOLDER    = './data/images/';   //The folder path for image data.
-const SESSION_FOLDER  = './data/session_files/';    //The folder path for session files.
-const CONVERTED_AUDIO = './data/audio/processed_audio/';    //The folder path for processed audio data.
-const EEG_FOLDER      = './data/eeg/';      //The folder path for EEG (Electroencephalography) data.
+const DATA_FOLDER   = './data/';
+const AUDIO_FOLDER  =   DATA_FOLDER + 'audio/';      //The folder path for audio data.
+const GSR_FOLDER      = DATA_FOLDER + 'gsr/';      //The folder path for GSR (Galvanic Skin Response) data.
+const USER_FOLDER     = DATA_FOLDER + 'user/';     //The folder path for user-related data.
+const IMAGE_FOLDER    = DATA_FOLDER + 'images/';   //The folder path for image data.
+const SESSION_FOLDER  = DATA_FOLDER + 'session_files/';    //The folder path for session files.
+const CONVERTED_AUDIO = DATA_FOLDER + 'audio/processed_audio/';    //The folder path for processed audio data.
+const EEG_FOLDER      = DATA_FOLDER + 'eeg/';      //The folder path for EEG (Electroencephalography) data.
 const FACIAL_EXPRESSIONS_FILE  = EEG_FOLDER  + 'facial_expressions.jsonl';  //The file path for facial expressions data related to EEG.
 const PERFORMANCE_METRICS_FILE = EEG_FOLDER  + 'performance_metrics.jsonl'; //The file path for performance metrics data related to EEG.
 const POWER_OF_SENSORS_FILE    = EEG_FOLDER  + 'power_of_sensors.jsonl';    //The file path for power of sensors data related to EEG.
 const RAW_EEG_FILE             = EEG_FOLDER  + 'raw_eeg.jsonl'; //The file path for raw EEG data.
+const GSR_CLIENT_GRAPH_FOLDER  = GSR_FOLDER + 'client_graph/'; //GSR Client graph folder
+const GSR_TRAINING_FOLDER      = GSR_FOLDER + 'gsr_training_data/';
+const IMAGE_TEXT_FOLDER        = IMAGE_FOLDER  + 'image_text/';
 
 
 const AUDIO_OUTPUT_JSON     = 'audio_text.json',    //Output JSON file for audio data.
@@ -51,8 +55,12 @@ const AUDIO_OUTPUT_JSON     = 'audio_text.json',    //Output JSON file for audio
 * @property {string[]} EEG_FILES_LIST - List of file paths related to EEG (Electroencephalography) data.
 */
 const FILE_PATHS = {
+    DATA_FOLDER                 : DATA_FOLDER,
     CONFIG_FILE_PATH            : '../config.ini',
+    GSR_CLIENT_GRAPH_FOLDER     : GSR_CLIENT_GRAPH_FOLDER,
+    GSR_TRAINING_FOLDER         : GSR_TRAINING_FOLDER,
     EEG_FOLDER                  : EEG_FOLDER,
+    IMAGE_TEXT_FOLDER           : IMAGE_TEXT_FOLDER,
     AUDIO_FOLDER                : AUDIO_FOLDER,
     CONVERTED_AUDIO             : CONVERTED_AUDIO,
     GSR_FOLDER                  : GSR_FOLDER,
@@ -61,10 +69,10 @@ const FILE_PATHS = {
     PROCESSED_IMAGES            : IMAGE_FOLDER        + 'processed_images',
     SESSION_FOLDER              : SESSION_FOLDER,
     RAW_AUDIO_FOLDER_PATH       : AUDIO_FOLDER        + 'raw_audio/',
-    CLIENT_GSR_GRAPH_FILE_PATH  : GSR_FOLDER          + 'client_graph/'         + GSR_GRAPH_CSV,
-    CLIENT_EMOTIONS_PATH        : GSR_FOLDER          + 'client_graph/'         + GSR_CLIENT_EMOTIONS_CSV,
-    GSR_TRAINING_FILE_PATH      : GSR_FOLDER          + 'gsr_training_data/'    + GSR_TRAINING_CSV,
-    IMAGE_TEXT_FILE_PATH        : IMAGE_FOLDER        + 'image_text/'           + IMAGE_TEXT_CSV,
+    CLIENT_GSR_GRAPH_FILE_PATH  : GSR_CLIENT_GRAPH_FOLDER + GSR_GRAPH_CSV,
+    CLIENT_EMOTIONS_PATH        : GSR_CLIENT_GRAPH_FOLDER + GSR_CLIENT_EMOTIONS_CSV,
+    GSR_TRAINING_FILE_PATH      : GSR_TRAINING_FOLDER     + GSR_TRAINING_CSV,
+    IMAGE_TEXT_FILE_PATH        : IMAGE_TEXT_FOLDER   + IMAGE_TEXT_CSV,
     AUDIO_TEXT_FILE_PATH        : AUDIO_FOLDER        + AUDIO_OUTPUT_JSON,
     GSR_SECTIONS_JSON_PATH      : GSR_FOLDER          + GSR_SECTIONS_JSON,
     USER_INTRO_AUDIO_PATH       : USER_FOLDER         + USER_INTRO_WAV,

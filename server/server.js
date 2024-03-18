@@ -6,7 +6,7 @@ import { rigControl }          from './modules/rig_controller.js';
 import { serverRoutes }        from './modules/routes.js';
 import { webClientRoutes }     from './modules/client-routes.js';
 import { cleanOldRowData }     from './modules/file_cleaners.js';
-import { runSessionFileUpdatingInterval } from './modules/utility.js';
+import { runSessionFileUpdatingInterval, checkEnviroment } from './modules/utility.js';
 import dotenv from "dotenv";
 import cors from "cors";
 
@@ -31,7 +31,8 @@ app.use('/', serverRoutes);    //Server client routes
 //Listen the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-
+    checkEnviroment();
+    
     cleanOldRowData();        //Clean old row data
     rigControl('config');     //Configure the rig
    runSessionFileUpdatingInterval();
