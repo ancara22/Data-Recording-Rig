@@ -1,0 +1,189 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "DATA RECORDER RECORD/0.5",
+    "title": "Data Recorded from Subject Wearing #NAME",
+    "description": "This document records data from an individual who is wearing data recorder NEED DATA RECORDER NAME https://www.npmjs.com/package/jsonminify",
+    "type": "object",
+    "properties": {
+        "head": {
+            "description": "Holds meta information about the data in the file.",
+            "type": "object",
+            "properties": {
+                "time": {
+                    "description": "The start time in milliseconds of the frame in UNIX format.",
+                    "type": "integer"
+                },
+                "duration": {
+                    "description": "Length of the frame in milliseconds.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000000000
+                },
+                "user": {
+                    "description": "Username of the person wearing #NAME. Should be anonymized for publicly distributed data.",
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9_.-]*$" 
+                },
+                "version": {
+                    "description": "Version of JSON format used to store the data.",
+                    "type": "number"
+                },
+                "device": {
+                    "description": "Recording rig used to capture data.",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "description": "Name of device.",
+                            "type": "string"
+                        },
+                        "URI": {
+                            "description": "URI of JSON file with specifications of device.",
+                            "type": "string"
+                        } 
+                    }
+                },
+                "blockchain": {
+                    "description": "Each frame contains hash(previous frame) or hash(previous frame + random number). 'self' indicates that hash was generated from the previous frame. An authority should generate the hash from the previous frame plus a random number that is known only to themselves.",
+                    "type": "object",
+                    "properties": {
+                        "authority":{
+                            "description": "When authority is set to 'self' the hash is generated from the previous file to create a blockchain. The hash of the file can also be sent to a third party, who generates a new hash with a separate random number that is known only to the third party. In this case this property is set to the name of the third party who has generated the hash.",
+                            "type": "string"
+                        },
+                        "hash": {
+                            "description": "The hash of the previous file, generated either by self or the specified authority.",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["authority", "hash"],
+                    "additionalProperties": false
+                }
+            },
+            "required": ["time", "user", "version", "duration", "blockchain"],
+            "additionalProperties": false
+        },
+        "body": {
+            "description": "Data recorded from subject.",
+            "type": "object",
+            "properties": {
+                "gsr": {
+                    "description": "Raw galvanic skin response (GSR) values of user.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties":{
+                            "time": {
+                                "description": "Unix timestamp in milliseconds.",
+                                "type": "integer",
+                                "minimum": 169113130000,
+                                "maximum": 2147483647000
+                            },
+                            "value": {
+                                "description": "GSR value",
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 10000
+                            }
+                        },
+                        "required": ["time", "value"],
+                        "additionalProperties": false
+                    }
+                },
+                "eeg": {
+                    "description": "Raw EEG data from user.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "time": {
+                                "description": "Unix timestamp in milliseconds.",
+                                "type": "integer",
+                                "minimum": 169113130000,
+                                "maximum": 2147483647000
+                            },
+                            "values": {
+                                "type": "object",
+                                "description": "EEG values for each sensor",
+                                "patternProperties": {
+                                    "^[a-zA-Z0-9_.-]*$": {
+                                        "description": "Sensor value.",
+                                        "type": "number",
+                                        "minimum": 0,
+                                        "maximum": 50000
+                                    }
+                                },
+                                "additionalProperties": false
+                            }
+                        },
+                        "additionalProperties": false
+                    }
+                },
+                "audio":{
+                    "description": "Audio data recorded from microphone mounted on user.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties":{                            
+                            "time": {
+                                "description": "Start time of recording. Unix timestamp (milliseconds).",
+                                "type": "integer",
+                                "minimum": 169113130000,
+                                "maximum": 2147483647000 
+                            },
+                            "duration": {
+                                "description": "Length of recording in milliseconds.",
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 1000000000 
+                            },
+                            "URI":{
+                                "description": "Location where audio data is stored. Can be file path, URL, S3 bucket, etc.",
+                                "type": "string"
+                            }
+                        }, 
+                        "required": ["time", "duration", "URI"],
+                        "additionalProperties": false
+                    }
+                },
+                "images":{
+                    "description": "Images recorded from camera mounted on user.",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties":{                            
+                            "time": {
+                                "description": "Time of recording. Unix timestamp (milliseconds).",
+                                "type": "integer",
+                                "minimum": 169113130000,
+                                "maximum": 2147483647000 
+                            },
+                            "URI":{
+                                "description": "Location where image is stored. Can be file path, URL, S3 bucket, etc.",
+                                "type": "string"
+                            }
+                        }, 
+                        "required": ["time", "URI"],
+                        "additionalProperties": false
+                    }
+                },
+                "des":{
+                    "description": "Key phrases used to indicate start and end of a descriptive experience sample. These are configured by the user in the device settings.",
+                    "type": "object",
+                    "properties": {
+                        "startPhrase": {
+                            "description": "Subject says this phrase at start of DES report.",
+                            "type": "string"
+                        },
+                        "endPhrase": {
+                            "description": "Subject says this phrase at end of DES report.",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["startPhrase", "endPhrase"],
+                    "additionalProperties": false
+                }
+            }
+        }
+    },
+    "required": ["head", "body"]
+}
