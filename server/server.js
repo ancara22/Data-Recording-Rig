@@ -31,29 +31,14 @@ app.use('/', serverRoutes);    //Server client routes
 //Listen the server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-    checkEnviroment();
+    checkEnviroment();        //Check the enviroment folders and files
     
     cleanOldRowData();        //Clean old row data
     rigControl('config');     //Configure the rig
-   runSessionFileUpdatingInterval();
+    //runSessionFileUpdatingInterval();   //For testing
 
 });
 
-
-
-//####################################################################################################
-//Remove the colected data
-//Temp code, to be removed
-setInterval(() => {
-    let dirPath = 'data/images/processed_images';
-    //removeStreamFiles(dirPath);
-
-    let dirPath2 = 'data/images/raw_images';
-    //removeStreamFiles(dirPath2);
-
-    let dirPath3 = 'data/audio/raw_audio';
-    //removeStreamFiles(dirPath3);
-}, 30000)
 
 
 
