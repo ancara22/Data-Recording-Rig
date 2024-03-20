@@ -491,6 +491,7 @@ const vueApp = new Vue({
             this.selectedAudio = ''
             this.currentAudioFile = ''
 
+    
             fetch("/getOutputFileContent", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
@@ -499,7 +500,6 @@ const vueApp = new Vue({
             ).then(data => {
                 this.outputSessionContent = data;
                 this.selectedFile = fileName;
-                console.log('first', this.outputSessionContent.data) ///Remove
 
                 if(this.pageContent == "history") {
                     Plotly.purge("gsr-plot");

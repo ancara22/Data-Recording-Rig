@@ -278,8 +278,10 @@ webClientRoutes.get("/getAllSessions", (req, res) => {
             const extension = path.extname(file),
                 fileName = path.basename(file, extension);
 
-            if(extension === '.json') return fileName;
-        })
+            if(extension === '.json') {
+                return fileName;
+            }
+        }).filter(fileName => fileName !== undefined )
 
         res.json(matchingFiles);
     }) 
@@ -373,6 +375,7 @@ webClientRoutes.post("/getOutputFileContent", (req, res) => {
     }
 
     let filePath = FILE_PATHS.SESSION_FOLDER + requestBody.fileName;
+    console.log('Request File Content: ', filePath)
 
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) {
