@@ -5,7 +5,7 @@
 
 import express from 'express';
 import fs from 'fs';
-import { sendAudioToAWSS3 } from './aws_services.js';
+import { sendAudioToAWSS3, runImageObjectLabelling } from './aws_services.js';
 import { saveData } from './utility.js';
 import { resetTimer } from './timer.js';
 import { SERVER_CONFIG, FILE_PATHS } from './server_settings.js';
@@ -80,7 +80,10 @@ serverRoutes.post('/image', saveData('images', 'image'), (req, res) => {
         return res.sendStatus(400);
     }
 
-    fs.rename(tempPath, destinationPath, (err) => {}); //Relocate image from the temporary directory to destination direcotry
+    //Object labelling
+    runImageObjectLabelling(tempPath, () => {
+        fs.rename(tempPath, destinationPath, (err) => {}); //Relocate image from the temporary directory to destination direcotry
+    });
 
     res.sendStatus(200);
 });
@@ -119,7 +122,7 @@ serverRoutes.post('/audio', saveData('audio/raw_audio', 'audio'), (req, res) => 
     //Procces the audio file
     fs.promises.readFile(filePath)
         .then(() => {
-            //sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
+            sendAudioToAWSS3(audioFile.filename); //Execute AWS Trasncriber
             res.sendStatus(200);
         })
 });

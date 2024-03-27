@@ -6,9 +6,15 @@ import { rigControl }          from './modules/rig_controller.js';
 import { serverRoutes }        from './modules/routes.js';
 import { webClientRoutes }     from './modules/client-routes.js';
 import { cleanOldRowData }     from './modules/file_cleaners.js';
-import { runSessionFileUpdatingInterval, checkEnviroment } from './modules/utility.js';
+import { checkEnviroment }     from './modules/utility.js';
+
 import dotenv from "dotenv";
 import cors from "cors";
+
+//import { runImageObjectLabelling } from './modules/aws_services.js';      //For testing
+//import { FILE_PATHS } from './modules/server_settings.js';                //For Testing
+//import { runSessionFileUpdatingInterval } from './modules/utility.js';    //For testing
+
 
 dotenv.config(); //Local  headset variables
 
@@ -35,7 +41,17 @@ app.listen(port, () => {
     
     cleanOldRowData();        //Clean old row data
     rigControl('config');     //Configure the rig
+
+
+    // FOR TESTING
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     //runSessionFileUpdatingInterval();   //For testing
+
+    /* //For Testing
+    runImageObjectLabelling('./data/images/phone.jpeg', () => {
+        console.log('Image Done')
+    });
+    */
 
 });
 

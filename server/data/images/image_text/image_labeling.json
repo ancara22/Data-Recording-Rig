@@ -1,0 +1,91 @@
+[
+  {
+    "image": "phone.jpeg",
+    "labels": [
+      {
+        "Name": "Electronics",
+        "Confidence": 99.99991607666016,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Mobile Phone",
+        "Confidence": 99.99991607666016,
+        "Parents": [
+          {
+            "Name": "Electronics"
+          },
+          {
+            "Name": "Phone"
+          }
+        ],
+        "Aliases": [
+          {
+            "Name": "Cell Phone"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Phone",
+        "Confidence": 99.99991607666016,
+        "Parents": [
+          {
+            "Name": "Electronics"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Iphone",
+        "Confidence": 99.64028930664062,
+        "Parents": [
+          {
+            "Name": "Electronics"
+          },
+          {
+            "Name": "Mobile Phone"
+          },
+          {
+            "Name": "Phone"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Person",
+        "Confidence": 92.30776977539062,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Human"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Person Description"
+          }
+        ]
+      }
+    ]
+  }
+]

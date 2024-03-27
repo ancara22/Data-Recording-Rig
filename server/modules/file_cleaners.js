@@ -57,7 +57,7 @@ function removeStreamFiles(directoryPath) {
 async function emptyAllFiles() {
 	try {
 		const writeFile = promisify(fs.writeFile);
-		const filesToEmpty = [FILE_PATHS.GSR_SECTIONS_JSON_PATH, FILE_PATHS.AUDIO_TEXT_FILE_PATH];
+		const filesToEmpty = [FILE_PATHS.GSR_SECTIONS_JSON_PATH, FILE_PATHS.AUDIO_TEXT_FILE_PATH , FILE_PATHS.IMAGE_LABELS_FILE_PATH];
 
 		//Empty the content of each file
 		await Promise.all(filesToEmpty.map(async (filename) => {

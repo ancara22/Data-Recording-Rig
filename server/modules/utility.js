@@ -306,27 +306,32 @@ function insertDataToFinalFile() {
 
                 //Read user data file
                 readJSONFile(FILE_PATHS.USER_FILE_PATH, (user) => {
-                    //Create the final data format
-                    const merged = {
-                        head: {
-                            time: user.sessionStart,
-                            user: user.currentUser,
-                            version: user.version,
-                            duration: user.duration,
-                            blockchain: user.blockchain
-                        },
-                        data: {
-                            gsr: gsrObject,
-                            eeg: eegObject,
-                            audio: audioObject,
-                            des: experienceObject,
-                            overallSentiment: sentiments,
-                            image: imageObject
+                    readJSONFile(FILE_PATHS.IMAGE_LABELS_FILE_PATH, (imageLabels) => {
+                        //Create the final data format
+                        const merged = {
+                            head: {
+                                time: user.sessionStart,
+                                user: user.currentUser,
+                                version: user.version,
+                                duration: user.duration,
+                                blockchain: user.blockchain
+                            },
+                            data: {
+                                gsr: gsrObject,
+                                eeg: eegObject,
+                                audio: audioObject,
+                                des: experienceObject,
+                                overallSentiment: sentiments,
+                                image: {
+                                    text: imageObject,
+                                    labels: imageLabels
+                                }
+                            }
                         }
-                    }
 
-                    writeJSONFile(SERVER_CONFIG.current_session_file, merged); // Write the merged data to a new file
-                    console.log(`Merged data written to ${SERVER_CONFIG.current_session_file}`);
+                        writeJSONFile(SERVER_CONFIG.current_session_file, merged); // Write the merged data to a new file
+                        console.log(`Merged data written to ${SERVER_CONFIG.current_session_file}`);
+                    })
                 })
             })
         })
@@ -730,6 +735,7 @@ function checkEnviroment() {
         ...FILE_PATHS.EEG_FILES_LIST, 
         FILE_PATHS.GSR_SECTIONS_JSON_PATH, 
         FILE_PATHS.USER_FILE_PATH,
+        FILE_PATHS.IMAGE_LABELS_FILE_PATH
     ]
 
     enviromentFolders.forEach(path => {

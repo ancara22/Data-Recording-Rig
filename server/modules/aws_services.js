@@ -422,9 +422,76 @@ function processTextObject(inputObject, username) {
     }
 }
 
+
+//Run image objects labeling
+function runImageObjectLabelling(imagePath, callback) {
+    let rekognition = new AWS.Rekognition();
+
+    let image = fs.readFileSync(imagePath);
+
+    let params = {
+        Image: {
+            Bytes: image
+        }
+    }
+
+    //Detect image labells
+    rekognition.detectLabels(params, (err, data) => {
+        if(err) {
+            console.log('Error labeling image objects: ', err)
+            callback();
+        } else {
+            let imageName = imagePath.replace('./data/images/', '');
+
+            try {
+                let dataLabels = data.Labels;
+
+                dataLabels.forEach(label => {
+                    delete label.Instances;
+                });
+
+                let formatedLabels = {
+                    image: imageName,
+                    labels: dataLabels
+                }
+
+                fs.readFile(FILE_PATHS.IMAGE_LABELS_FILE_PATH, 'utf8', (error, dataJson) => {
+                    if(error) {
+                        console.log('Error reading JSON file: ', error);
+                    }
+
+                    let objectData;
+
+                    try {
+                        objectData = JSON.parse(dataJson);
+                    } catch {
+                        console.log('Error parsing JSON data.'); 
+                    }
+
+                    objectData.push(formatedLabels);
+
+                    let jsonData = JSON.stringify(objectData, null, 2); //Convert the object to json
+
+                    //Write the json file
+                    fs.writeFile(FILE_PATHS.IMAGE_LABELS_FILE_PATH , jsonData, 'utf8', (err) => {
+                        if (err) console.error('Error updating JSON file:', err)
+                    })
+                })
+                
+            } catch {
+                console.log('Error writing labelled images data into JSON file!');
+            }
+
+            callback();
+        }
+    })
+}
+
+
 export {
     sendAudioToAWSS3,
     insertToJSON,
     detectExterienceSampling,
-    concatinateWavFiles
+    concatinateWavFiles,
+    runImageObjectLabelling
 }
