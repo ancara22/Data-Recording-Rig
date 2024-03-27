@@ -261,8 +261,8 @@
                                 <div id="image_text_box">
                                     <h5>Image Text</h5>
                                     <div id="content">
-                                        <p id="li_default" v-if="outputSessionContent.data.image.length == 0">No Text</p>
-                                        <li v-for="image in outputSessionContent.data.image"><span>{{ convertTime(image.time) }}:  </span>{{ image.text }}</li>
+                                        <p id="li_default" v-if="outputSessionContent.data.image.text?.length == 0">No Text</p>
+                                        <li v-for="image in outputSessionContent.data.image?.text"><span>{{ convertTime(image.time) }}:  </span>{{ image.text }}</li>
                                     </div>
                                 </div>
                             </div>
