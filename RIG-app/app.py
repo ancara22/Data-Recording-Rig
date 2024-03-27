@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
     thread1.join()
     thread2.join()
-    emit_short_sound()
+    emit_start_sound()
 
 
 

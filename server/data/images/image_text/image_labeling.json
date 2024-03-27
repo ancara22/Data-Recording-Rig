@@ -1,1 +1,6586 @@
-[]
+[
+  {
+    "image": "1711563083-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 57.58721923828125,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.219844818115234,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 56.954402923583984,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 56.17736053466797,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 56.0114860534668,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 56.0114860534668,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 56.0114860534668,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.01063919067383,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 55.42909622192383,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.335121154785156,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.335121154785156,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563085-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 76.74980926513672,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 76.74980926513672,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 76.74980926513672,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 61.183982849121094,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 60.34189987182617,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.61252212524414,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 57.47285461425781,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 57.466400146484375,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.48375701904297,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.77521514892578,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.77521514892578,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.68749237060547,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 55.49761199951172,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.218971252441406,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563088-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.0223274230957,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.0223274230957,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.0223274230957,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.985618591308594,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 56.82703399658203,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.620643615722656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.2887077331543,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 56.20109939575195,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 56.109344482421875,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.87941360473633,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.87941360473633,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 55.684913635253906,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.58954620361328,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563090-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.215274810791016,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.96818923950195,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 56.945396423339844,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.66804885864258,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 56.43962097167969,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 56.43962097167969,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 56.43962097167969,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 56.39490509033203,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 55.736793518066406,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 55.408634185791016,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.359832763671875,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.093997955322266,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.093997955322266,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563091-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 90.8892822265625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 88.06194305419922,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 86.13720703125,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 73.33961486816406,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 73.33961486816406,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 73.33961486816406,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 71.8521499633789,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 57.02189254760742,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 57.02189254760742,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.21581268310547,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Outdoors",
+        "Confidence": 56.10956573486328,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.972564697265625,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 55.965213775634766,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Purple",
+        "Confidence": 55.83411407470703,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Electronics",
+        "Confidence": 55.61511993408203,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.577476501464844,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Office Building",
+        "Confidence": 55.551944732666016,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563093-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 92.10413360595703,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 88.39572143554688,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 75.0896224975586,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 75.0896224975586,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 75.0896224975586,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 72.28287506103516,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 67.85530090332031,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 61.23493194580078,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 57.005638122558594,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 57.005638122558594,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.752784729003906,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.94486618041992,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 55.82451248168945,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563094-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 97.97999572753906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 57.99245834350586,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.17826461791992,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Electronics",
+        "Confidence": 56.62437057495117,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 55.924259185791016,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 55.924259185791016,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 55.924259185791016,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 55.475650787353516,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 55.260704040527344,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563096-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 65.58296203613281,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 57.34502029418945,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.890384674072266,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.76081085205078,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 56.74110794067383,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 56.74110794067383,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 56.74110794067383,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 56.731719970703125,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 56.46464920043945,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.13856506347656,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 55.74216079711914,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.53575897216797,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.53575897216797,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 55.486244201660156,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563098-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.49832534790039,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.49832534790039,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.49832534790039,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.096534729003906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 57.054012298583984,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 56.89399719238281,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 56.71662139892578,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 56.52294158935547,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 56.324005126953125,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.105892181396484,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.10126876831055,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Outdoors",
+        "Confidence": 56.06776428222656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.47503662109375,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.47503662109375,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.24699020385742,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 55.08580017089844,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563099-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 94.35900115966797,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 79.42256164550781,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 79.42256164550781,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 79.42256164550781,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 71.14904022216797,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 57.291229248046875,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 57.0759162902832,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Purple",
+        "Confidence": 56.682769775390625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 55.90626525878906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Office Building",
+        "Confidence": 55.31045913696289,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.19701385498047,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.19701385498047,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.041080474853516,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563101-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.396846771240234,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 57.011783599853516,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.97551345825195,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 56.96938705444336,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 56.96938705444336,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 56.96938705444336,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.67420196533203,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 56.264678955078125,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 55.73784255981445,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 55.39030456542969,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.10309982299805,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.10309982299805,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.102317810058594,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563103-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 96.35357666015625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 91.9711685180664,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 89.91658020019531,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 89.91658020019531,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 89.91658020019531,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 75.75908660888672,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 60.2066650390625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 60.2066650390625,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.91669464111328,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.54848098754883,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.340003967285156,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 55.93293380737305,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.85673904418945,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.69832992553711,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563104-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.190120697021484,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 57.14599609375,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.03352737426758,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.01206970214844,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.01206970214844,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.01206970214844,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 56.694454193115234,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.67247009277344,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.21635437011719,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 56.05402755737305,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.538875579833984,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.538875579833984,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.513771057128906,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.40087890625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563106-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 96.12300872802734,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 90.70293426513672,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 81.4096908569336,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 67.5870590209961,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 60.54005432128906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 60.54005432128906,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 60.54005432128906,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.30547332763672,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.30366134643555,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.30366134643555,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.51543426513672,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Office Building",
+        "Confidence": 55.15963363647461,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563107-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 91.16092681884766,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 91.16092681884766,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 91.16092681884766,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 88.1445083618164,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 84.18775939941406,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 77.24374389648438,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 72.62972259521484,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 57.53852844238281,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.32256317138672,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.32256317138672,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.22336959838867,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Purple",
+        "Confidence": 56.0002555847168,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Office Building",
+        "Confidence": 55.362648010253906,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.01951599121094,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563109-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 97.22360229492188,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 73.92655944824219,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 57.97084045410156,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 56.98403549194336,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 56.80717086791992,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 56.80717086791992,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 56.80717086791992,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Outdoors",
+        "Confidence": 56.34199905395508,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Electronics",
+        "Confidence": 56.187171936035156,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.12158966064453,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.12158966064453,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.057273864746094,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.45405578613281,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Nature",
+        "Confidence": 55.23460388183594,
+        "Parents": [
+          {
+            "Name": "Outdoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Night",
+        "Confidence": 55.23460388183594,
+        "Parents": [
+          {
+            "Name": "Nature"
+          },
+          {
+            "Name": "Outdoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 55.019126892089844,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563110-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 57.62179946899414,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.57411193847656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.47655487060547,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.47655487060547,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.47655487060547,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.2497673034668,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 57.232696533203125,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 57.10040283203125,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.07807540893555,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.84771728515625,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.84771728515625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 55.732948303222656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.51530838012695,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.23235321044922,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.005615234375,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563112-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 98.00331115722656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 94.22566986083984,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 93.33439636230469,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 88.12796020507812,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 88.12796020507812,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 88.12796020507812,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 79.9401626586914,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 57.67369842529297,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 57.67369842529297,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Outdoors",
+        "Confidence": 57.51222229003906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.66936111450195,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 55.97040557861328,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.77806854248047,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.75621795654297,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Nature",
+        "Confidence": 55.70469665527344,
+        "Parents": [
+          {
+            "Name": "Outdoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Night",
+        "Confidence": 55.70469665527344,
+        "Parents": [
+          {
+            "Name": "Nature"
+          },
+          {
+            "Name": "Outdoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.53507995605469,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Green",
+        "Confidence": 55.23384094238281,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Office Building",
+        "Confidence": 55.01993942260742,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563114-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.87954330444336,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.85240936279297,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.85240936279297,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.85240936279297,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.924583435058594,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.90473937988281,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 56.880672454833984,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 56.513710021972656,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.461544036865234,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 55.52878952026367,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.504737854003906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.504737854003906,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.47993850708008,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Outdoors",
+        "Confidence": 55.34823989868164,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.15272521972656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.04834747314453,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563115-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 91.09149932861328,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 86.86798095703125,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 79.63241577148438,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 79.0530776977539,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 79.0530776977539,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 79.0530776977539,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 62.84632873535156,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 56.602088928222656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.5720329284668,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.255332946777344,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.255332946777344,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.72517395019531,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.51704025268555,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Electronics",
+        "Confidence": 55.056053161621094,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563117-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 73.69495391845703,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 68.23341369628906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 68.23341369628906,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 68.23341369628906,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 66.20242309570312,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 56.69407653808594,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.59592056274414,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.50821304321289,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.50821304321289,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.30572509765625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.1728401184082,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 56.060569763183594,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.86511993408203,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 55.3233757019043,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.2157096862793,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563119-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 86.36375427246094,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 82.61165618896484,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 67.51683044433594,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 66.27838897705078,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 66.27838897705078,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 66.27838897705078,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 56.8237190246582,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 56.65426254272461,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.6500358581543,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.6500358581543,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.63996887207031,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.355072021484375,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Computer Hardware",
+        "Confidence": 56.232025146484375,
+        "Parents": [
+          {
+            "Name": "Electronics"
+          },
+          {
+            "Name": "Hardware"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Electronics",
+        "Confidence": 56.232025146484375,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Hardware",
+        "Confidence": 56.232025146484375,
+        "Parents": [
+          {
+            "Name": "Electronics"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Monitor",
+        "Confidence": 56.232025146484375,
+        "Parents": [
+          {
+            "Name": "Computer Hardware"
+          },
+          {
+            "Name": "Electronics"
+          },
+          {
+            "Name": "Hardware"
+          },
+          {
+            "Name": "Screen"
+          }
+        ],
+        "Aliases": [
+          {
+            "Name": "Display"
+          },
+          {
+            "Name": "Digital Display"
+          },
+          {
+            "Name": "LCD Screen"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Screen",
+        "Confidence": 56.232025146484375,
+        "Parents": [
+          {
+            "Name": "Electronics"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 55.77240753173828,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563120-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 98.25153350830078,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 97.78282928466797,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 81.42045593261719,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 79.71270751953125,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 79.71270751953125,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 79.71270751953125,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 74.55241394042969,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 57.92708969116211,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 57.92708969116211,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 57.014774322509766,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.49763488769531,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.40949630737305,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Purple",
+        "Confidence": 55.97769546508789,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.58905792236328,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Office Building",
+        "Confidence": 55.035282135009766,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563122-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 86.49847412109375,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 80.72356414794922,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 79.36389923095703,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 79.36389923095703,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 79.36389923095703,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.48632049560547,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.329105377197266,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.61320495605469,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.61320495605469,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 56.587440490722656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.58000564575195,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.30085372924805,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.59547424316406,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563123-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 82.72393035888672,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 82.72393035888672,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 82.72393035888672,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 79.56726837158203,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 70.9886245727539,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.940643310546875,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 57.02928161621094,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.86790466308594,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.852500915527344,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.852500915527344,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.54424285888672,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.10406494140625,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 55.479549407958984,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.247623443603516,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563125-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 70.3698959350586,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 70.3698959350586,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 70.3698959350586,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 57.98694610595703,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 57.52434539794922,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.44063186645508,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 57.091163635253906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Outdoors",
+        "Confidence": 56.833396911621094,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 56.587196350097656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.56024932861328,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.245826721191406,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.245826721191406,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.06538009643555,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.5232048034668,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 55.251251220703125,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.204139709472656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 55.080055236816406,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563127-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 80.48143005371094,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 77.13142395019531,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 73.09337615966797,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 73.09337615966797,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 73.09337615966797,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 67.0526351928711,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.75078582763672,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.95050811767578,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.75476837158203,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.75476837158203,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 56.6966667175293,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Outdoors",
+        "Confidence": 56.046424865722656,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Nature and Outdoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.54493713378906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.468040466308594,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.10824203491211,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563128-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 76.65888977050781,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 76.65888977050781,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 76.65888977050781,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 61.566097259521484,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 57.62708282470703,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.49276351928711,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 57.033748626708984,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 56.879634857177734,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 56.879634857177734,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.994571685791016,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 55.97919845581055,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 55.96168518066406,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 55.64091873168945,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.107887268066406,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563157-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.83985900878906,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.83985900878906,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.83985900878906,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.211334228515625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.90391159057617,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 56.62248611450195,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.54271697998047,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 56.42401123046875,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 56.223087310791016,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 56.15898895263672,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.90044403076172,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.775238037109375,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.775238037109375,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.12134552001953,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563159-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.9711799621582,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.916866302490234,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.916866302490234,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.916866302490234,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 57.22535705566406,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 56.5049934387207,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 56.476802825927734,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 56.421512603759766,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.327152252197266,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Flooring",
+        "Confidence": 56.063209533691406,
+        "Parents": [
+          {
+            "Name": "Floor"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Indoors",
+        "Confidence": 55.95816421508789,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Interior Design",
+        "Confidence": 55.95816421508789,
+        "Parents": [
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Corridor",
+        "Confidence": 55.677181243896484,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Indoors"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Lamp",
+        "Confidence": 55.2750244140625,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Furniture and Furnishings"
+          }
+        ]
+      },
+      {
+        "Name": "Skylight",
+        "Confidence": 55.00819778442383,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          },
+          {
+            "Name": "Window"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "image": "1711563161-stream.jpg",
+    "labels": [
+      {
+        "Name": "Lighting",
+        "Confidence": 100,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Light",
+        "Confidence": 96.3335189819336,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Triangle",
+        "Confidence": 57.97997283935547,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Architecture",
+        "Confidence": 57.8943977355957,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Building",
+        "Confidence": 57.8943977355957,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Wall",
+        "Confidence": 57.8943977355957,
+        "Parents": [
+          {
+            "Name": "Architecture"
+          },
+          {
+            "Name": "Building"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Buildings and Architecture"
+          }
+        ]
+      },
+      {
+        "Name": "Spotlight",
+        "Confidence": 56.759979248046875,
+        "Parents": [
+          {
+            "Name": "Lighting"
+          }
+        ],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Colors and Visual Composition"
+          }
+        ]
+      },
+      {
+        "Name": "Electronics",
+        "Confidence": 55.69346618652344,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Technology and Computing"
+          }
+        ]
+      },
+      {
+        "Name": "Floor",
+        "Confidence": 55.599308013916016,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Texture",
+        "Confidence": 55.59879684448242,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Patterns and Shapes"
+          }
+        ]
+      },
+      {
+        "Name": "Handrail",
+        "Confidence": 55.31447982788086,
+        "Parents": [],
+        "Aliases": [
+          {
+            "Name": "Banister"
+          }
+        ],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      },
+      {
+        "Name": "Window",
+        "Confidence": 55.172908782958984,
+        "Parents": [],
+        "Aliases": [],
+        "Categories": [
+          {
+            "Name": "Home and Indoors"
+          }
+        ]
+      }
+    ]
+  }
+]
