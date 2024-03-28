@@ -83,8 +83,8 @@ serverRoutes.post('/image', saveData('images', 'image'), (req, res) => {
     //Object labelling
     runImageObjectLabelling(tempPath, () => {
         fs.rename(tempPath, destinationPath, (err) => {}); //Relocate image from the temporary directory to destination direcotry
-    });
-
+    }); 
+    //fs.rename(tempPath, destinationPath, (err) => {}); //to remove
     res.sendStatus(200);
 });
 

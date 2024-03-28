@@ -233,7 +233,7 @@ function writeClientGSREmotionsToCSV(data) {
  */
 async function writeSectionToCSV(data, callback) {
     try {
-        const gsrValues = data.gsrData[0].map(item => Object.values(item)[0]);
+        const gsrValues = data.gsrData.map(item => Object.values(item)[0]);
 
         const emotion = await predictGSREmotion(gsrValues);
         const csvRow = `${data.startTime},${data.finishTime},"[${data.gsrData.join(', ')}]",${emotion}\n`;

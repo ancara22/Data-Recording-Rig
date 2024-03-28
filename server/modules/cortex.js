@@ -284,12 +284,19 @@ export class Cortex {
                     socket.send(JSON.stringify(createSessionRequest));
     
                     socket.on('message', (data) => {
-                        let parsedData = JSON.parse(data);
+                        try {
+                            let parsedData = JSON.parse(data);
 
-                        if (parsedData.id === CREATE_SESSION_ID) {
-                            sessionId = parsedData.id;
-                            resolve(sessionId);
+                            if (parsedData.id === CREATE_SESSION_ID) {
+
+                                sessionId = parsedData['result']['id'];
+                            // sessionId = parsedData.id;
+                                resolve(sessionId);
+                            }
+                        } catch(err) {
+                            console.log('EEG headset error: ', err)
                         }
+                        
                     });
                 }
             };

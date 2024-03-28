@@ -110,7 +110,7 @@ function readJSONFile(filePath, callback = () => {}) {
                 callback(err, null);
                 return;
             }
-
+            console.log('filePath2', filePath)
             const dataObject = JSON.parse(data || '[]');
             callback(dataObject);
         });
@@ -370,7 +370,7 @@ function extractTimestamp(fromString) {
  */
 function runSessionFileUpdatingInterval() {
     console.log('Running the session file controls interval.')
-    sessionFileUpdatingIntervalId = setInterval(() => insertDataToFinalFile(), 1 * 60 * 100);
+    sessionFileUpdatingIntervalId = setInterval(() => insertDataToFinalFile(), 10 * 60 * 100);
 }
 
 /**
