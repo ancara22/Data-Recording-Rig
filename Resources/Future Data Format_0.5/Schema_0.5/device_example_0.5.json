@@ -1,7 +1,7 @@
 {
     "$schema": "./device_schema_0.5.json",
-    "name": "#NAME",
-    "description": "#Name hardware.",
+    "name": "RIG",
+    "description": "Rasberry Pi recording integrated system (RIG)",
     "version": 0.1,
     "hardware": {
         "gsr": {
@@ -30,11 +30,11 @@
         },
         "microphone": {
             "manufacturer": "Rasberry Pi",
-            "model": "Unknown"
+            "model": "USB Microphone"
         },
         "camera":{
             "manufacturer": "Rasberry Pi",
-            "model": "Unknown"
+            "model": "ZeroCamera"
         }
     }
 }

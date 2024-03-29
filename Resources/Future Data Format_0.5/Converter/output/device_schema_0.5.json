@@ -1,0 +1,97 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "DATA RECORDER DEVICE/0.5",
+    "title": "Hardware details of #NAME",
+    "description": "Device details of #NAME",
+    "type": "object",
+    "properties": {
+        "name":{
+            "description": "The name of the device",
+            "type": "string"
+        },
+        "description": {
+            "description": "Description of device.",
+            "type": "string"
+        },
+        "version": {
+            "description": "Version of device.",
+            "type": "number"
+        },
+        "hardware": {
+            "description": "Hardware associated with device.",
+            "type": "object",
+            "properties": {
+                "gsr": {
+                    "description": "Description of hardware used to record GSR data.",
+                    "type": "object",
+                    "properties": {
+                        "manufacturer": {
+                            "description": "Manufacturer of GSR device.",
+                            "type": "string"
+                        },
+                        "model": {
+                            "description": "Model of the GSR device.",
+                            "type": "string"
+                        }
+                    }
+                },
+                "eeg": {
+                    "description": "Description of hardware used to record EEG data.",
+                    "type": "object",
+                    "properties": {
+                        "manufacturer": {
+                            "description": "Manufacturer of EEG device.",
+                            "type": "string"
+                        },
+                        "model": {
+                            "description": "Model of the EEG device.",
+                            "type": "string"
+                        },
+                        "sensors": {
+                            "description": "Sensors of the device",
+                            "type": "object",
+                            "patternProperties": {
+                                "^[a-zA-Z0-9_.-]*$": {
+                                    "type": "string",
+                                    "description": "Location and type of sensor" 
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    },
+                    "required": ["manufacturer", "model", "sensors"],
+                    "additionalProperties": false
+                },
+                "camera": {
+                    "description": "Camera on device.",
+                    "type": "object",
+                    "properties": {
+                        "manufacturer": {
+                            "description": "Manufacturer of camera.",
+                            "type": "string"
+                        },
+                        "model": {
+                            "description": "Model of camera.",
+                            "type": "string"
+                        }
+                    }
+                },
+                "microphone": {
+                    "description": "Microphone on device.",
+                    "type": "object",
+                    "properties": {
+                        "manufacturer": {
+                            "description": "Manufacturer of microphone.",
+                            "type": "string"
+                        },
+                        "model": {
+                            "description": "Model of microphone.",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required": ["name", "description", "version", "hardware"]
+}
