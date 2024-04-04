@@ -22,18 +22,18 @@ The server is designed to handle tasks such as processing audio and image data, 
 
 <h2>Features</h2>
 
-<h5>Data Processing:</h5> Efficiently processes diverse data types, including audio, image, and EEG data.
-<h5>Real-time Updates:</h5> Regularly updates the final output file with the latest information from various sources.
-<h5>Hashing and Cloud Integration:</h5> Implements secure data hashing and interacts with cloud services to ensure data integrity.
-<h5>Session Management:</h5> Monitors and manages user sessions, creating new sessions when needed.
-<h5>File Handling:</h5> Manages various data files, ensuring proper organization and storage.
+- <h5>Data Processing:</h5> Efficiently processes diverse data types, including audio, image, and EEG data.
+- <h5>Real-time Updates:</h5> Regularly updates the final output file with the latest information from various sources.
+- <h5>Hashing and Cloud Integration:</h5> Implements secure data hashing and interacts with cloud services to ensure data integrity.
+- <h5>Session Management:</h5> Monitors and manages user sessions, creating new sessions when needed.
+- <h5>File Handling:</h5> Manages various data files, ensuring proper organization and storage.
 
 
 <h2>Headset Enviroment: </h2>
 The Emotive Headset Authentification details must be store int the server/.env file, and contain:
-<h5>HEADSET_CLIENT_SECRET = 'YourHeadsetSecret'</h5> 
-<h5>HEADSET_CLIENT_ID = 'YourHeadseclientID'</h5> 
-<h5>HEADSET_LICENSE = 'YourHeadsetLicense' </h5>
+HEADSET_CLIENT_SECRET = 'YourHeadsetSecret'
+HEADSET_CLIENT_ID = 'YourHeadseclientID'
+HEADSET_LICENSE = 'YourHeadsetLicense'
 
 
 <h2>Connection Hosts: </h2>
