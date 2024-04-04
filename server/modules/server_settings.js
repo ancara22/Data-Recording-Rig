@@ -127,7 +127,7 @@ const APP_CONFIG = {
 * @property {number} gsrNumber - Number of GSR (Galvanic Skin Response) readings.
 */
 let SERVER_CONFIG = {
-    OUTPUT_LENGTH               : 10,       //Length of the output json file (in minutes)
+    OUTPUT_LENGTH               : 5,       //Length of the output json file (in minutes)
     current_session_file        : '',       //Current session file name
     rigActive                   : false,
     imagesNumber                : 0,

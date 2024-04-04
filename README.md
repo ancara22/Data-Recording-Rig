@@ -45,6 +45,12 @@ http://192.168.0.57:8080 - My home wifi
 http://172.20.10.4:8080 - My phone hotspot
 
 
+<h2>User Manual: </h2>
+For detailed instructions on how to build the system, please refer to the user manual available at the following link:
+
+``
+https://github.com/ancara22/pi-server/blob/df1e6d27642e000038c959c5ba7c225e1d0c547c/Resources/RIG%20User%20Manual.pdf
+``
 
 <h2>Documentation: </h2>
 To generate and open the documentation you can run the commands:
