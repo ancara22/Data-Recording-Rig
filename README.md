@@ -28,12 +28,12 @@ The server is designed to handle tasks such as processing audio and image data, 
 - <h5>Session Management:</h5> Monitors and manages user sessions, creating new sessions when needed.
 - <h5>File Handling:</h5> Manages various data files, ensuring proper organization and storage.
 
-
 <h2>Headset Enviroment: </h2>
-The Emotive Headset Authentification details must be store int the server/.env file, and contain:
-HEADSET_CLIENT_SECRET = 'YourHeadsetSecret'
-HEADSET_CLIENT_ID = 'YourHeadseclientID'
-HEADSET_LICENSE = 'YourHeadsetLicense'
+The Emotive Headset Authentification details must be store int the "server/.en" file, and contain:
+
+- HEADSET_CLIENT_SECRET = 'YourHeadsetSecret'
+- HEADSET_CLIENT_ID = 'YourHeadseclientID'
+- HEADSET_LICENSE = 'YourHeadsetLicense'
 
 
 <h2>Connection Hosts: </h2>
