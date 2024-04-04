@@ -31,9 +31,9 @@ The server is designed to handle tasks such as processing audio and image data, 
 
 <h2>Headset Enviroment: </h2>
 The Emotive Headset Authentification details must be store int the server/.env file, and contain:
-<h5>HEADSET_CLIENT_SECRET</h5> = 'YourHeadsetSecret'
-<h5>HEADSET_CLIENT_ID</h5> = 'YourHeadseclientID'
-<h5>HEADSET_LICENSE</h5> = 'YourHeadsetLicense'
+<h5>HEADSET_CLIENT_SECRET = 'YourHeadsetSecret'</h5> 
+<h5>HEADSET_CLIENT_ID = 'YourHeadseclientID'</h5> 
+<h5>HEADSET_LICENSE = 'YourHeadsetLicense' </h5>
 
 
 <h2>Connection Hosts: </h2>
