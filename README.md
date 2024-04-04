@@ -58,6 +58,7 @@ To generate and open the documentation you can run the commands:
 - To generate the documentation
 ``
 npm docs 
+``
 
 - To open the documentation in a browser page
 ``
