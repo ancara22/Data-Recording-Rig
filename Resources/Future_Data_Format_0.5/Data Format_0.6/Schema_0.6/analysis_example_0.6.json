@@ -1,0 +1,313 @@
+{
+  "$schema": "./analysis_schema_0.6.json",
+  "recordURI": "./record_example_0.6.json.",
+  "streamAnalysis": {
+    "gsr": {
+      "state": [
+        {
+          "time": 1703097904852,
+          "state": {
+            "sad": 0.9
+          }
+        },
+        {
+          "time": 1703097904857,
+          "state": "cheerful"
+        }
+      ]
+    },
+    "eeg": {
+      "faceExpression": [
+        {
+          "time": 1708372627689,
+          "expression": {
+            "eyeAction": "neutral",
+            "upperFace": {
+              "action": "neutral",
+              "power": 0
+            },
+            "lowerFace": {
+              "action": "smile",
+              "power": 0.121893
+            }
+          }
+        },
+        {
+          "time": 1708372627690,
+          "expression": {
+            "eyeAction": "neutral",
+            "upperFace": {
+              "action": "neutral",
+              "power": 0
+            },
+            "lowerFace": {
+              "action": "smile",
+              "power": 0.121893
+            }
+          }
+        }
+      ],
+      "cognition": [
+        {
+          "time": 1708372612290,
+          "states": {
+            "engagement": 0.524136,
+            "excitement": 0.583672,
+            "stress": 0.230829,
+            "longExcitement": 0,
+            "relaxation": 0.414978,
+            "interest": 0.224907,
+            "focus": 0.550004
+          }
+        },
+        {
+          "time": 1708372622028,
+          "states": {
+            "engagement": 0.553929,
+            "excitement": 0.562685,
+            "stress": 0.30083,
+            "longExcitement": 0,
+            "relaxation": 0.375937,
+            "interest": 0.283522,
+            "focus": 0.472601
+          }
+        }
+      ],
+      "bandPower": {
+        "bands": {
+          "theta": {
+            "minimum": 4,
+            "maximum": 8
+          },
+          "alpha": {
+            "minimum": 8,
+            "maximum": 12
+          },
+          "betaL": {
+            "minimum": 12,
+            "maximum": 16
+          },
+          "betaH": {
+            "minimum": 16,
+            "maximum": 25
+          },
+          "gamma": {
+            "minimum": 25,
+            "maximum": 45
+          }
+        },
+        "power": [
+          {
+            "time": 1708372566690,
+            "values": {
+              "AF3": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "F7": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "F3": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "FC5": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "T7": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "P7": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "O1": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "O2": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "P8": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "T8": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "FC6": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "F4": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "F8": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              },
+              "AF4": {
+                "theta": 6.468,
+                "alpha": 1.6,
+                "betaL": 0.983,
+                "betaH": 0.729,
+                "gamma": 1.492
+              }
+            }
+          }
+        ]
+      }
+    },
+    "audio": {
+      "text": [
+        {
+          "time": 1708372566690,
+          "speaker": "user",
+          "text": "How are you today?"
+        },
+        {
+          "time": 1708372566690,
+          "speaker": "spk_2",
+          "text": "I am feeling great, thanks!"
+        }
+      ],
+      "sentiment": [
+        {
+          "time": 1708372566690,
+          "speaker": "user",
+          "sentiment": {
+            "positive": 0.37354254722595215,
+            "negative": 0.0046794842928647995,
+            "neutral": 0.6217033267021179,
+            "mixed": 0.00007467778050340712,
+            "label": "Neutral"
+          }
+        },
+        {
+          "time": 1708372566690,
+          "speaker": "spk_2",
+          "sentiment": {
+            "positive": 0.37354254722595215,
+            "negative": 0.0046794842928647995,
+            "neutral": 0.6217033267021179,
+            "mixed": 0.00007467778050340712,
+            "label": "Neutral"
+          }
+        }
+      ],
+      "des": [
+        {
+          "time": 1708372566690,
+          "phenomenology": "I am thinking about a beautiful red sunset."
+        },
+        {
+          "time": 1708372568690,
+          "phenomenology": "There is a terrible pain in my left foot."
+        }
+      ]
+    },
+    "images": {
+      "text": [
+        {
+          "time": 1708372566690,
+          "text": "Buy Cheerios Now!"
+        }
+      ],
+      "labels": [
+        {
+          "time": 1708372566690,
+          "name": "Mobile Phone",
+          "parents": [
+            {
+              "Name": "Phone"
+            }
+          ],
+          "aliases": [
+            {
+              "Name": "Cell Phone"
+            }
+          ],
+          "categories": [
+            {
+              "Name": "Technology and Computing"
+            }
+          ],
+          "confidence": 99.9364013671875,
+          "instances": [
+            {
+              "BoundingBox": {
+                "Width": 0.26779675483703613,
+                "Height": 0.8562285900115967,
+                "Left": 0.3604024350643158,
+                "Top": 0.09245597571134567
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "globalAnalysis": {
+    "emotion": [
+      {
+        "time": 1708372566690,
+        "state": {
+          "happy": 0.9,
+          "hungry": 0.4
+        }
+      },
+      {
+        "time": 1708372576690,
+        "state": {
+          "sad": 0.3,
+          "tense": 0.5
+        }
+      }
+    ]
+  }
+}

@@ -57,10 +57,10 @@ To generate and open the documentation you can run the commands:
 
 - To generate the documentation
 ``
-npm docs 
+npm run docs 
 ``
 
 - To open the documentation in a browser page
 ``
-npm open-docs  
+npm run open-docs  
 ``

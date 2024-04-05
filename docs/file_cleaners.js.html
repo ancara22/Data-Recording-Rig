@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: file_cleaners.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: file_cleaners.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The File Cleaner Module.
+ * @module FileCleaner
+ */
+
+import { promisify } from "util";
+import { join } from 'path';
+import fs, { readdir, unlink } from 'fs';
+import { FILE_PATHS } from "./server_settings.js";
+
+////////////////////////////////////////////////////////////////////////////
+//REMOVE FILES/ file cleaners
+////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Remove files with names containing 'stream' or 'audio' from the specified directory.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @param {string} directoryPath - The path of the directory from which to remove files.
+ * @returns {void}
+ * @example
+ * // Example of using removeStreamFiles function
+ * const directoryPath = './data/images';
+ * removeStreamFiles(directoryPath);
+ */
+function removeStreamFiles(directoryPath) {
+	readdir(directoryPath, (err, files) => {
+		if (err) {
+			console.error('Error reading directory:', err);
+			return;
+		}
+
+		files.forEach((file) => {
+			if (file.includes('stream') || file.includes('audio')) {
+				const filePath = join(directoryPath, file);
+				unlink(filePath, (error) => {
+					if (error) console.error(`Error deleting file ${file}:`, error)
+				});
+			}
+		});
+	});
+}
+
+/**
+ * Empty the content of specified files and clean old row files.
+ *
+ * @async
+ * @function
+ * @memberof module:FileCleaner
+ * @returns {Promise&lt;void>}
+ * @throws {Error} If there is an issue writing to files.
+ * @example
+ * // Example of using emptyAllFiles function
+ * await emptyAllFiles();
+ */
+async function emptyAllFiles() {
+	try {
+		const writeFile = promisify(fs.writeFile);
+		const filesToEmpty = [FILE_PATHS.GSR_SECTIONS_JSON_PATH, FILE_PATHS.AUDIO_TEXT_FILE_PATH , FILE_PATHS.IMAGE_LABELS_FILE_PATH];
+
+		//Empty the content of each file
+		await Promise.all(filesToEmpty.map(async (filename) => {
+			await writeFile(filename, JSON.stringify([]));
+		}));
+
+		cleanCSVFile(FILE_PATHS.IMAGE_TEXT_FILE_PATH, 'image,text\n');
+
+		FILE_PATHS.EEG_FILES_LIST.forEach(file => {
+			cleanJSONL(file);
+		});
+	} catch (err) {
+		console.log('Error cleaning files: ', err);
+	}
+}
+
+/**
+ * Empty the content of the specified CSV file.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @param {string} filePath - The path of the CSV file to be cleaned.
+ * @param {string} content - The content to be written to the CSV file.
+ * @returns {void}
+ * @example
+ * // Example of using cleanCSVFile function
+ * const filePath = './data/images/image_text.csv';
+ * cleanCSVFile(filePath, 'image,text\n');
+ */
+function cleanCSVFile(filePath, content) {
+	try {
+		//Write the new content to the CSV file
+		fs.writeFile(filePath, content, () => {});
+	} catch (err) {
+		console.error('Error resetting CSV file:', err);
+	}
+}
+
+/**
+ * Clean the content of the specified JSONL file by truncating it to zero length.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @param {string} filePath - The path of the JSONL file to be cleaned.
+ * @returns {void}
+ * @example
+ * // Example of using cleanJSONL function
+ * const filePath = './data/eeg_data.jsonl';
+ * cleanJSONL(filePath);
+ */
+function cleanJSONL(filePath) {
+	try {
+		fs.truncateSync(filePath, 0);
+	} catch (error) {
+		console.log('Error cleaning JSONL file', error);
+	}
+}
+
+/**
+ * Clean old row files by removing files with names containing 'stream' or 'audio'.
+ *
+ * @function
+ * @memberof module:FileCleaner
+ * @returns {void}
+ * @example
+ * // Example of using cleanOldRowData function
+ * cleanOldRowData();
+ */
+function cleanOldRowData() {
+	let folders = ["data/audio/raw_audio", "data/images/raw_images"];
+
+	folders.forEach(folder => {
+		removeStreamFiles(folder);
+	});
+}
+
+
+//Export
+export {
+	removeStreamFiles,
+	cleanOldRowData,
+	emptyAllFiles,
+	cleanCSVFile
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-AWSServices.html">AWSServices</a></li><li><a href="module-BlockchainAPI.html">BlockchainAPI</a></li><li><a href="module-CortexEEGHeadset.html">CortexEEGHeadset</a></li><li><a href="module-FileCleaner.html">FileCleaner</a></li><li><a href="module-GSRProcessor.html">GSRProcessor</a></li><li><a href="module-RigControl.html">RigControl</a></li><li><a href="module-ServerRoutes.html">ServerRoutes</a></li><li><a href="module-ServerSettings.html">ServerSettings</a></li><li><a href="module-Timer.html">Timer</a></li><li><a href="module-UtilityModule.html">UtilityModule</a></li><li><a href="module-webClientRoutes.html">webClientRoutes</a></li></ul><h3>Classes</h3><ul><li><a href="module-CortexEEGHeadset.Cortex.html">Cortex</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 04 2024 21:04:56 GMT+0100 (British Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
