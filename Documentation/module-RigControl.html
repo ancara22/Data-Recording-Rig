@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: FileCleaner</title>
+    <title>JSDoc: Module: RigControl</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: FileCleaner</h1>
+    <h1 class="page-title">Module: RigControl</h1>
 
     
 
@@ -34,7 +34,7 @@
     <div class="container-overview">
     
         
-            <div class="description">The File Cleaner Module.</div>
+            <div class="description">The RigControl Module.</div>
         
 
         
@@ -69,7 +69,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="file_cleaners.js.html">file_cleaners.js</a>, <a href="file_cleaners.js.html#line1">line 1</a>
+        <a href="rig_controller.js.html">rig_controller.js</a>, <a href="rig_controller.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -108,7 +108,7 @@
     
 
     
-    <h4 class="name" id=".cleanCSVFile"><span class="type-signature">(static) </span>cleanCSVFile<span class="signature">(filePath, content)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    <h4 class="name" id=".executeCommand"><span class="type-signature">(static) </span>executeCommand<span class="signature">(ssh)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -116,7 +116,7 @@
 
 
 <div class="description">
-    Empty the content of the specified CSV file.
+    Execute the RIG terminal command to run the recording application.
 </div>
 
 
@@ -152,13 +152,13 @@
 
         <tr>
             
-                <td class="name"><code>filePath</code></td>
+                <td class="name"><code>ssh</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Client</span>
 
 
             
@@ -168,30 +168,7 @@
 
             
 
-            <td class="description last">The path of the CSV file to be cleaned.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>content</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The content to be written to the CSV file.</td>
+            <td class="description last">The SSH client instance for connecting to the Raspberry Pi.</td>
         </tr>
 
     
@@ -232,7 +209,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="file_cleaners.js.html">file_cleaners.js</a>, <a href="file_cleaners.js.html#line90">line 90</a>
+        <a href="rig_controller.js.html">rig_controller.js</a>, <a href="rig_controller.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -281,9 +258,8 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example of using cleanCSVFile function
-const filePath = './data/images/image_text.csv';
-cleanCSVFile(filePath, 'image,text\n');</code></pre>
+    <pre class="prettyprint"><code>// Example of using executeCommand function
+executeCommand(sshInstance); // Executes the RIG terminal command to run the recording application</code></pre>
 
 
 
@@ -293,7 +269,7 @@ cleanCSVFile(filePath, 'image,text\n');</code></pre>
     
 
     
-    <h4 class="name" id=".cleanJSONL"><span class="type-signature">(static) </span>cleanJSONL<span class="signature">(filePath)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    <h4 class="name" id=".handleSSHError"><span class="type-signature">(static) </span>handleSSHError<span class="signature">(ssh)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -301,7 +277,7 @@ cleanCSVFile(filePath, 'image,text\n');</code></pre>
 
 
 <div class="description">
-    Clean the content of the specified JSONL file by truncating it to zero length.
+    Handle SSH connection errors.
 </div>
 
 
@@ -337,13 +313,13 @@ cleanCSVFile(filePath, 'image,text\n');</code></pre>
 
         <tr>
             
-                <td class="name"><code>filePath</code></td>
+                <td class="name"><code>ssh</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Client</span>
 
 
             
@@ -353,7 +329,7 @@ cleanCSVFile(filePath, 'image,text\n');</code></pre>
 
             
 
-            <td class="description last">The path of the JSONL file to be cleaned.</td>
+            <td class="description last">The SSH client instance for connecting to the Raspberry Pi.</td>
         </tr>
 
     
@@ -394,7 +370,7 @@ cleanCSVFile(filePath, 'image,text\n');</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="file_cleaners.js.html">file_cleaners.js</a>, <a href="file_cleaners.js.html#line111">line 111</a>
+        <a href="rig_controller.js.html">rig_controller.js</a>, <a href="rig_controller.js.html#line140">line 140</a>
     </li></ul></dd>
     
 
@@ -443,9 +419,8 @@ cleanCSVFile(filePath, 'image,text\n');</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example of using cleanJSONL function
-const filePath = './data/eeg_data.jsonl';
-cleanJSONL(filePath);</code></pre>
+    <pre class="prettyprint"><code>// Example of using handleSSHError function
+handleSSHError(sshInstance); // Handles SSH connection errors</code></pre>
 
 
 
@@ -455,7 +430,7 @@ cleanJSONL(filePath);</code></pre>
     
 
     
-    <h4 class="name" id=".cleanOldRowData"><span class="type-signature">(static) </span>cleanOldRowData<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
+    <h4 class="name" id=".rigControl"><span class="type-signature">(static) </span>rigControl<span class="signature">(startRig)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -463,260 +438,8 @@ cleanJSONL(filePath);</code></pre>
 
 
 <div class="description">
-    Clean old row files by removing files with names containing 'stream' or 'audio'.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="file_cleaners.js.html">file_cleaners.js</a>, <a href="file_cleaners.js.html#line129">line 129</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">void</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// Example of using cleanOldRowData function
-cleanOldRowData();</code></pre>
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".emptyAllFiles"><span class="type-signature">(async, static) </span>emptyAllFiles<span class="signature">()</span><span class="type-signature"> &rarr; {Promise.&lt;void>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Empty the content of specified files and clean old row files.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="file_cleaners.js.html">file_cleaners.js</a>, <a href="file_cleaners.js.html#line57">line 57</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        If there is an issue writing to files.
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl>
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type">Error</span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;void></span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>// Example of using emptyAllFiles function
-await emptyAllFiles();</code></pre>
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".removeStreamFiles"><span class="type-signature">(static) </span>removeStreamFiles<span class="signature">(directoryPath)</span><span class="type-signature"> &rarr; {void}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Remove files with names containing 'stream' or 'audio' from the specified directory.
+    Send the configuration file (config.ini) to the Raspberry Pi.
+If specified, also starts the recording application on the Raspberry Pi.
 </div>
 
 
@@ -752,7 +475,7 @@ await emptyAllFiles();</code></pre>
 
         <tr>
             
-                <td class="name"><code>directoryPath</code></td>
+                <td class="name"><code>startRig</code></td>
             
 
             <td class="type">
@@ -768,7 +491,7 @@ await emptyAllFiles();</code></pre>
 
             
 
-            <td class="description last">The path of the directory from which to remove files.</td>
+            <td class="description last">If 'config', only sends the configuration file; otherwise, starts the recording application.</td>
         </tr>
 
     
@@ -809,7 +532,7 @@ await emptyAllFiles();</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="file_cleaners.js.html">file_cleaners.js</a>, <a href="file_cleaners.js.html#line27">line 27</a>
+        <a href="rig_controller.js.html">rig_controller.js</a>, <a href="rig_controller.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -858,9 +581,304 @@ await emptyAllFiles();</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// Example of using removeStreamFiles function
-const directoryPath = './data/images';
-removeStreamFiles(directoryPath);</code></pre>
+    <pre class="prettyprint"><code>// Example of using rigControl function
+rigControl('start'); // Sends the configuration file and starts the recording application</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".runTheRecordingApp"><span class="type-signature">(static) </span>runTheRecordingApp<span class="signature">(ssh, startRig)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Run the recording app.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ssh</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Client</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The SSH client instance for connecting to the Raspberry Pi.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>startRig</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">If 'start', starts the recording application; otherwise, stops preview processes.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="rig_controller.js.html">rig_controller.js</a>, <a href="rig_controller.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Example of using runTheRecordingApp function
+runTheRecordingApp(sshInstance, 'start'); // Starts the recording application on the Raspberry Pi</code></pre>
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".startEEGRecording"><span class="type-signature">(static) </span>startEEGRecording<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Start EEG recording.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="rig_controller.js.html">rig_controller.js</a>, <a href="rig_controller.js.html#line161">line 161</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>// Example of using startEEGRecording function
+startEEGRecording(); // Starts EEG recording</code></pre>
 
 
 
@@ -886,7 +904,7 @@ removeStreamFiles(directoryPath);</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 04 2024 21:04:56 GMT+0100 (British Summer Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Apr 14 2024 10:55:43 GMT+0100 (British Summer Time)
 </footer>
 
 <script> prettyPrint(); </script>
