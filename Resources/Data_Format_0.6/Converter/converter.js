@@ -1,6 +1,4 @@
-
-
-import fs, { write } from 'fs';
+import fs from 'fs';
 
 
 //Convert the old session file into new files format
@@ -15,13 +13,14 @@ function convertSessionFile(filePath) {
     
         generateRecordFile(fileContent);
         generateAnalysisFile(fileContent);
-        createDeviceFile("./output/device_0.6.json");
+        createDeviceFile("./device_0.6.json");
 
         console.log('Conversion finished!')
     })
     
 }
 
+//Create the device file
 function createDeviceFile(filePath) {
     fs.readFile(filePath, (err, data) => {
         if(err) {
@@ -32,7 +31,7 @@ function createDeviceFile(filePath) {
         let device = JSON.parse(data);
 
 
-        writeFile("./output/device_0.6.json", device);
+        writeFile("./device_0.6.json", device);
     })
 }
 
@@ -115,7 +114,7 @@ function generateRecordFile(fileContent) {
         }
     }
 
-    writeFile("./output/record_0.6.json", recordFileData);
+    writeFile("./record_0.6.json", recordFileData);
 
 
 }
@@ -396,7 +395,7 @@ function generateAnalysisFile(fileContent) {
 
     }
 
-   writeFile("./output/analysis_0.6.json", analysisFileData);
+   writeFile("./analysis_0.6.json", analysisFileData);
 }
 
-convertSessionFile('/Users/dionisbarcari/Documents/Courseworks/Final-Coursework/RIG/Resources/Current Data Example/session_1712236502822.json');
+convertSessionFile('PATH.json');
