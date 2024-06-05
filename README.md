@@ -11,7 +11,7 @@ This work is licensed under a
 
 
 <h1>Project Name - Data Recording Rig</h1>
-<h2>Version 1.x.x</h2>
+<h2>Version 1.0</h2>
 
 Welcome to the server component of the Data Recording Rig! This server plays a crucial role in managing and processing data collected from various sources, providing a robust backend for the entire system.
 
