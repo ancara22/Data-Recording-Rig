@@ -1,0 +1,10 @@
+{
+    "source": {
+      "include": ["modules", "modules/blockchain"],
+      "exclude": ["node_modules"]
+    },
+    "opts": {
+      "destination": "../Documentation"
+    }
+  }
+  

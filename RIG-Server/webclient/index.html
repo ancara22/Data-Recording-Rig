@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="./script/recorder.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://momentjs.com/downloads/moment.js"></script>
+    
+    <title>RIG</title>
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation Bar -->
+        <div id="nav">
+            <div id="menu">
+                <i class="fa-solid fa-bars"></i>
+                <button class="menuActive" @click="pageContent = 'settings'">Settings</button>
+                <button :class="{disabledMenuItem: !rigActive, menuActive: rigActive}" :disabled="!rigActive" @click="pageContent = 'data'">Dashboard</button>
+                <button :class="{disabledMenuItem: historyPageActive}" @click="pageContent = 'history'" :disabled="historyPageActive">History Data</button>
+            </div>
+            <div id="rig_status">
+                <p :class="{ 'colorGreen': rigActive, 'colorRed': !rigActive }">{{ statusText }}</p>
+                <i class="fa-regular fa-spinner" :class="{ 'fa-spin': rigActive, 'colorGray': !rigActive }" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div id="rig_control">
+            <div id="change_status">
+                <button :disabled="isRunDisabled" :class="{ 'backColorGreen': !rigActive, 'tempColorGray': tempColorGray, 'disabled': isRunDisabled }"  @click="startRig" v-if="rigActive == false">Start</button>
+                <button class="backColorRed" @click="stopRig" v-if="rigActive == true">Stop</button>
+            </div>
+            <div id="startTime">
+                <span>Last session start:</span>
+                <span>{{ startTime ? new Date(startTime).toLocaleString(): "0000.00.00 00:00" }}</span>
+            </div>
+        </div>
+
+<!-- --------------------------------------------------------------------------------------------------------- -->
+        <!-- Rig Settings Page -->
+        <div v-if="pageContent == 'settings'" id="settings_container">
+            <div id="user_settings">
+                <!-- User Settings -->
+                <div id="info">To enable the <span>Start</span> button, click <span>Set User</span>, enter your username, 
+                    and record a brief audio introduction by cliking <span>Start Recording</span> button and then <span>Save</span> button. Once done, the rig can be started correctly.
+                </div>
+                <div id="control">
+                    <div id="user_control_box" :class="{'show': isUserMenuDisplayed, 'moveDown': !isUserMenuDisplayed}">
+                        <button @click="continueRecording" :class="{'hide': !isUserMenuDisplayed}">Set User</button>
+                    </div>
+                    <span>Current user: {{ userName }}</span>
+                    <label for="user_name">username</label>
+                    <input v-model="userName" name="user_name" type="text">
+                    <button id="setUserButton" @click="setNewUser"  :class="{'hide': isUserMenuDisplayed}">Set User Name</button>
+                </div>
+                <div id="audio_recording_box" :class="{'hide': hideAudioRecording, 'show': !hideAudioRecording}">
+                    <h2>Press <b>"Start Recording"</b> and introduce yourself!</h2>
+                    <button @click="startRecording" :disabled="recording">Start Recording</button>
+                    <button @click="saveRecording" :disabled="!audioData || recording">Save Recording</button>
+                    <span v-if="recording">Recording... {{ recordingTimer }}sec</span>
+                </div>
+            </div>
+             <!-- Rig Settings -->
+            <h1>Rig Settings</h1>
+             <!-- Image Settings -->
+            <div class="settings_box">
+                <h3>Image</h3>
+                <div class="settings">
+                    <label for="img_freq">Frequency(seconds)</label>
+                    <input v-model="imageSettings.frequence" name="img_freq" type="number">
+                    <label for="img_frame">Framerate</label>
+                    <input v-model="imageSettings.framerate" name="img_frame" type="number">
+                    <label for="img_x">Image Width</label>
+                    <input v-model="imageSettings.size_x"  name="img_x" type="number">
+                    <label for="img_y">Image Height</label>
+                    <input v-model="imageSettings.size_y" name="img_y" type="number">
+                    <label for="img_host">Host/Data receiving address</label>
+                    <input v-model="imageSettings.host" name="img_host" type="text">
+                </div>
+            </div>
+            <!-- Audio Settings -->
+            <div class="settings_box">
+                <h3>Audio</h3>
+                <div class="settings">
+                    <label for="aud_freq">Frequency(seconds)</label>
+                    <input v-model="audioSettings.frequence" name="aud_freq" type="number">
+                    <label for="aud_rate">Sample rate</label>
+                    <input v-model="audioSettings.sampleRate" name="aud_rate" type="number">
+                    <label for="aud_chunk">Chunk</label>
+                    <input v-model="audioSettings.chunk" name="aud_chunk" type="number">
+                    <label for="aud_host">Host/Data receiving address</label>
+                    <input v-model="audioSettings.host" name="aud_host" type="text">
+                </div>
+            </div>
+            <!-- GSR Settings -->
+            <div class="settings_box">
+                <h3>GSR</h3>
+                <div class="settings">
+                    <label for="gsr_freq">Frequency(seconds)</label>
+                    <input v-model="gsrSettings.frequence" name="gsr_freq" type="number" disabled>
+                    <label for="gsr_host">Host/Data receiving addres</label>
+                    <input v-model="gsrSettings.host" name="gsr_host" type="text">
+                </div>
+                <div class="settings">
+                    <h3>Connection</h3>
+                    <label for="connection_host">Host/Connection check address</label>
+                    <input v-model="connectionSettings.host" name="connection_host" type="text">
+                </div>
+            </div>
+            <!-- EEG Headset Settings -->
+            <div class="settings_box eeg_settings_box" >
+                <h3>EEG</h3>
+                <div id="eeg_settings_box">
+                    <legend>Choose EEG Data Types</legend>
+                    <div>
+                        <input v-model="eegSettings.eeg" id="eeg_raw" type="checkbox" name="eeg" value="eeg">
+                        <label for="eeg">Raw EEG</label>
+                    </div>
+                    <div>
+                        <input v-model="eegSettings.fac" id="eeg_fac" type="checkbox" name="eeg" value="fac">
+                        <label for="fac">Facial Expressions</label>
+                    </div>
+                    <div>
+                        <input v-model="eegSettings.met" id="eeg_met" type="checkbox" name="eeg" value="met">
+                        <label for="met">Performance Metrics</label>
+                    </div>
+                    <div>
+                        <input v-model="eegSettings.pow" id="eeg_pow" type="checkbox" name="eeg" value="pow">
+                        <label for="pow">EEG Sensors Power</label>
+                    </div>
+                </div>
+            </div>
+            <!-- Save Settings -->
+            <div id="saveBtn">
+                <button @click="saveConfigFile">Save</button>
+            </div>
+        </div>
+ <!-- --------------------------------------------------------------------------------------------------------- -->
+        <!-- Dashboard Page -->
+        <div id="rig_data_box" v-else-if="pageContent == 'data'">
+            <div id="counter">
+                <h2>Data Collected:</h2>
+                <div class="counter_box images_counter">
+                    <span>Images:</span>
+                    <span>{{ imagesNumber }}</span>
+                </div>
+                <div class="counter_box audio_counter">
+                    <span>Audio:</span>
+                    <span>{{ audioNumber }}</span>
+                </div>
+                <div class="counter_box audio_counter">
+                    <span>GSR:</span>
+                    <span>{{ gsrTime }}</span>
+                </div>
+            </div>
+            <div id="data">
+                <div class="text_box_1" >
+                    <span>Text from audio:</span>
+                    <div>
+                        <div id="audio_text">
+                            <div v-for="conv in audioText">
+                                <span class="timestamp">Time: {{ new Date( parseInt(conv.timestamp) * 1000).toLocaleString()}}</span>
+                                <li v-for="speach in conv.text"><span>{{ speach.speaker }}: </span>{{ speach.text }}</li>
+                                <li v-if="conv.experienceDetected != null" class="audio_text_emotion"><span>Experience Detected: </span>{{ conv.experienceDetected }}</li>
+                                <li class="audio_text_emotion"><span>Text Emotion: </span>{{ conv.text_emotion.Sentiment }}</li>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text_box_2" >
+                    <span>Text from image:</span>
+                    <div id="image_text">
+                        <li v-for="image in imageText"><span>{{ image.imageTime }}:  </span>{{ image.text }}</li>
+                    </div>
+                </div>
+            </div>
+            <div id="gsr_box">
+                <div id="gsrGraph"></div>
+                <div id="gsr_emotions">
+                    <div id="history">
+                        <li v-for="emotion in emotionsList" :class="{'current': emotion.current}">
+                            {{ emotion.emotion }}
+                            <span>{{ emotion.startTime }}</span>
+                        </li>
+                    </div>
+                </div>
+            </div>
+        </div>
+ <!-- --------------------------------------------------------------------------------------------------------- -->
+         <!-- History Page -->
+        <div v-if="pageContent == 'history'">
+            <div id="container">
+                <div id="sessions_list">
+                    <li v-for="file in sessionsList" :key="file" @click="getFileContent(file)" :class="{ 'active': file == selectedFile }">
+                        <span class="session_name">{{ file }}</span>
+                        <span class="session_time">Time: {{ getTime(file + "") }}</span>
+                    </li>
+                </div>
+                <div id="sessions_output">
+                    <!-- Head Data -->
+                    <div id="head">
+                        <h4>Head</h4>
+                        <div id="head_timestamp">
+                            <span>Time: <span>{{ getTime(outputSessionContent.head.time + " ") }}</span></span>
+                        </div>
+                        <div id="head_user">User Name: <span>{{ outputSessionContent.head.user }}</span></div>
+                        <div id="head_version">Version: <span>{{ outputSessionContent.head.version }}</span></div>
+                    </div>
+                    <div id="data_history">
+                         <!-- GSR Data -->
+                        <div id="data_gsr" v-show="outputSessionContent.data.gsr.length != 0">
+                            <h6>GSR Data</h6>
+                            <div class="gsr_section" :key="selectedFile">
+                                <div class="recording_times" v-for="gsr in outputSessionContent.data.gsr">
+                                    <div class="time"><span>Start Time: </span>{{ getTime("" + gsr.time) }}</div>
+                                    <div class="time"><span>Sentiment: </span>{{ gsr.sentiment }}</div>
+                                </div>
+                                <div id="gsr-plot" ></div>
+                            </div>
+                        </div>
+                        <!-- Audio Data -->
+                        <div id="data_audio" v-show="outputSessionContent.data.audio.length != 0">
+                            <h6>Audio Data</h6>
+                            <div id="audio_player">
+                                <span>Select an audio file: </span>
+                                <select id="select_audio_box" @change="handleSelectAudioOption" :key="selectedFile" v-model="selectedAudio">
+                                    <option disabled value="" selected>Select Audio</option>
+                                    <option v-for="audio of audioList" :value="audio" :key="audio" >{{ audio }}</option>
+                                </select>
+                                <audio controls :key="selectedAudio">
+                                    <source :src="currentAudioFile" type="audio/wav" :key="selectedAudio">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            </div>
+                            <div class="scroll">
+                                <div class="recording" v-for="audio in outputSessionContent.data.audio">
+                                    <div class="time">Start Time: {{ getTime(audio.time + " ") + '' }}</div>
+                                    <div class="file_name">Audio file name: {{ audio.file }}</div>
+                                    <div class="conv_box">
+                                        <div class="conv_speach" v-for="conv in audio.text">
+                                            <span class="speaker">{{ conv.speaker }}: </span>
+                                            <span class="text">{{ conv.text }}</span>
+                                        </div>
+                                        <div class="conv_sentiment"><span>Text Sentiment: </span>{{ audio.sentiment.Sentiment }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Image Data -->
+                        <div id="image_data">
+                        <h6>Image Data</h6>
+                            <span>Select an Image: </span>
+                            <select id="selectImageBox" @change="handleSelectImageOption" :key="selectedFile">
+                                <option disabled value="" selected>Select an image</option>
+                                <option v-for="image of imageList" :value="image" :key="image">{{ image }}</option>
+                            </select>
+                
+                            <div id="image_data_container">
+                                <img :src="currentImageURL" alt="image" :key="selectedFile">
+                                <div id="image_text_box">
+                                    <h5>Image Text</h5>
+                                    <div id="content">
+                                        <p id="li_default" v-if="outputSessionContent.data.image.text?.length == 0">No Text</p>
+                                        <li v-for="image in outputSessionContent.data.image?.text"><span>{{ convertTime(image.time) }}:  </span>{{ image.text }}</li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- EEG Data -->
+                        <div id="eeg_data" :key="selectedFile">
+                            <h6>EEG Data</h6>
+                            <div id="eeg_titles">
+                                <span>Facial Expressions</span>
+                            </div>
+                            <div id="eeg_head">
+                                <div id="face_expressions">
+                                    <table>
+                                        <tr>
+                                            <th>Eye Action</th>
+                                            <th>Upper Face</th>
+                                            <th>Lower Face</th>
+                                            <th>Time</th>
+                                        </tr>
+                                        <tr v-for="expression in formatFacialExpressions()" v-show="expression?.time">
+                                            <td>{{ expression?.eyeAction }}</td>
+                                            <td>{{ expression?.upperFace.action }}</td>
+                                            <td>{{ expression?.lowerFace.action }}</td>
+                                            <td>{{  momentTime(expression?.time)  }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <span class="eeg_titles">Performance Metrics</span>
+                          
+                            <div id="performance_metrics" >
+                                <button @click="renderPerformanceCharts()">Click to Display Performance Metrics</button>
+                                <div v-if="showEEGMetrics" class="metrix_box" v-for="metricNr in 7" :key="metricNr">
+                                    <div :id="`performance_metrics_chart${metricNr}`"></div>
+                                </div>
+                            </div>
+                            <span class="eeg_titles">Raw EEG</span>
+                             <!-- Raw EEG Data -->
+                            <div id="raw_eeg">
+                                <button @click="renderRawEEGCharts()">Click to Display Raw EEG Data</button>
+                                <div v-if="showEEGRaw" class="sensor_box" v-for="sensorNumber in 14" :key="sensorNumber">
+                                    <div :id="`raw_eeg_sensor_${sensorNumber}`"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Detected Experience Data -->
+                        <div id="experience_container" v-if="outputSessionContent.data.des.length != 0">
+                            <div class="experience" v-for="desc in outputSessionContent.data.des">
+                                <div class="time">Start Time: {{ getTime("" + desc.time) }}</div>
+                                <div class="file_name">Audio file name: {{ desc.file }}</div>
+                                <div class="text"><span>Experience Detected: </span>{{ desc.text }}</div>
+                            </div>
+                        </div>
+                        <!-- Sentiment Data -->
+                        <div id="sentiment_container" v-if="outputSessionContent.data.overallSentiment.length != 0">
+                            <h6>Overall Sentiment</h6>
+                            <div class="scroll_2">
+                                <div class="sentiment_box" v-for="sentiment in outputSessionContent.data.overallSentiment">
+                                    <div class="time"><span>Recording time: </span>{{ getTime(sentiment.time + "") }}</div>
+                                    <div class="file_name" ><span>Source: </span>{{ sentiment.file }} <span v-if="!sentiment.file">Data Analyse</span></div>
+                                    <div class="sentiment"><span>Sentiment: </span>{{  getSentiment(sentiment.sentiment) }} </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./script/index.js"></script>
+</body>
+</html>

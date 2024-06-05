@@ -1,0 +1,37 @@
+service: blockchain-service
+app: blockchain
+org: db1166
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: eu-west-2
+
+functions:
+  blockchainHasher:
+    handler: blockchain-api.handler
+    events:
+      - http:
+          path: /
+          method: post
+          cors: true
+
+resources:
+  Resources:
+    BlockchainHashTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: blockchainHash
+        AttributeDefinitions:
+          - AttributeName: user
+            AttributeType: S
+          - AttributeName: timestamp
+            AttributeType: N
+        KeySchema:
+          - AttributeName: user
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
