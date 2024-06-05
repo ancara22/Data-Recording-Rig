@@ -32,7 +32,7 @@ body {
    width: 100%;
 }
 
-#menu button, .fa-bars, #rig_status, #saveBtn button {
+.fa-bars, #rig_status, #saveBtn button {
    color: white;
 }
 
@@ -68,7 +68,7 @@ body {
    font-size: 1rem;
 }
 
-#menu button:hover {
+#menu .menuActive:hover {
    cursor: pointer;
    background-color: blueviolet;
 }
@@ -513,6 +513,14 @@ body {
    background-color: rgb(195, 195, 195);
    border: none;
    color: white;
+}
+
+.menuActive {
+   color:white
+}
+
+.disabledMenuItem {
+   color:rgb(194, 194, 194)
 }
 
 #container {

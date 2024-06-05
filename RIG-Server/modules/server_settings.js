@@ -61,6 +61,7 @@ const FILE_PATHS = {
     GSR_TRAINING_FOLDER         : GSR_TRAINING_FOLDER,
     EEG_FOLDER                  : EEG_FOLDER,
     IMAGE_TEXT_FOLDER           : IMAGE_TEXT_FOLDER,
+    RAW_IMAGES                  : IMAGE_FOLDER + "raw_images",  // modified
     AUDIO_FOLDER                : AUDIO_FOLDER,
     CONVERTED_AUDIO             : CONVERTED_AUDIO,
     GSR_FOLDER                  : GSR_FOLDER,
@@ -93,7 +94,7 @@ const FILE_PATHS = {
 */
 const RIG_CONFIG = {
     host: "raspberry.local",
-    port: 22,
+    port: 24,
     username: "rig",
     password: "raspberry"
 }
@@ -108,8 +109,8 @@ const RIG_CONFIG = {
 * @property {string} PATH - Path to the configuration file.
 */
 const APP_CONFIG = {
-    IMAGE_PROCESSOR_COMMAND     : 'python3 ./processors/image_processor.py',
-    APP_RUNNING_COMMAND         : 'python3 /home/rig/Documents/App/main/app.py',
+    IMAGE_PROCESSOR_COMMAND     : 'python ./processors/image_processor.py',
+    APP_RUNNING_COMMAND         : 'python /home/rig/Documents/App/main/app.py',
     KILL_PYTHON_APPS_COMMAND    : 'pkill -f python',
     PATH                        : '/home/rig/Documents/App/main/config.ini'
 }

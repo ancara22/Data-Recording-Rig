@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://momentjs.com/downloads/moment.js"></script>
+    
     <title>RIG</title>
 </head>
 <body>
@@ -17,13 +18,13 @@
         <div id="nav">
             <div id="menu">
                 <i class="fa-solid fa-bars"></i>
-                <button @click="pageContent = 'settings'">Settings</button>
-                <button @click="pageContent = 'data'">Dashboard</button>
-                <button @click="pageContent = 'history'">History Data</button>
+                <button class="menuActive" @click="pageContent = 'settings'">Settings</button>
+                <button :class="{disabledMenuItem: !rigActive, menuActive: rigActive}" :disabled="!rigActive" @click="pageContent = 'data'">Dashboard</button>
+                <button :class="{disabledMenuItem: historyPageActive}" @click="pageContent = 'history'" :disabled="historyPageActive">History Data</button>
             </div>
             <div id="rig_status">
                 <p :class="{ 'colorGreen': rigActive, 'colorRed': !rigActive }">{{ statusText }}</p>
-                <i class="fa-regular fa-spinner" :class="{ 'fa-spin': rigActive, 'colorGray': !rigActive }"></i>
+                <i class="fa-regular fa-spinner" :class="{ 'fa-spin': rigActive, 'colorGray': !rigActive }" aria-hidden="true"></i>
             </div>
         </div>
         <div id="rig_control">

@@ -87,7 +87,7 @@ function executeCommand(ssh) {
         
         runSessionFileUpdatingInterval();     //Update the final file / interval
         
-        stream.stderr.on('data', (data) => console.error('Python Script Error:', data.toString()));
+        //stream.stderr.on('data', (data) => console.error('Python Script Error:', data.toString()));
     
         stream.on("close", (code, signal) => { 
             console.log("Recording process closed. Exit code:", code, "Signal:", signal);
@@ -110,6 +110,7 @@ function executeCommand(ssh) {
  * runTheRecordingApp(sshInstance, 'start'); // Starts the recording application on the Raspberry Pi
  */
 function runTheRecordingApp(ssh, startRig) {
+
     //Stop all the previews processes
     ssh.exec(APP_CONFIG.KILL_PYTHON_APPS_COMMAND, (err, stream) => {
         const sleep = (milliseconds) => {
@@ -120,7 +121,7 @@ function runTheRecordingApp(ssh, startRig) {
             console.log('Starting the Recording process.')
             sleep(1000).then(()=> {
                 executeCommand(ssh);    // Run the rig recording on the raspberry pi
-                runImageProcessor();    //Rund image processor
+                runImageProcessor();    // Rund image processor
             })
         }
     }) 
@@ -138,12 +139,13 @@ function runTheRecordingApp(ssh, startRig) {
  * handleSSHError(sshInstance); // Handles SSH connection errors
  */
 function handleSSHError(ssh) {
+    runImageProcessor() //remove
     //On ssh connection error
     ssh.on("error", (err) => {
         if(err.code == 'ENOTFOUND') {
-            console.log('SSH connection error. No active devices!')
+            console.log('No active devices!')
         } else {
-            console.log('SSH connection error: ', err)
+            console.log('SSH connection error:', err)
         }
     })
 }

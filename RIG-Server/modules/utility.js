@@ -714,7 +714,10 @@ function getAllEEGFilesContent() {
 
 //Function that will check the server enviroment and create all the neccessary folders and files
 function checkEnviroment() {
+    console.log('Setting the Enviroment...')
+
     const enviromentFolders = [
+        FILE_PATHS.RAW_IMAGES,
         FILE_PATHS.DATA_FOLDER, 
         FILE_PATHS.AUDIO_FOLDER, 
         FILE_PATHS.EEG_FOLDER, 
@@ -744,8 +747,6 @@ function checkEnviroment() {
                 fs.mkdir(path, {recursive: true }, (err) => {
                     if (err) {
                         console.error('Error creating folder:', err);
-                    } else {
-                        console.log('Folder created successfully');
                     }
                 })
             }
@@ -767,7 +768,6 @@ function checkEnviroment() {
     });
 
 
-    console.log('The Enviroment is Ready!')
 
 }
 

@@ -1,0 +1,18 @@
+# Node.js dependencies
+Rig-Server/node_modules
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Compiled output
+/dist
+
+# Log files
+/log
+
+# IDE specific files
+.vscode

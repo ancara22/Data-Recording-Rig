@@ -31,6 +31,7 @@ const vueApp = new Vue({
         currentAudioFile       : '',           //Currently selected audio file
         showEEGMetrics         : false,        //Show EEG metrics status
         showEEGRaw             : false,        //Show EEG raw status
+        historyPageActive      : true,
 
         //Rig image configurations
         imageSettings: {
@@ -474,8 +475,15 @@ const vueApp = new Vue({
                 .then(response => response.json())
                 .then(data => {
                     this.sessionsList = data;
-                    this.getFileContent(this.sessionsList[0]);
-                    this.selectedFile = this.sessionsList[0];
+
+                    if(this.sessionsList.length != 0) {
+                        this.getFileContent(this.sessionsList[0]);
+                        this.selectedFile = this.sessionsList[0];
+                        this.historyPageActive = false
+                    } else {
+                        this.historyPageActive = true
+                    }
+                   
                 }).catch(error => console.error('Error:', error));
         },
 

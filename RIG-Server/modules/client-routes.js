@@ -378,6 +378,7 @@ webClientRoutes.post("/getOutputFileContent", (req, res) => {
     console.log('Request File Content: ', filePath)
 
     fs.readFile(filePath, 'utf8', (err, data) => {
+        console.log('object :>> ', requestBody.fileName);
         if (err) {
             return res.status(500).json({ error: 'Error reading file.', details: err.message });
         }

@@ -27,7 +27,7 @@ import { FILE_PATHS } from "./server_settings.js";
 function removeStreamFiles(directoryPath) {
 	readdir(directoryPath, (err, files) => {
 		if (err) {
-			console.error('Error reading directory:', err);
+			//console.error('Error reading directory:', err);
 			return;
 		}
 
