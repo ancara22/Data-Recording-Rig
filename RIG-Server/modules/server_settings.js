@@ -94,7 +94,7 @@ const FILE_PATHS = {
 */
 const RIG_CONFIG = {
     host: "raspberry.local",
-    port: 24,
+    port: 22,
     username: "rig",
     password: "raspberry"
 }
@@ -109,8 +109,8 @@ const RIG_CONFIG = {
 * @property {string} PATH - Path to the configuration file.
 */
 const APP_CONFIG = {
-    IMAGE_PROCESSOR_COMMAND     : 'python ./processors/image_processor.py',
-    APP_RUNNING_COMMAND         : 'python /home/rig/Documents/App/main/app.py',
+    IMAGE_PROCESSOR_COMMAND     : 'python3 ./processors/image_processor.py',
+    APP_RUNNING_COMMAND         : 'python3 /home/rig/Documents/App/main/app.py',
     KILL_PYTHON_APPS_COMMAND    : 'pkill -f python',
     PATH                        : '/home/rig/Documents/App/main/config.ini'
 }

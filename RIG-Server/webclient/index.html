@@ -20,7 +20,7 @@
                 <i class="fa-solid fa-bars"></i>
                 <button class="menuActive" @click="pageContent = 'settings'">Settings</button>
                 <button :class="{disabledMenuItem: !rigActive, menuActive: rigActive}" :disabled="!rigActive" @click="pageContent = 'data'">Dashboard</button>
-                <button :class="{disabledMenuItem: historyPageActive}" @click="pageContent = 'history'" :disabled="historyPageActive">History Data</button>
+                <button :class="{disabledMenuItem: historyPageActive, menuActive:!historyPageActive}" @click="pageContent = 'history'" :disabled="historyPageActive">History Data</button>
             </div>
             <div id="rig_status">
                 <p :class="{ 'colorGreen': rigActive, 'colorRed': !rigActive }">{{ statusText }}</p>

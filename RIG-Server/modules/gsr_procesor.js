@@ -34,7 +34,7 @@ let isDataUpdated = false;       //To update the GSR session
 async function predictGSREmotion(inputGSR) {
     try {
         const inputGSRString = inputGSR.join(',');
-        const command = `python ./processors/gsr_predict_emotion.py ${inputGSRString}`;
+        const command = `python3 ./processors/gsr_predict_emotion.py ${inputGSRString}`;
 
         const { stdout, stderr } = await util.promisify(exec)(command);
         const emotion = stdout.trim();
